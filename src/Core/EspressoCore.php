@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace EspressoWebDriver;
+namespace EspressoWebDriver\Core;
 
 use EspressoWebDriver\Interaction\ElementInteraction;
 use EspressoWebDriver\Interaction\InteractionInterface;
@@ -13,7 +13,7 @@ use RuntimeException;
 
 final readonly class EspressoCore
 {
-    public function __construct(private WebDriver $driver)
+    public function __construct(private WebDriver $driver, private EspressoOptions $options = new EspressoOptions)
     {
         //
     }
@@ -22,7 +22,7 @@ final readonly class EspressoCore
     {
         $body = $this->driver->findElement(WebDriverBy::tagName('body'));
 
-        $elements = $assertion->match($body);
+        $elements = $assertion->match($body, $this->options);
 
         if (empty($elements)) {
             throw new RuntimeException('Element not found');
@@ -34,6 +34,6 @@ final readonly class EspressoCore
 
         $element = reset($elements);
 
-        return new ElementInteraction($element);
+        return new ElementInteraction($element, $this->options);
     }
 }

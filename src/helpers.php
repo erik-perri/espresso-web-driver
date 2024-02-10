@@ -8,6 +8,8 @@ use EspressoWebDriver\Action\ActionInterface;
 use EspressoWebDriver\Action\ClickAction;
 use EspressoWebDriver\Assertion\AssertionInterface;
 use EspressoWebDriver\Assertion\MatchesAssertion;
+use EspressoWebDriver\Core\EspressoCore;
+use EspressoWebDriver\Core\EspressoOptions;
 use EspressoWebDriver\Matcher\AllOfMatcher;
 use EspressoWebDriver\Matcher\AnyOfMatcher;
 use EspressoWebDriver\Matcher\HasFocusMatcher;
@@ -21,9 +23,9 @@ use Facebook\WebDriver\WebDriver;
 
 // region Core
 
-function withDriver(WebDriver $driver): EspressoCore
+function withDriver(WebDriver $driver, EspressoOptions $options = new EspressoOptions): EspressoCore
 {
-    return new EspressoCore($driver);
+    return new EspressoCore($driver, $options);
 }
 
 // endregion
