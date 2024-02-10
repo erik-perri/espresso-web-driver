@@ -21,6 +21,6 @@
 
     <php>
         <env name="SELENIUM_DRIVER_URL" value="http://localhost:6544" />
-        <env name="SELENIUM_START_URL" value="http://nginx" />
+        <env name="SELENIUM_START_URL" value="http://php:8000" />
     </php>
 </phpunit>
