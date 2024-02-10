@@ -24,7 +24,7 @@ class HasDescendantMatcherTest extends BaseFeatureTestCase
 {
     public function testFindsDeepDescendant(): void
     {
-        $driver = $this->driver()->get($this->mockStaticUrl('has-descendants.html'));
+        $driver = $this->driver()->get($this->mockStaticUrl('has-descendant.html'));
 
         $espresso = withDriver($driver, new EspressoOptions(waitTimeoutInSeconds: 1));
 

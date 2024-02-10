@@ -30,7 +30,7 @@ jobs:
           php-version: 8.3
       - run: composer install --prefer-dist --no-interaction --optimize-autoloader
       - run: composer check-code
-      - run: php -S 0.0.0.0:8000 -t ./tests/Fixtures/static &
+      - run: php -S 0.0.0.0:8000 -t ./tests/static &
       - run: composer test
         env:
           SELENIUM_DRIVER_URL: http://localhost:4444
