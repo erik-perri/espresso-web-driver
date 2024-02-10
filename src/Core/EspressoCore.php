@@ -28,8 +28,10 @@ final readonly class EspressoCore
             throw new RuntimeException(sprintf('Element not found [%1$s]', $assertion));
         }
 
-        if (count($elements) > 1) {
-            throw new RuntimeException(sprintf('Multiple elements found [%1$s]', $assertion));
+        $found = count($elements);
+
+        if ($found > 1) {
+            throw new RuntimeException(sprintf('%1$s elements found [%2$s]', number_format($found), $assertion));
         }
 
         $element = reset($elements);
