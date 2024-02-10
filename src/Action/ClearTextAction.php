@@ -19,4 +19,9 @@ final readonly class ClearTextAction implements ActionInterface
 
         return true;
     }
+
+    public function __toString(): string
+    {
+        return 'clearText';
+    }
 }

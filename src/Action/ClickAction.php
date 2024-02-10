@@ -14,4 +14,9 @@ final readonly class ClickAction implements ActionInterface
 
         return true;
     }
+
+    public function __toString(): string
+    {
+        return 'click';
+    }
 }

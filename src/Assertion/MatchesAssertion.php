@@ -21,4 +21,9 @@ final readonly class MatchesAssertion implements AssertionInterface
 
         return reset($match) === $root;
     }
+
+    public function __toString(): string
+    {
+        return sprintf('matches(%s)', $this->matcher);
+    }
 }

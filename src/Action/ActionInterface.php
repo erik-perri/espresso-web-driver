@@ -9,4 +9,6 @@ use Facebook\WebDriver\WebDriverElement;
 interface ActionInterface
 {
     public function perform(WebDriverElement $element): bool;
+
+    public function __toString(): string;
 }

@@ -20,17 +20,17 @@ final readonly class ElementInteraction implements InteractionInterface
     public function check(AssertionInterface $assertion): InteractionInterface
     {
         if (!$assertion->assert($this->element, $this->options)) {
-            throw new RuntimeException('Assertion failed');
+            throw new RuntimeException(sprintf('Assertion failed [%1$s]', $assertion));
         }
 
         return $this;
     }
 
-    public function perform(ActionInterface ...$action): InteractionInterface
+    public function perform(ActionInterface ...$actions): InteractionInterface
     {
-        foreach ($action as $act) {
-            if (!$act->perform($this->element)) {
-                throw new RuntimeException('Action failed');
+        foreach ($actions as $action) {
+            if (!$action->perform($this->element)) {
+                throw new RuntimeException(sprintf('Action failed [%1$s]', $action));
             }
         }
 
