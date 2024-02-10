@@ -12,28 +12,51 @@ use EspressoWebDriver\Matcher\MatcherInterface;
 use Facebook\WebDriver\Exception\NoSuchElementException;
 use Facebook\WebDriver\WebDriver;
 use Facebook\WebDriver\WebDriverBy;
+use Facebook\WebDriver\WebDriverElement;
 
 use function EspressoWebDriver\withTagName;
 
 final readonly class EspressoCore
 {
-    public function __construct(private WebDriver $driver, private EspressoOptions $options = new EspressoOptions)
-    {
-        //
+    private WebDriverElement $container;
+
+    /**
+     * @throws NoMatchingElementException
+     */
+    public function __construct(
+        private WebDriver $driver,
+        private EspressoOptions $options = new EspressoOptions,
+        ?WebDriverElement $container = null,
+    ) {
+        $this->container = $container ?? $this->findHtmlElement();
     }
 
     /**
-     * @throws NoMatchingElementException|AmbiguousElementMatcherException
+     * @throws AmbiguousElementMatcherException|NoMatchingElementException
+     */
+    public function inContainer(MatcherInterface $matcher): self
+    {
+        $container = $this->findSingleMatch($matcher);
+
+        return new self($this->driver, $this->options, $container);
+    }
+
+    /**
+     * @throws AmbiguousElementMatcherException|NoMatchingElementException
      */
     public function onElement(MatcherInterface $matcher): InteractionInterface
     {
-        try {
-            $body = $this->driver->findElement(WebDriverBy::tagName('body'));
-        } catch (NoSuchElementException) {
-            throw new NoMatchingElementException(withTagName('body'));
-        }
+        $element = $this->findSingleMatch($matcher);
 
-        $elements = $matcher->match($body, $this->options);
+        return new ElementInteraction($element, $this->options);
+    }
+
+    /**
+     * @throws AmbiguousElementMatcherException|NoMatchingElementException
+     */
+    private function findSingleMatch(MatcherInterface $matcher): WebDriverElement
+    {
+        $elements = $matcher->match($this->container, $this->options);
         $elementCount = count($elements);
 
         if ($elementCount === 0) {
@@ -44,8 +67,18 @@ final readonly class EspressoCore
             throw new AmbiguousElementMatcherException($elementCount, $matcher);
         }
 
-        $element = reset($elements);
+        return reset($elements);
+    }
 
-        return new ElementInteraction($element, $this->options);
+    /**
+     * @throws NoMatchingElementException
+     */
+    private function findHtmlElement(): WebDriverElement
+    {
+        try {
+            return $this->driver->findElement(WebDriverBy::tagName('html'));
+        } catch (NoSuchElementException) {
+            throw new NoMatchingElementException(withTagName('html'));
+        }
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+/** @noinspection PhpUnused */
+
 declare(strict_types=1);
 
 namespace EspressoWebDriver;
@@ -13,6 +15,7 @@ use EspressoWebDriver\Assertion\AssertionInterface;
 use EspressoWebDriver\Assertion\MatchesAssertion;
 use EspressoWebDriver\Core\EspressoCore;
 use EspressoWebDriver\Core\EspressoOptions;
+use EspressoWebDriver\Exceptions\NoMatchingElementException;
 use EspressoWebDriver\Matcher\AllOfMatcher;
 use EspressoWebDriver\Matcher\AnyOfMatcher;
 use EspressoWebDriver\Matcher\HasDescendantMatcher;
@@ -29,6 +32,9 @@ use Facebook\WebDriver\WebDriver;
 
 // region Core
 
+/**
+ * @throws NoMatchingElementException
+ */
 function withDriver(WebDriver $driver, EspressoOptions $options = new EspressoOptions): EspressoCore
 {
     return new EspressoCore($driver, $options);
