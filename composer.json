@@ -3,12 +3,16 @@
     "type": "library",
     "autoload": {
         "psr-4": {
-            "EspressoWebDriver\\": "src/",
-            "EspressoWebDriver\\Tests\\": "tests/"
+            "EspressoWebDriver\\": "src/"
         },
         "files": [
             "src/helpers.php"
         ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "EspressoWebDriver\\Tests\\": "tests/"
+        }
     },
     "require": {
         "php": ">=8.2",
