@@ -38,12 +38,12 @@ final readonly class HasDescendantMatcher implements MatcherInterface
             waitIntervalInMilliseconds: 0,
         );
 
-        $descendents = $this->matcher->match($root, $instantOptions);
+        $descendants = $this->matcher->match($root, $instantOptions);
 
         $elements = [];
 
-        foreach ($descendents as $descendent) {
-            $ancestors = array_reverse($descendent->findElements(WebDriverBy::xpath('./ancestor::*')));
+        foreach ($descendants as $descendant) {
+            $ancestors = array_reverse($descendant->findElements(WebDriverBy::xpath('./ancestor::*')));
 
             foreach ($ancestors as $ancestor) {
                 if ($ancestor->getID() === $root->getID()) {
