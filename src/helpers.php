@@ -7,6 +7,7 @@ namespace EspressoWebDriver;
 use EspressoWebDriver\Action\ActionInterface;
 use EspressoWebDriver\Action\ClearTextAction;
 use EspressoWebDriver\Action\ClickAction;
+use EspressoWebDriver\Action\SubmitAction;
 use EspressoWebDriver\Action\TypeTextAction;
 use EspressoWebDriver\Assertion\AssertionInterface;
 use EspressoWebDriver\Assertion\MatchesAssertion;
@@ -45,6 +46,11 @@ function clearText(): ActionInterface
 function click(): ActionInterface
 {
     return new ClickAction();
+}
+
+function submit(): ActionInterface
+{
+    return new SubmitAction();
 }
 
 function typeText(string $text): ActionInterface
