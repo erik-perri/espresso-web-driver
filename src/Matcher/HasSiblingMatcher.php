@@ -34,19 +34,23 @@ final readonly class HasSiblingMatcher implements MatcherInterface
     {
         $elements = [];
 
-        $parent = $root->findElement(WebDriverBy::xpath('..'));
-
-        $siblings = $parent->findElements(WebDriverBy::xpath('*'));
-
         // Since we are waiting ourselves, we don't want the child matchers to wait as well.
         $instantOptions = new EspressoOptions(
             waitTimeoutInSeconds: 0,
             waitIntervalInMilliseconds: 0,
         );
 
-        foreach ($siblings as $sibling) {
-            if ($this->matcher->match($sibling, $instantOptions)) {
-                $elements[] = $sibling;
+        $potentialSiblings = $this->matcher->match($root, $instantOptions);
+
+        foreach ($potentialSiblings as $sibling) {
+            $parent = $sibling->findElement(WebDriverBy::xpath('./parent::*'));
+
+            $adjacentChildren = $parent->findElements(WebDriverBy::xpath('*'));
+
+            foreach ($adjacentChildren as $child) {
+                if ($child->getID() !== $sibling->getID()) {
+                    $elements[] = $child;
+                }
             }
         }
 
