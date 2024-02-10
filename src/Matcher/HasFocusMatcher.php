@@ -27,21 +27,9 @@ final readonly class HasFocusMatcher implements MatcherInterface
      */
     private function findElementsWithFocus(WebDriverElement $root): array
     {
-        $elements = [];
+        $parent = $root->findElement(WebDriverBy::xpath('./parent::*'));
 
-        if ($root->isSelected()) {
-            $elements[] = $root;
-        }
-
-        $focusElements = $root->findElements(WebDriverBy::cssSelector('*:focus'));
-
-        foreach ($focusElements as $element) {
-            if ($element->isSelected()) {
-                $elements[] = $element;
-            }
-        }
-
-        return $elements;
+        return $parent->findElements(WebDriverBy::cssSelector(':focus'));
     }
 
     public function __toString(): string
