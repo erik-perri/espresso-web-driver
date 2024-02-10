@@ -17,17 +17,18 @@ trait HasAutomaticWait
     {
         $start = time();
         $end = $start + $timeoutInSeconds;
+        $lastResult = null;
 
         while (time() < $end) {
-            $result = $callback();
+            $lastResult = $callback();
 
-            if (!empty($result)) {
-                return $result;
+            if (!empty($lastResult)) {
+                return $lastResult;
             }
 
             usleep($intervalInMilliseconds * 1000);
         }
 
-        return null;
+        return $lastResult;
     }
 }
