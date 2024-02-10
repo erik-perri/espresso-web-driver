@@ -22,6 +22,7 @@ use EspressoWebDriver\Matcher\IsEnabledMatcher;
 use EspressoWebDriver\Matcher\MatcherInterface;
 use EspressoWebDriver\Matcher\WithClassMatcher;
 use EspressoWebDriver\Matcher\WithIdMatcher;
+use EspressoWebDriver\Matcher\WithTagNameMatcher;
 use EspressoWebDriver\Matcher\WithTextMatcher;
 use Facebook\WebDriver\WebDriver;
 
@@ -107,6 +108,11 @@ function withClass(string $class): MatcherInterface
 function withId(string $id): MatcherInterface
 {
     return new WithIdMatcher($id);
+}
+
+function withTagName(string $tagName): MatcherInterface
+{
+    return new WithTagNameMatcher($tagName);
 }
 
 function withText(string $text): MatcherInterface
