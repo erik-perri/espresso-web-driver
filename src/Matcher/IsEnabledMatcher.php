@@ -7,7 +7,7 @@ namespace EspressoWebDriver\Matcher;
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverElement;
 
-final readonly class IsEnabled implements MatcherInterface
+final readonly class IsEnabledMatcher implements MatcherInterface
 {
     public function match(WebDriverElement $root): array
     {
