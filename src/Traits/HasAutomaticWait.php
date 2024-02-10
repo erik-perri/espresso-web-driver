@@ -9,6 +9,8 @@ use Closure;
 trait HasAutomaticWait
 {
     /**
+     * Executes the provided callback function in intervals until it returns a non-empty result or the timeout is reached.
+     *
      * @template T
      *
      * @param  Closure(): T  $callback
@@ -19,11 +21,11 @@ trait HasAutomaticWait
             return $callback();
         }
 
-        $start = time();
+        $start = (float) microtime(true);
         $end = $start + $timeoutInSeconds;
         $lastResult = null;
 
-        while (time() < $end) {
+        while (microtime(true) < $end) {
             $lastResult = $callback();
 
             if (!empty($lastResult)) {
