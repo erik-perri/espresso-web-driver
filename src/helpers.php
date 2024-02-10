@@ -12,6 +12,7 @@ use EspressoWebDriver\Core\EspressoCore;
 use EspressoWebDriver\Core\EspressoOptions;
 use EspressoWebDriver\Matcher\AllOfMatcher;
 use EspressoWebDriver\Matcher\AnyOfMatcher;
+use EspressoWebDriver\Matcher\HasDescendantMatcher;
 use EspressoWebDriver\Matcher\HasFocusMatcher;
 use EspressoWebDriver\Matcher\HasSiblingMatcher;
 use EspressoWebDriver\Matcher\IsDisplayedMatcher;
@@ -59,6 +60,11 @@ function allOf(MatcherInterface ...$matchers): MatcherInterface
 function anyOf(MatcherInterface ...$assertions): MatcherInterface
 {
     return new AnyOfMatcher(...$assertions);
+}
+
+function hasDescendant(MatcherInterface $matcher): MatcherInterface
+{
+    return new HasDescendantMatcher($matcher);
 }
 
 function hasFocus(): MatcherInterface
