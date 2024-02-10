@@ -4,12 +4,16 @@ declare(strict_types=1);
 
 namespace EspressoWebDriver\Core;
 
+use EspressoWebDriver\Exceptions\AmbiguousElementMatcherException;
+use EspressoWebDriver\Exceptions\NoMatchingElementException;
 use EspressoWebDriver\Interaction\ElementInteraction;
 use EspressoWebDriver\Interaction\InteractionInterface;
 use EspressoWebDriver\Matcher\MatcherInterface;
+use Facebook\WebDriver\Exception\NoSuchElementException;
 use Facebook\WebDriver\WebDriver;
 use Facebook\WebDriver\WebDriverBy;
-use RuntimeException;
+
+use function EspressoWebDriver\withTagName;
 
 final readonly class EspressoCore
 {
@@ -18,20 +22,26 @@ final readonly class EspressoCore
         //
     }
 
-    public function onElement(MatcherInterface $assertion): InteractionInterface
+    /**
+     * @throws NoMatchingElementException|AmbiguousElementMatcherException
+     */
+    public function onElement(MatcherInterface $matcher): InteractionInterface
     {
-        $body = $this->driver->findElement(WebDriverBy::tagName('body'));
-
-        $elements = $assertion->match($body, $this->options);
-
-        if (empty($elements)) {
-            throw new RuntimeException(sprintf('Element not found [%1$s]', $assertion));
+        try {
+            $body = $this->driver->findElement(WebDriverBy::tagName('body'));
+        } catch (NoSuchElementException) {
+            throw new NoMatchingElementException(withTagName('body'));
         }
 
-        $found = count($elements);
+        $elements = $matcher->match($body, $this->options);
+        $elementCount = count($elements);
 
-        if ($found > 1) {
-            throw new RuntimeException(sprintf('%1$s elements found [%2$s]', number_format($found), $assertion));
+        if ($elementCount === 0) {
+            throw new NoMatchingElementException($matcher);
+        }
+
+        if ($elementCount > 1) {
+            throw new AmbiguousElementMatcherException($elementCount, $matcher);
         }
 
         $element = reset($elements);
