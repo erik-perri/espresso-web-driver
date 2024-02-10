@@ -1,0 +1,26 @@
+{
+    "name": "erik-perri/espresso-web-driver",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "EspressoWebDriver\\": "src/"
+        }
+    },
+    "require": {
+        "php": ">=8.2",
+        "php-webdriver/webdriver": "^1.15.1"
+    },
+    "require-dev": {
+        "laravel/pint": "^1.13",
+        "phpstan/phpstan": "^1.10"
+    },
+    "scripts": {
+        "check-code": [
+            "@lint",
+            "@phpstan"
+        ],
+        "lint": "@php vendor/bin/pint --test",
+        "lint:fix": "@php vendor/bin/pint",
+        "phpstan": "@php vendor/bin/phpstan analyse"
+    }
+}
