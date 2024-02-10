@@ -46,6 +46,6 @@ final readonly class WithTagNameMatcher implements MatcherInterface
 
     public function __toString(): string
     {
-        return sprintf('tagName="%s"', $this->tagName);
+        return sprintf('tagName="%1$s"', $this->tagName);
     }
 }

@@ -40,12 +40,12 @@ final readonly class WithTextMatcher implements MatcherInterface
 
         return array_merge(
             $elements,
-            $root->findElements(WebDriverBy::xpath(sprintf('//*[text()="%s"]', $this->text))),
+            $root->findElements(WebDriverBy::xpath(sprintf('//*[text()="%1$s"]', $this->text))),
         );
     }
 
     public function __toString(): string
     {
-        return sprintf('text="%s"', $this->text);
+        return sprintf('text="%1$s"', $this->text);
     }
 }
