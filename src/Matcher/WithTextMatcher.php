@@ -43,4 +43,9 @@ final readonly class WithTextMatcher implements MatcherInterface
             $root->findElements(WebDriverBy::xpath(sprintf('//*[text()="%s"]', $this->text))),
         );
     }
+
+    public function __toString(): string
+    {
+        return sprintf('text="%s"', $this->text);
+    }
 }

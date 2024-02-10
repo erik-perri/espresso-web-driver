@@ -29,4 +29,12 @@ final readonly class AnyOfMatcher implements MatcherInterface
 
         return array_merge(...$elementsByMatcher);
     }
+
+    public function __toString(): string
+    {
+        return sprintf(
+            'any(%1$s)',
+            implode('; ', array_map(fn (MatcherInterface $matcher) => (string) $matcher, $this->matchers)),
+        );
+    }
 }

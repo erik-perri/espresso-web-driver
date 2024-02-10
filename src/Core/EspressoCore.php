@@ -25,11 +25,11 @@ final readonly class EspressoCore
         $elements = $assertion->match($body, $this->options);
 
         if (empty($elements)) {
-            throw new RuntimeException('Element not found');
+            throw new RuntimeException(sprintf('Element not found [%1$s]', $assertion));
         }
 
         if (count($elements) > 1) {
-            throw new RuntimeException('Multiple elements found');
+            throw new RuntimeException(sprintf('Multiple elements found [%1$s]', $assertion));
         }
 
         $element = reset($elements);

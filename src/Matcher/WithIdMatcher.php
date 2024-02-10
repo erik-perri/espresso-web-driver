@@ -43,4 +43,9 @@ final readonly class WithIdMatcher implements MatcherInterface
             $root->findElements(WebDriverBy::id($this->id)),
         );
     }
+
+    public function __toString(): string
+    {
+        return sprintf('id="%s"', $this->id);
+    }
 }

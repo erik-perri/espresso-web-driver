@@ -43,4 +43,9 @@ final readonly class HasFocusMatcher implements MatcherInterface
 
         return $elements;
     }
+
+    public function __toString(): string
+    {
+        return 'focused';
+    }
 }

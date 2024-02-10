@@ -50,6 +50,10 @@ final readonly class AllOfMatcher implements MatcherInterface
 
         $result = array_shift($elementsByMatcher);
 
+        if ($result === null) {
+            return [];
+        }
+
         foreach ($elementsByMatcher as $elements) {
             $result = array_uintersect($result, $elements, $this->compareElements(...));
         }
@@ -60,5 +64,13 @@ final readonly class AllOfMatcher implements MatcherInterface
     private function compareElements(WebDriverElement $a, WebDriverElement $b): int
     {
         return strcmp($a->getID(), $b->getID());
+    }
+
+    public function __toString(): string
+    {
+        return sprintf(
+            'all(%1$s)',
+            implode('; ', array_map(fn (MatcherInterface $matcher) => (string) $matcher, $this->matchers)),
+        );
     }
 }

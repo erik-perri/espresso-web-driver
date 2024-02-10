@@ -45,4 +45,9 @@ final readonly class IsEnabledMatcher implements MatcherInterface
 
         return $elements;
     }
+
+    public function __toString(): string
+    {
+        return 'enabled';
+    }
 }
