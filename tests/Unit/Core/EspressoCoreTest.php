@@ -22,7 +22,7 @@ use function EspressoWebDriver\withText;
 #[CoversClass(EspressoCore::class)]
 class EspressoCoreTest extends BaseUnitTestCase
 {
-    public function testThrowsExceptionWhenUnableToLocateRootElement(): void
+    public function testThrowsExceptionWhenUnableToLocateContainerElement(): void
     {
         // Expectations
         $this->expectException(NoMatchingElementException::class);

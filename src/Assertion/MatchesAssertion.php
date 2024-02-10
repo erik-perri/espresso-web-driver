@@ -19,12 +19,12 @@ final readonly class MatchesAssertion implements AssertionInterface
     {
         $matches = $this->matcher->match($container, $options);
 
-        $filteredToRoot = array_filter(
+        $filteredToContainer = array_filter(
             $matches,
             fn (WebDriverElement $element) => $element->getID() === $container->getID(),
         );
 
-        return count($filteredToRoot) > 0;
+        return count($filteredToContainer) > 0;
     }
 
     public function __toString(): string
