@@ -15,6 +15,10 @@ trait HasAutomaticWait
      */
     protected function wait(int $timeoutInSeconds, int $intervalInMilliseconds, Closure $callback): mixed
     {
+        if ($timeoutInSeconds < 1) {
+            return $callback();
+        }
+
         $start = time();
         $end = $start + $timeoutInSeconds;
         $lastResult = null;
