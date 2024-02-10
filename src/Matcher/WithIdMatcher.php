@@ -34,7 +34,7 @@ final readonly class WithIdMatcher implements MatcherInterface
     {
         $elements = [];
 
-        if ($root->getId() === $this->id) {
+        if ($root->getAttribute('id') === $this->id) {
             $elements[] = $root;
         }
 
