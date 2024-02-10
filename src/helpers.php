@@ -13,6 +13,7 @@ use EspressoWebDriver\Core\EspressoOptions;
 use EspressoWebDriver\Matcher\AllOfMatcher;
 use EspressoWebDriver\Matcher\AnyOfMatcher;
 use EspressoWebDriver\Matcher\HasFocusMatcher;
+use EspressoWebDriver\Matcher\HasSiblingMatcher;
 use EspressoWebDriver\Matcher\IsDisplayedMatcher;
 use EspressoWebDriver\Matcher\IsEnabledMatcher;
 use EspressoWebDriver\Matcher\MatcherInterface;
@@ -63,6 +64,11 @@ function anyOf(MatcherInterface ...$assertions): MatcherInterface
 function hasFocus(): MatcherInterface
 {
     return new HasFocusMatcher();
+}
+
+function hasSibling(MatcherInterface $matcher): MatcherInterface
+{
+    return new HasSiblingMatcher($matcher);
 }
 
 function isDisplayed(): MatcherInterface
