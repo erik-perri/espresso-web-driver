@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace EspressoWebDriver;
 
 use EspressoWebDriver\Action\ActionInterface;
+use EspressoWebDriver\Action\ClearTextAction;
 use EspressoWebDriver\Action\ClickAction;
+use EspressoWebDriver\Action\TypeTextAction;
 use EspressoWebDriver\Assertion\AssertionInterface;
 use EspressoWebDriver\Assertion\MatchesAssertion;
 use EspressoWebDriver\Core\EspressoCore;
@@ -34,9 +36,19 @@ function withDriver(WebDriver $driver, EspressoOptions $options = new EspressoOp
 
 // region Actions
 
+function clearText(): ActionInterface
+{
+    return new ClearTextAction();
+}
+
 function click(): ActionInterface
 {
     return new ClickAction();
+}
+
+function typeText(string $text): ActionInterface
+{
+    return new TypeTextAction($text);
 }
 
 // endregion

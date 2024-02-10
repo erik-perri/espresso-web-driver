@@ -1,0 +1,22 @@
+<?php
+
+declare(strict_types=1);
+
+namespace EspressoWebDriver\Action;
+
+use Facebook\WebDriver\WebDriverElement;
+
+final readonly class ClearTextAction implements ActionInterface
+{
+    public function __construct()
+    {
+        //
+    }
+
+    public function perform(WebDriverElement $element): bool
+    {
+        $element->clear();
+
+        return true;
+    }
+}
