@@ -9,7 +9,7 @@ use Facebook\WebDriver\WebDriverElement;
 
 interface AssertionInterface
 {
-    public function assert(WebDriverElement $root, EspressoOptions $options): bool;
+    public function assert(WebDriverElement $container, EspressoOptions $options): bool;
 
     public function __toString(): string;
 }

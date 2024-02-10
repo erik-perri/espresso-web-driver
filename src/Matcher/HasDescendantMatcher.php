@@ -18,19 +18,19 @@ final readonly class HasDescendantMatcher implements MatcherInterface
         //
     }
 
-    public function match(WebDriverElement $root, EspressoOptions $options): array
+    public function match(WebDriverElement $container, EspressoOptions $options): array
     {
         return $this->wait(
             $options->waitTimeoutInSeconds,
             $options->waitIntervalInMilliseconds,
-            fn () => $this->findDescendantElements($root),
+            fn () => $this->findDescendantElements($container),
         );
     }
 
     /**
      * @return WebDriverElement[]
      */
-    private function findDescendantElements(WebDriverElement $root): array
+    private function findDescendantElements(WebDriverElement $container): array
     {
         // Since we are waiting ourselves, we don't want the child matchers to wait as well.
         $instantOptions = new EspressoOptions(
@@ -38,7 +38,7 @@ final readonly class HasDescendantMatcher implements MatcherInterface
             waitIntervalInMilliseconds: 0,
         );
 
-        $descendants = $this->matcher->match($root, $instantOptions);
+        $descendants = $this->matcher->match($container, $instantOptions);
 
         $elements = [];
 
@@ -46,7 +46,7 @@ final readonly class HasDescendantMatcher implements MatcherInterface
             $ancestors = array_reverse($descendant->findElements(WebDriverBy::xpath('./ancestor::*')));
 
             foreach ($ancestors as $ancestor) {
-                if ($ancestor->getID() === $root->getID()) {
+                if ($ancestor->getID() === $container->getID()) {
                     break;
                 }
 

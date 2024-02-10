@@ -22,19 +22,19 @@ final readonly class AnyOfMatcher implements MatcherInterface
         $this->matchers = $matchers;
     }
 
-    public function match(WebDriverElement $root, EspressoOptions $options): array
+    public function match(WebDriverElement $container, EspressoOptions $options): array
     {
         return $this->wait(
             $options->waitTimeoutInSeconds,
             $options->waitIntervalInMilliseconds,
-            fn () => $this->findElements($root),
+            fn () => $this->findElements($container),
         );
     }
 
     /**
      * @return WebDriverElement[]
      */
-    private function findElements(WebDriverElement $root): array
+    private function findElements(WebDriverElement $container): array
     {
         $elementsByMatcher = [];
 
@@ -45,7 +45,7 @@ final readonly class AnyOfMatcher implements MatcherInterface
         );
 
         foreach ($this->matchers as $matcher) {
-            $elementsByMatcher[] = $matcher->match($root, $instantOptions);
+            $elementsByMatcher[] = $matcher->match($container, $instantOptions);
         }
 
         $mergedElements = array_merge(...$elementsByMatcher);

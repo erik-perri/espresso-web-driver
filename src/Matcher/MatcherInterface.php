@@ -12,7 +12,7 @@ interface MatcherInterface
     /**
      * @return WebDriverElement[]
      */
-    public function match(WebDriverElement $root, EspressoOptions $options): array;
+    public function match(WebDriverElement $container, EspressoOptions $options): array;
 
     public function __toString(): string;
 }

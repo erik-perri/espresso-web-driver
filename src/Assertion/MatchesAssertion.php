@@ -15,13 +15,13 @@ final readonly class MatchesAssertion implements AssertionInterface
         //
     }
 
-    public function assert(WebDriverElement $root, EspressoOptions $options): bool
+    public function assert(WebDriverElement $container, EspressoOptions $options): bool
     {
-        $matches = $this->matcher->match($root, $options);
+        $matches = $this->matcher->match($container, $options);
 
         $filteredToRoot = array_filter(
             $matches,
-            fn (WebDriverElement $element) => $element->getID() === $root->getID(),
+            fn (WebDriverElement $element) => $element->getID() === $container->getID(),
         );
 
         return count($filteredToRoot) > 0;

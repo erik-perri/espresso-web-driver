@@ -18,29 +18,29 @@ final readonly class WithTextMatcher implements MatcherInterface
         //
     }
 
-    public function match(WebDriverElement $root, EspressoOptions $options): array
+    public function match(WebDriverElement $container, EspressoOptions $options): array
     {
         return $this->wait(
             $options->waitTimeoutInSeconds,
             $options->waitIntervalInMilliseconds,
-            fn () => $this->findElementsWithText($root),
+            fn () => $this->findElementsWithText($container),
         );
     }
 
     /**
      * @return WebDriverElement[]
      */
-    private function findElementsWithText(WebDriverElement $root): array
+    private function findElementsWithText(WebDriverElement $container): array
     {
         $elements = [];
 
-        if ($root->getText() === $this->text) {
-            $elements[] = $root;
+        if ($container->getText() === $this->text) {
+            $elements[] = $container;
         }
 
         return array_merge(
             $elements,
-            $root->findElements(WebDriverBy::xpath(sprintf('//*[text()="%1$s"]', $this->text))),
+            $container->findElements(WebDriverBy::xpath(sprintf('//*[text()="%1$s"]', $this->text))),
         );
     }
 

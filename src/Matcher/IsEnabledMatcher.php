@@ -13,27 +13,27 @@ final readonly class IsEnabledMatcher implements MatcherInterface
 {
     use HasAutomaticWait;
 
-    public function match(WebDriverElement $root, EspressoOptions $options): array
+    public function match(WebDriverElement $container, EspressoOptions $options): array
     {
         return $this->wait(
             $options->waitTimeoutInSeconds,
             $options->waitIntervalInMilliseconds,
-            fn () => $this->findEnabledElements($root),
+            fn () => $this->findEnabledElements($container),
         );
     }
 
     /**
      * @return WebDriverElement[]
      */
-    private function findEnabledElements(WebDriverElement $root): array
+    private function findEnabledElements(WebDriverElement $container): array
     {
         $elements = [];
 
-        if ($root->isEnabled()) {
-            $elements[] = $root;
+        if ($container->isEnabled()) {
+            $elements[] = $container;
         }
 
-        $possibleElements = $root->findElements(
+        $possibleElements = $container->findElements(
             WebDriverBy::cssSelector('button, fieldset, optgroup, option, select, textarea, input'),
         );
 

@@ -18,29 +18,29 @@ final readonly class WithTagNameMatcher implements MatcherInterface
         //
     }
 
-    public function match(WebDriverElement $root, EspressoOptions $options): array
+    public function match(WebDriverElement $container, EspressoOptions $options): array
     {
         return $this->wait(
             $options->waitTimeoutInSeconds,
             $options->waitIntervalInMilliseconds,
-            fn () => $this->findElementsWithTagName($root),
+            fn () => $this->findElementsWithTagName($container),
         );
     }
 
     /**
      * @return WebDriverElement[]
      */
-    private function findElementsWithTagName(WebDriverElement $root): array
+    private function findElementsWithTagName(WebDriverElement $container): array
     {
         $elements = [];
 
-        if (strcasecmp($root->getTagName(), $this->tagName) === 0) {
-            $elements[] = $root;
+        if (strcasecmp($container->getTagName(), $this->tagName) === 0) {
+            $elements[] = $container;
         }
 
         return array_merge(
             $elements,
-            $root->findElements(WebDriverBy::tagName($this->tagName)),
+            $container->findElements(WebDriverBy::tagName($this->tagName)),
         );
     }
 

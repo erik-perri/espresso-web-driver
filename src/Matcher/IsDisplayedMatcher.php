@@ -13,27 +13,27 @@ final readonly class IsDisplayedMatcher implements MatcherInterface
 {
     use HasAutomaticWait;
 
-    public function match(WebDriverElement $root, EspressoOptions $options): array
+    public function match(WebDriverElement $container, EspressoOptions $options): array
     {
         return $this->wait(
             $options->waitTimeoutInSeconds,
             $options->waitIntervalInMilliseconds,
-            fn () => $this->findDisplayedElements($root),
+            fn () => $this->findDisplayedElements($container),
         );
     }
 
     /**
      * @return WebDriverElement[]
      */
-    private function findDisplayedElements(WebDriverElement $root): array
+    private function findDisplayedElements(WebDriverElement $container): array
     {
         $elements = [];
 
-        if ($root->isDisplayed()) {
-            $elements[] = $root;
+        if ($container->isDisplayed()) {
+            $elements[] = $container;
         }
 
-        $visibleElements = $root->findElements(
+        $visibleElements = $container->findElements(
             WebDriverBy::cssSelector('*:not([style*="display: none"]):not([style*="visibility: hidden"])'),
         );
 

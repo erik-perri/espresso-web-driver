@@ -18,19 +18,19 @@ final readonly class HasSiblingMatcher implements MatcherInterface
         //
     }
 
-    public function match(WebDriverElement $root, EspressoOptions $options): array
+    public function match(WebDriverElement $container, EspressoOptions $options): array
     {
         return $this->wait(
             $options->waitTimeoutInSeconds,
             $options->waitIntervalInMilliseconds,
-            fn () => $this->findSiblingElements($root),
+            fn () => $this->findSiblingElements($container),
         );
     }
 
     /**
      * @return WebDriverElement[]
      */
-    private function findSiblingElements(WebDriverElement $root): array
+    private function findSiblingElements(WebDriverElement $container): array
     {
         $elements = [];
 
@@ -40,7 +40,7 @@ final readonly class HasSiblingMatcher implements MatcherInterface
             waitIntervalInMilliseconds: 0,
         );
 
-        $potentialSiblings = $this->matcher->match($root, $instantOptions);
+        $potentialSiblings = $this->matcher->match($container, $instantOptions);
 
         foreach ($potentialSiblings as $sibling) {
             $parent = $sibling->findElement(WebDriverBy::xpath('./parent::*'));

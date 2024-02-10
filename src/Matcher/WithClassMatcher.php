@@ -18,29 +18,29 @@ final readonly class WithClassMatcher implements MatcherInterface
         //
     }
 
-    public function match(WebDriverElement $root, EspressoOptions $options): array
+    public function match(WebDriverElement $container, EspressoOptions $options): array
     {
         return $this->wait(
             $options->waitTimeoutInSeconds,
             $options->waitIntervalInMilliseconds,
-            fn () => $this->findElementsWithClass($root),
+            fn () => $this->findElementsWithClass($container),
         );
     }
 
     /**
      * @return WebDriverElement[]
      */
-    private function findElementsWithClass(WebDriverElement $root): array
+    private function findElementsWithClass(WebDriverElement $container): array
     {
         $elements = [];
 
-        if ($this->hasClass($root)) {
-            $elements[] = $root;
+        if ($this->hasClass($container)) {
+            $elements[] = $container;
         }
 
         return array_merge(
             $elements,
-            $root->findElements(WebDriverBy::className($this->class)),
+            $container->findElements(WebDriverBy::className($this->class)),
         );
     }
 

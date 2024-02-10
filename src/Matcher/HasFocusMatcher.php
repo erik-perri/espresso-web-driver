@@ -13,21 +13,21 @@ final readonly class HasFocusMatcher implements MatcherInterface
 {
     use HasAutomaticWait;
 
-    public function match(WebDriverElement $root, EspressoOptions $options): array
+    public function match(WebDriverElement $container, EspressoOptions $options): array
     {
         return $this->wait(
             $options->waitTimeoutInSeconds,
             $options->waitIntervalInMilliseconds,
-            fn () => $this->findElementsWithFocus($root),
+            fn () => $this->findElementsWithFocus($container),
         );
     }
 
     /**
      * @return WebDriverElement[]
      */
-    private function findElementsWithFocus(WebDriverElement $root): array
+    private function findElementsWithFocus(WebDriverElement $container): array
     {
-        $parent = $root->findElement(WebDriverBy::xpath('./parent::*'));
+        $parent = $container->findElement(WebDriverBy::xpath('./parent::*'));
 
         return $parent->findElements(WebDriverBy::cssSelector(':focus'));
     }
