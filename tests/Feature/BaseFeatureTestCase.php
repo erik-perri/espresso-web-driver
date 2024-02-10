@@ -74,7 +74,7 @@ class BaseFeatureTestCase extends TestCase
 
     private static function outputDirectory(): string
     {
-        return __DIR__.'/output';
+        return dirname(__DIR__).'/output';
     }
 
     private static function quitDriver(): void
