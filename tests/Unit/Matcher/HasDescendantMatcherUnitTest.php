@@ -14,14 +14,16 @@ class HasDescendantMatcherUnitTest extends BaseUnitTestCase
 {
     public function testHasDescendantToString(): void
     {
+        // Arrange
         $mockMatcher = $this->createMock(MatcherInterface::class);
-
         $mockMatcher
             ->method('__toString')
             ->willReturn('mock="test"');
 
+        // Act
         $matcher = new HasDescendantMatcher($mockMatcher);
 
+        // Assert
         $this->assertSame('descendant(mock="test")', (string) $matcher);
     }
 }
