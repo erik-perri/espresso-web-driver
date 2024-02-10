@@ -6,6 +6,7 @@ namespace EspressoWebDriver\Matcher;
 
 use EspressoWebDriver\Core\EspressoOptions;
 use EspressoWebDriver\Traits\HasAutomaticWait;
+use Facebook\WebDriver\Exception\NoSuchElementException;
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverElement;
 
@@ -43,14 +44,18 @@ final readonly class HasSiblingMatcher implements MatcherInterface
         $potentialSiblings = $this->matcher->match($container, $instantOptions);
 
         foreach ($potentialSiblings as $sibling) {
-            $parent = $sibling->findElement(WebDriverBy::xpath('./parent::*'));
+            try {
+                $parent = $sibling->findElement(WebDriverBy::xpath('./parent::*'));
 
-            $adjacentChildren = $parent->findElements(WebDriverBy::xpath('*'));
+                $adjacentChildren = $parent->findElements(WebDriverBy::xpath('*'));
 
-            foreach ($adjacentChildren as $child) {
-                if ($child->getID() !== $sibling->getID()) {
-                    $elements[] = $child;
+                foreach ($adjacentChildren as $child) {
+                    if ($child->getID() !== $sibling->getID()) {
+                        $elements[] = $child;
+                    }
                 }
+            } catch (NoSuchElementException) {
+                // If we couldn't find the parent, we can't find the siblings.
             }
         }
 
