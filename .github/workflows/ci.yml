@@ -9,6 +9,12 @@ on:
 jobs:
   ci:
     runs-on: ubuntu-latest
+    services:
+      selenium:
+        image: selenium/standalone-chrome
+        options: --add-host=host.docker.internal:host-gateway
+        ports:
+          - 4444:4444
     steps:
       - uses: actions/checkout@v4
       - run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
@@ -24,3 +30,8 @@ jobs:
           php-version: 8.3
       - run: composer install --prefer-dist --no-interaction --optimize-autoloader
       - run: composer check-code
+      - run: php -S 0.0.0.0:8000 -t ./tests/Fixtures/static &
+      - run: composer test
+        env:
+          SELENIUM_DRIVER_URL: http://localhost:4444
+          SELENIUM_START_URL: http://host.docker.internal:8000

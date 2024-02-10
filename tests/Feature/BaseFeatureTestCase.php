@@ -62,12 +62,7 @@ class BaseFeatureTestCase extends TestCase
 
     private static function createWebDriver(): WebDriver
     {
-        $serverUrl = sprintf(
-            '%1$s://%2$s:%3$d',
-            $_ENV['SELENIUM_PROTOCOL'] ?? 'http',
-            $_ENV['SELENIUM_HOST'] ?? 'localhost',
-            $_ENV['SELENIUM_PORT'] ?? 4444,
-        );
+        $serverUrl = $_ENV['SELENIUM_DRIVER_URL'] ?? 'http://localhost:4444';
 
         $options = (new ChromeOptions)->addArguments(['--start-maximized']);
 
