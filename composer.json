@@ -4,7 +4,10 @@
     "autoload": {
         "psr-4": {
             "EspressoWebDriver\\": "src/"
-        }
+        },
+        "files": [
+            "src/helpers.php"
+        ]
     },
     "require": {
         "php": ">=8.2",
