@@ -29,6 +29,7 @@ use EspressoWebDriver\Matcher\MatcherInterface;
 use EspressoWebDriver\Matcher\WithClassMatcher;
 use EspressoWebDriver\Matcher\WithIdMatcher;
 use EspressoWebDriver\Matcher\WithTagNameMatcher;
+use EspressoWebDriver\Matcher\WithTextContainingMatcher;
 use EspressoWebDriver\Matcher\WithTextMatcher;
 use Facebook\WebDriver\WebDriver;
 
@@ -143,6 +144,11 @@ function withTagName(string $tagName): MatcherInterface
 function withText(string $text): MatcherInterface
 {
     return new WithTextMatcher($text);
+}
+
+function withTextContaining(string $text): MatcherInterface
+{
+    return new WithTextContainingMatcher($text);
 }
 
 // endregion
