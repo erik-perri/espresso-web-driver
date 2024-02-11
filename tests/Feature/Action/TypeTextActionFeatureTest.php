@@ -18,11 +18,11 @@ use function EspressoWebDriver\typeText;
 use function EspressoWebDriver\withDriver;
 use function EspressoWebDriver\withId;
 
-#[CoversFunction('EspressoWebDriver\typeText')]
 #[CoversClass(TypeTextAction::class)]
+#[CoversFunction('EspressoWebDriver\typeText')]
 class TypeTextActionFeatureTest extends BaseFeatureTestCase
 {
-    public function testTypesTextInExpectedInputs(): void
+    public function testTypesTextInTextInputs(): void
     {
         // Arrange
         $driver = $this->driver()->get($this->mockStaticUrl('actions/type-text.html'));
@@ -36,10 +36,44 @@ class TypeTextActionFeatureTest extends BaseFeatureTestCase
             ->onElement(withId('test-a'))
             ->perform(click(), typeText('Value A'));
 
+        // Assert
+        $this->assertSame(
+            'Value A',
+            $driver->findElement(WebDriverBy::id('test-a'))->getAttribute('value'),
+        );
+    }
+
+    public function testTypesTextInTextareaInputs(): void
+    {
+        // Arrange
+        $driver = $this->driver()->get($this->mockStaticUrl('actions/type-text.html'));
+
+        $options = new EspressoOptions(waitTimeoutInSeconds: 0);
+
+        $espresso = withDriver($driver, $options);
+
+        // Act
         $espresso
             ->onElement(withId('test-b'))
             ->perform(click(), typeText("Value B\nWith new line"));
 
+        // Assert
+        $this->assertSame(
+            "Value B\nWith new line",
+            $driver->findElement(WebDriverBy::id('test-b'))->getAttribute('value'),
+        );
+    }
+
+    public function testTypesTextInSelectInputs(): void
+    {
+        // Arrange
+        $driver = $this->driver()->get($this->mockStaticUrl('actions/type-text.html'));
+
+        $options = new EspressoOptions(waitTimeoutInSeconds: 0);
+
+        $espresso = withDriver($driver, $options);
+
+        // Act
         $espresso
             ->onElement(withId('test-c'))
             // Click twice to open and close the select for focus
@@ -47,14 +81,6 @@ class TypeTextActionFeatureTest extends BaseFeatureTestCase
             ->perform(click(), click(), typeText('Value C'));
 
         // Assert
-        $this->assertSame(
-            'Value A',
-            $driver->findElement(WebDriverBy::id('test-a'))->getAttribute('value'),
-        );
-        $this->assertSame(
-            "Value B\nWith new line",
-            $driver->findElement(WebDriverBy::id('test-b'))->getAttribute('value'),
-        );
         $this->assertSame(
             'Value C',
             $driver->findElement(WebDriverBy::id('test-c'))->getAttribute('value'),
