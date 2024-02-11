@@ -20,7 +20,7 @@ use function EspressoWebDriver\withText;
 
 #[CoversClass(HasDescendantMatcher::class)]
 #[CoversFunction('EspressoWebDriver\hasDescendant')]
-class HasDescendantMatcherTest extends BaseFeatureTestCase
+class HasDescendantMatcherFeatureTest extends BaseFeatureTestCase
 {
     public function testFindsDeepDescendant(): void
     {

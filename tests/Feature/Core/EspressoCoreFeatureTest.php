@@ -17,7 +17,7 @@ use function EspressoWebDriver\withDriver;
 use function EspressoWebDriver\withTagName;
 use function EspressoWebDriver\withText;
 
-class EspressoCoreInContainerTest extends BaseFeatureTestCase
+class EspressoCoreFeatureTest extends BaseFeatureTestCase
 {
     public function testConstrainsToRequestedContainer(): void
     {

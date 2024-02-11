@@ -10,7 +10,7 @@ use EspressoWebDriver\Tests\Unit\BaseUnitTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 
 #[CoversClass(HasDescendantMatcher::class)]
-class HasDescendantMatcherUnitTest extends BaseUnitTestCase
+class HasDescendantMatcherTest extends BaseUnitTestCase
 {
     public function testHasDescendantToString(): void
     {
