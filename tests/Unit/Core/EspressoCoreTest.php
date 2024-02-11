@@ -35,7 +35,7 @@ class EspressoCoreTest extends BaseUnitTestCase
             ->method('findElement')
             ->willThrowException(new NoSuchElementException(''));
 
-        $mockOptions = new EspressoOptions();
+        $mockOptions = new EspressoOptions(waitTimeoutInSeconds: 0);
 
         // Act
         new EspressoCore($mockDriver, $mockOptions);
@@ -63,10 +63,7 @@ class EspressoCoreTest extends BaseUnitTestCase
             ->method('findElement')
             ->willReturn($mockHtmlElement);
 
-        $mockOptions = new EspressoOptions(
-            waitTimeoutInSeconds: 0,
-            waitIntervalInMilliseconds: 0,
-        );
+        $mockOptions = new EspressoOptions(waitTimeoutInSeconds: 0);
 
         // Act
         $espresso = new EspressoCore($mockDriver, $mockOptions);
@@ -98,7 +95,7 @@ class EspressoCoreTest extends BaseUnitTestCase
             ->method('findElement')
             ->willReturn($mockHtmlElement);
 
-        $mockOptions = new EspressoOptions();
+        $mockOptions = new EspressoOptions(waitTimeoutInSeconds: 0);
 
         // Act
         $espresso = new EspressoCore($mockDriver, $mockOptions);
@@ -130,10 +127,7 @@ class EspressoCoreTest extends BaseUnitTestCase
             ->method('findElement')
             ->willReturn($mockHtmlElement);
 
-        $mockOptions = new EspressoOptions(
-            waitTimeoutInSeconds: 0,
-            waitIntervalInMilliseconds: 0,
-        );
+        $mockOptions = new EspressoOptions(waitTimeoutInSeconds: 0);
 
         // Act
         $espresso = new EspressoCore($mockDriver, $mockOptions);
@@ -169,10 +163,7 @@ class EspressoCoreTest extends BaseUnitTestCase
             ->method('findElement')
             ->willReturn($mockHtmlElement);
 
-        $mockOptions = new EspressoOptions(
-            waitTimeoutInSeconds: 0,
-            waitIntervalInMilliseconds: 0,
-        );
+        $mockOptions = new EspressoOptions(waitTimeoutInSeconds: 0);
 
         $espresso = new EspressoCore($mockDriver, $mockOptions);
         $containedEspresso = $espresso->inContainer(withText('mock'));

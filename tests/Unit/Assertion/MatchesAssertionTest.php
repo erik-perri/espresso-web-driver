@@ -33,10 +33,7 @@ class MatchesAssertionTest extends BaseUnitTestCase
                 $this->createMock(WebDriverElement::class),
             ]);
 
-        $mockOptions = new EspressoOptions(
-            waitTimeoutInSeconds: 0,
-            waitIntervalInMilliseconds: 0,
-        );
+        $mockOptions = new EspressoOptions(waitTimeoutInSeconds: 0);
 
         $assertion = new MatchesAssertion($mockMatcher);
 
@@ -62,10 +59,7 @@ class MatchesAssertionTest extends BaseUnitTestCase
                 $this->createMock(WebDriverElement::class),
             ]);
 
-        $mockOptions = new EspressoOptions(
-            waitTimeoutInSeconds: 0,
-            waitIntervalInMilliseconds: 0,
-        );
+        $mockOptions = new EspressoOptions(waitTimeoutInSeconds: 0);
 
         $assertion = new MatchesAssertion($mockMatcher);
 
