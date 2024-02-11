@@ -9,9 +9,11 @@ namespace EspressoWebDriver;
 use EspressoWebDriver\Action\ActionInterface;
 use EspressoWebDriver\Action\ClearTextAction;
 use EspressoWebDriver\Action\ClickAction;
+use EspressoWebDriver\Action\ScrollToAction;
 use EspressoWebDriver\Action\SubmitAction;
 use EspressoWebDriver\Action\TypeTextAction;
 use EspressoWebDriver\Assertion\AssertionInterface;
+use EspressoWebDriver\Assertion\DoesNotMatchAssertion;
 use EspressoWebDriver\Assertion\MatchesAssertion;
 use EspressoWebDriver\Core\EspressoCore;
 use EspressoWebDriver\Core\EspressoOptions;
@@ -54,6 +56,11 @@ function click(): ActionInterface
     return new ClickAction();
 }
 
+function scrollTo(): ActionInterface
+{
+    return new ScrollToAction();
+}
+
 function submit(): ActionInterface
 {
     return new SubmitAction();
@@ -67,6 +74,12 @@ function typeText(string $text): ActionInterface
 // endregion
 
 // region Assertions
+
+function doesNotMatch(MatcherInterface $assertion): AssertionInterface
+{
+    // TODO Figure out how to get a `not(MatcherInterface)` instead of this
+    return new DoesNotMatchAssertion($assertion);
+}
 
 function matches(MatcherInterface $assertion): AssertionInterface
 {
