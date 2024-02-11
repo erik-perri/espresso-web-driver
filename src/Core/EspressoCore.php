@@ -25,7 +25,7 @@ final readonly class EspressoCore
      */
     public function __construct(
         private WebDriver $driver,
-        private EspressoOptions $options = new EspressoOptions,
+        private EspressoOptions $options,
         ?WebDriverElement $container = null,
     ) {
         $this->container = $container ?? $this->findHtmlElement();
