@@ -8,7 +8,7 @@ namespace Assertions;
 
 use EspressoWebDriver\Assertion\ExistsAssertion;
 use EspressoWebDriver\Core\EspressoOptions;
-use EspressoWebDriver\Core\PhpunitReporter;
+use EspressoWebDriver\Reporter\PhpunitReporter;
 use EspressoWebDriver\Tests\Feature\BaseFeatureTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\CoversFunction;

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace EspressoWebDriver\Core;
 
+use EspressoWebDriver\Reporter\AssertionReporterInterface;
+
 final readonly class EspressoOptions
 {
     public function __construct(

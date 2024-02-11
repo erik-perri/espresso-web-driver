@@ -7,8 +7,8 @@ declare(strict_types=1);
 namespace EspressoWebDriver\Tests\Feature\Matcher;
 
 use EspressoWebDriver\Core\EspressoOptions;
-use EspressoWebDriver\Core\PhpunitReporter;
 use EspressoWebDriver\Matcher\HasDescendantMatcher;
+use EspressoWebDriver\Reporter\PhpunitReporter;
 use EspressoWebDriver\Tests\Feature\BaseFeatureTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\CoversFunction;
