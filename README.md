@@ -19,13 +19,13 @@ $espresso
 ```
 
 ```php
-$espresso = withDriver($driver)
+$containedEspresso = withDriver($driver)
     ->inContainer(allOf(
         withClass('row'),
         hasDescendant(withText('John Doe')),
     ));
 
-$espresso
+$containedEspresso
     ->onElement(withText('Edit'))
     ->perform(click());
 ```
