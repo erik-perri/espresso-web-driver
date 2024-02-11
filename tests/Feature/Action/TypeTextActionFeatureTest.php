@@ -27,7 +27,9 @@ class TypeTextActionFeatureTest extends BaseFeatureTestCase
         // Arrange
         $driver = $this->driver()->get($this->mockStaticUrl('actions/type-text.html'));
 
-        $espresso = withDriver($driver, new EspressoOptions(waitTimeoutInSeconds: 1));
+        $options = new EspressoOptions(waitTimeoutInSeconds: 0);
+
+        $espresso = withDriver($driver, $options);
 
         // Act
         $espresso

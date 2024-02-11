@@ -1,5 +1,7 @@
 <?php
 
+/** @noinspection PhpUnhandledExceptionInspection */
+
 declare(strict_types=1);
 
 namespace EspressoWebDriver\Tests\Feature\Matcher;
@@ -24,14 +26,15 @@ class HasDescendantMatcherFeatureTest extends BaseFeatureTestCase
 {
     public function testFindsDeepDescendant(): void
     {
+        // Arrange
         $driver = $this->driver()->get($this->mockStaticUrl('matchers/has-descendant.html'));
 
-        $espresso = withDriver($driver, new EspressoOptions(waitTimeoutInSeconds: 1));
+        $options = new EspressoOptions(waitTimeoutInSeconds: 0);
 
+        $espresso = withDriver($driver, $options);
+
+        // Act and Assert
         $espresso->onElement(allOf(withClass('test'), hasDescendant(withText('Mock B'))))
             ->check(matches(withTagName('div')));
-
-        // TODO Wire up check and exceptions to Phpunit
-        $this->assertTrue(true);
     }
 }

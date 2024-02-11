@@ -27,7 +27,9 @@ class EspressoCoreFeatureTest extends BaseFeatureTestCase
         // Arrange
         $driver = $this->driver()->get($this->mockStaticUrl('core/in-container.html'));
 
-        $espresso = withDriver($driver, new EspressoOptions(waitTimeoutInSeconds: 1));
+        $options = new EspressoOptions(waitTimeoutInSeconds: 0);
+
+        $espresso = withDriver($driver, $options);
 
         // Contain the instance to an individual row, then click a matcher that would match many rows if not contained
         $containedEspresso = $espresso
