@@ -8,11 +8,6 @@ use Facebook\WebDriver\WebDriverElement;
 
 final readonly class ClearTextAction implements ActionInterface
 {
-    public function __construct()
-    {
-        //
-    }
-
     public function perform(WebDriverElement $element): bool
     {
         $element->clear();

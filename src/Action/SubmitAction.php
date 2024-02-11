@@ -9,11 +9,6 @@ use RuntimeException;
 
 final readonly class SubmitAction implements ActionInterface
 {
-    public function __construct()
-    {
-        //
-    }
-
     public function perform(WebDriverElement $element): bool
     {
         if (!in_array(strtolower($element->getTagName()), [
