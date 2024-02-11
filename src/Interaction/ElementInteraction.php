@@ -27,15 +27,19 @@ final readonly class ElementInteraction implements InteractionInterface
      */
     public function check(AssertionInterface $assertion): InteractionInterface
     {
-        $result = $assertion->assert($this->result, $this->context);
+        try {
+            $result = $assertion->assert($this->result, $this->context);
 
-        $this->context->options->assertionReporter?->report(
-            $result,
-            sprintf('Failed asserting that %s is true', $assertion),
-        );
+            $this->context->options->assertionReporter?->report(
+                $result,
+                sprintf('Failed asserting that %s is true', $assertion),
+            );
 
-        if (!$result) {
-            throw new AssertionFailedException($assertion);
+            if (!$result) {
+                throw new AssertionFailedException($assertion);
+            }
+        } catch (AmbiguousElementMatcherException|NoMatchingElementException $exception) {
+            $this->context->options->assertionReporter?->report(false, $exception->getMessage());
         }
 
         return $this;

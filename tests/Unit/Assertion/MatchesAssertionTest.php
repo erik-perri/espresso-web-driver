@@ -45,7 +45,7 @@ class MatchesAssertionTest extends BaseUnitTestCase
 
         $assertion = new MatchesAssertion($mockMatcher);
 
-        $mockResult = new MatchResult($mockMatcher, [$mockContainer], $mockContext);
+        $mockResult = new MatchResult($mockMatcher, [$mockContainer]);
 
         // Act
         $result = $assertion->assert($mockResult, $mockContext);
@@ -78,7 +78,7 @@ class MatchesAssertionTest extends BaseUnitTestCase
 
         $assertion = new MatchesAssertion($mockMatcher);
 
-        $mockResult = new MatchResult($mockMatcher, [$mockContainer], $mockContext);
+        $mockResult = new MatchResult($mockMatcher, [$mockContainer]);
 
         // Act
         $result = $assertion->assert($mockResult, $mockContext);

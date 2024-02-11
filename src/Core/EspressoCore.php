@@ -38,7 +38,7 @@ final readonly class EspressoCore
     {
         $context = new EspressoContext($this->driver, $this->options);
 
-        $result = new MatchResult($matcher, $matcher->match($this->container, $context), $context);
+        $result = new MatchResult($matcher, $matcher->match($this->container, $context));
 
         $container = $result->single();
 
@@ -49,7 +49,7 @@ final readonly class EspressoCore
     {
         $context = new EspressoContext($this->driver, $this->options);
 
-        $result = new MatchResult($matcher, $matcher->match($this->container, $context), $context);
+        $result = new MatchResult($matcher, $matcher->match($this->container, $context));
 
         return new ElementInteraction($result, $context);
     }

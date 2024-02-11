@@ -17,7 +17,6 @@ final readonly class MatchResult
     public function __construct(
         private MatcherInterface $matcher,
         private array $result,
-        private EspressoContext $context,
     ) {
         //
     }
@@ -27,24 +26,19 @@ final readonly class MatchResult
         return count($this->result);
     }
 
+    /**
+     * @throws AmbiguousElementMatcherException|NoMatchingElementException
+     */
     public function single(): WebDriverElement
     {
         $elementCount = count($this->result);
 
         if ($elementCount === 0) {
-            $exception = new NoMatchingElementException($this->matcher);
-
-            $this->context->options->assertionReporter?->report(false, $exception->getMessage());
-
-            throw $exception;
+            throw new NoMatchingElementException($this->matcher);
         }
 
         if ($elementCount > 1) {
-            $exception = new AmbiguousElementMatcherException($elementCount, $this->matcher);
-
-            $this->context->options->assertionReporter?->report(false, $exception->getMessage());
-
-            throw $exception;
+            throw new AmbiguousElementMatcherException($elementCount, $this->matcher);
         }
 
         return array_values($this->result)[0];
