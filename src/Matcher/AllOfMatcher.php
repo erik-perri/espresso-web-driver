@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace EspressoWebDriver\Matcher;
 
-use EspressoWebDriver\Core\EspressoOptions;
+use EspressoWebDriver\Core\EspressoContext;
 use EspressoWebDriver\Traits\HasAutomaticWait;
 use Facebook\WebDriver\WebDriverElement;
 
@@ -22,27 +22,27 @@ final readonly class AllOfMatcher implements MatcherInterface
         $this->matchers = $matchers;
     }
 
-    public function match(WebDriverElement $container, EspressoOptions $options): array
+    public function match(WebDriverElement $container, EspressoContext $context): array
     {
         // Since we are waiting ourselves, we don't want the child matchers to wait as well.
-        $instantOptions = $options->toInstantOptions();
+        $instantOptions = $context->options->toInstantOptions();
 
         return $this->wait(
-            $options->waitTimeoutInSeconds,
-            $options->waitIntervalInMilliseconds,
-            fn () => $this->findElements($container, $instantOptions),
+            $context->options->waitTimeoutInSeconds,
+            $context->options->waitIntervalInMilliseconds,
+            fn () => $this->findElements($container, new EspressoContext($context->driver, $instantOptions)),
         );
     }
 
     /**
      * @return WebDriverElement[]
      */
-    private function findElements(WebDriverElement $container, EspressoOptions $options): array
+    private function findElements(WebDriverElement $container, EspressoContext $context): array
     {
         $elementsByMatcher = [];
 
         foreach ($this->matchers as $matcher) {
-            $elementsByMatcher[] = $matcher->match($container, $options);
+            $elementsByMatcher[] = $matcher->match($container, $context);
         }
 
         $result = array_shift($elementsByMatcher);

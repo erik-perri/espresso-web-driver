@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace EspressoWebDriver\Matcher;
 
-use EspressoWebDriver\Core\EspressoOptions;
+use EspressoWebDriver\Core\EspressoContext;
 use EspressoWebDriver\Traits\HasAutomaticWait;
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverElement;
@@ -18,24 +18,24 @@ final readonly class HasDescendantMatcher implements MatcherInterface
         //
     }
 
-    public function match(WebDriverElement $container, EspressoOptions $options): array
+    public function match(WebDriverElement $container, EspressoContext $context): array
     {
         // Since we are waiting ourselves, we don't want the child matchers to wait as well.
-        $instantOptions = $options->toInstantOptions();
+        $instantOptions = $context->options->toInstantOptions();
 
         return $this->wait(
-            $options->waitTimeoutInSeconds,
-            $options->waitIntervalInMilliseconds,
-            fn () => $this->findDescendantElements($container, $instantOptions),
+            $context->options->waitTimeoutInSeconds,
+            $context->options->waitIntervalInMilliseconds,
+            fn () => $this->findDescendantElements($container, new EspressoContext($context->driver, $instantOptions)),
         );
     }
 
     /**
      * @return WebDriverElement[]
      */
-    private function findDescendantElements(WebDriverElement $container, EspressoOptions $options): array
+    private function findDescendantElements(WebDriverElement $container, EspressoContext $context): array
     {
-        $descendants = $this->matcher->match($container, $options);
+        $descendants = $this->matcher->match($container, $context);
 
         $elements = [];
 

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace EspressoWebDriver\Assertion;
 
-use EspressoWebDriver\Core\EspressoOptions;
+use EspressoWebDriver\Core\EspressoContext;
 use EspressoWebDriver\Matcher\MatcherInterface;
 use Facebook\WebDriver\WebDriverElement;
 
@@ -15,9 +15,9 @@ final readonly class MatchesAssertion implements AssertionInterface
         //
     }
 
-    public function assert(WebDriverElement $container, EspressoOptions $options): bool
+    public function assert(WebDriverElement $container, EspressoContext $context): bool
     {
-        $matches = $this->matcher->match($container, $options);
+        $matches = $this->matcher->match($container, $context);
 
         $filteredToContainer = array_filter(
             $matches,

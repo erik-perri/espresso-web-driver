@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace EspressoWebDriver\Matcher;
 
-use EspressoWebDriver\Core\EspressoOptions;
+use EspressoWebDriver\Core\EspressoContext;
 use EspressoWebDriver\Traits\HasAutomaticWait;
 use Facebook\WebDriver\Exception\NoSuchElementException;
 use Facebook\WebDriver\WebDriverBy;
@@ -19,26 +19,26 @@ final readonly class HasSiblingMatcher implements MatcherInterface
         //
     }
 
-    public function match(WebDriverElement $container, EspressoOptions $options): array
+    public function match(WebDriverElement $container, EspressoContext $context): array
     {
         // Since we are waiting ourselves, we don't want the child matchers to wait as well.
-        $instantOptions = $options->toInstantOptions();
+        $instantOptions = $context->options->toInstantOptions();
 
         return $this->wait(
-            $options->waitTimeoutInSeconds,
-            $options->waitIntervalInMilliseconds,
-            fn () => $this->findSiblingElements($container, $instantOptions),
+            $context->options->waitTimeoutInSeconds,
+            $context->options->waitIntervalInMilliseconds,
+            fn () => $this->findSiblingElements($container, new EspressoContext($context->driver, $instantOptions)),
         );
     }
 
     /**
      * @return WebDriverElement[]
      */
-    private function findSiblingElements(WebDriverElement $container, EspressoOptions $options): array
+    private function findSiblingElements(WebDriverElement $container, EspressoContext $context): array
     {
         $elements = [];
 
-        $potentialSiblings = $this->matcher->match($container, $options);
+        $potentialSiblings = $this->matcher->match($container, $context);
 
         foreach ($potentialSiblings as $sibling) {
             try {

@@ -48,7 +48,7 @@ final readonly class EspressoCore
     {
         $element = $this->findSingleMatch($matcher);
 
-        return new ElementInteraction($element, $this->options);
+        return new ElementInteraction($element, new EspressoContext($this->driver, $this->options));
     }
 
     /**
@@ -56,7 +56,7 @@ final readonly class EspressoCore
      */
     private function findSingleMatch(MatcherInterface $matcher): WebDriverElement
     {
-        $elements = $matcher->match($this->container, $this->options);
+        $elements = $matcher->match($this->container, new EspressoContext($this->driver, $this->options));
         $elementCount = count($elements);
 
         if ($elementCount === 0) {

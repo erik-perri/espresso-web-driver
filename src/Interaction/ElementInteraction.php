@@ -6,15 +6,17 @@ namespace EspressoWebDriver\Interaction;
 
 use EspressoWebDriver\Action\ActionInterface;
 use EspressoWebDriver\Assertion\AssertionInterface;
-use EspressoWebDriver\Core\EspressoOptions;
+use EspressoWebDriver\Core\EspressoContext;
 use EspressoWebDriver\Exception\AssertionFailedException;
 use EspressoWebDriver\Exception\PerformException;
 use Facebook\WebDriver\WebDriverElement;
 
 final readonly class ElementInteraction implements InteractionInterface
 {
-    public function __construct(private WebDriverElement $element, private EspressoOptions $options)
-    {
+    public function __construct(
+        private WebDriverElement $element,
+        private EspressoContext $context,
+    ) {
         //
     }
 
@@ -23,9 +25,9 @@ final readonly class ElementInteraction implements InteractionInterface
      */
     public function check(AssertionInterface $assertion): InteractionInterface
     {
-        $result = $assertion->assert($this->element, $this->options);
+        $result = $assertion->assert($this->element, $this->context);
 
-        $this->options->assertionReporter?->report(
+        $this->context->options->assertionReporter?->report(
             $result,
             sprintf('Failed asserting that %s is true', $assertion),
         );
@@ -43,7 +45,7 @@ final readonly class ElementInteraction implements InteractionInterface
     public function perform(ActionInterface ...$actions): InteractionInterface
     {
         foreach ($actions as $action) {
-            if (!$action->perform($this->element)) {
+            if (!$action->perform($this->element, $this->context)) {
                 throw new PerformException($action);
             }
         }

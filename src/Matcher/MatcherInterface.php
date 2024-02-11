@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace EspressoWebDriver\Matcher;
 
-use EspressoWebDriver\Core\EspressoOptions;
+use EspressoWebDriver\Core\EspressoContext;
 use Facebook\WebDriver\WebDriverElement;
 
 interface MatcherInterface
@@ -12,7 +12,7 @@ interface MatcherInterface
     /**
      * @return WebDriverElement[]
      */
-    public function match(WebDriverElement $container, EspressoOptions $options): array;
+    public function match(WebDriverElement $container, EspressoContext $context): array;
 
     public function __toString(): string;
 }

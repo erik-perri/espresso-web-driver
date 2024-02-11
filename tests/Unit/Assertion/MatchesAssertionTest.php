@@ -7,9 +7,11 @@ declare(strict_types=1);
 namespace EspressoWebDriver\Tests\Unit\Assertion;
 
 use EspressoWebDriver\Assertion\MatchesAssertion;
+use EspressoWebDriver\Core\EspressoContext;
 use EspressoWebDriver\Core\EspressoOptions;
 use EspressoWebDriver\Matcher\MatcherInterface;
 use EspressoWebDriver\Tests\Unit\BaseUnitTestCase;
+use Facebook\WebDriver\WebDriver;
 use Facebook\WebDriver\WebDriverElement;
 use PHPUnit\Framework\Attributes\CoversClass;
 
@@ -35,10 +37,15 @@ class MatchesAssertionTest extends BaseUnitTestCase
 
         $mockOptions = new EspressoOptions(waitTimeoutInSeconds: 0);
 
+        $mockContext = new EspressoContext(
+            driver: $this->createMock(WebDriver::class),
+            options: $mockOptions,
+        );
+
         $assertion = new MatchesAssertion($mockMatcher);
 
         // Act
-        $result = $assertion->assert($mockContainer, $mockOptions);
+        $result = $assertion->assert($mockContainer, $mockContext);
 
         // Assert
         $this->assertTrue($result);
@@ -61,10 +68,15 @@ class MatchesAssertionTest extends BaseUnitTestCase
 
         $mockOptions = new EspressoOptions(waitTimeoutInSeconds: 0);
 
+        $mockContext = new EspressoContext(
+            driver: $this->createMock(WebDriver::class),
+            options: $mockOptions,
+        );
+
         $assertion = new MatchesAssertion($mockMatcher);
 
         // Act
-        $result = $assertion->assert($mockContainer, $mockOptions);
+        $result = $assertion->assert($mockContainer, $mockContext);
 
         // Assert
         $this->assertFalse($result);
