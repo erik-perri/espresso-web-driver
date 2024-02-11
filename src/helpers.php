@@ -31,6 +31,7 @@ use EspressoWebDriver\Matcher\WithIdMatcher;
 use EspressoWebDriver\Matcher\WithTagNameMatcher;
 use EspressoWebDriver\Matcher\WithTextContainingMatcher;
 use EspressoWebDriver\Matcher\WithTextMatcher;
+use EspressoWebDriver\Matcher\WithValueMatcher;
 use Facebook\WebDriver\WebDriver;
 
 // region Core
@@ -149,6 +150,11 @@ function withText(string $text): MatcherInterface
 function withTextContaining(string $text): MatcherInterface
 {
     return new WithTextContainingMatcher($text);
+}
+
+function withValue(string $text): MatcherInterface
+{
+    return new WithValueMatcher($text);
 }
 
 // endregion
