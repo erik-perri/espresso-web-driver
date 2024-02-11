@@ -13,4 +13,13 @@ final readonly class EspressoOptions
     ) {
         //
     }
+
+    public function toInstantOptions(): self
+    {
+        return new self(
+            waitTimeoutInSeconds: 0,
+            waitIntervalInMilliseconds: 0,
+            assertionReporter: $this->assertionReporter,
+        );
+    }
 }

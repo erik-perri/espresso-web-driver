@@ -22,11 +22,7 @@ final readonly class HasSiblingMatcher implements MatcherInterface
     public function match(WebDriverElement $container, EspressoOptions $options): array
     {
         // Since we are waiting ourselves, we don't want the child matchers to wait as well.
-        $instantOptions = new EspressoOptions(
-            waitTimeoutInSeconds: 0,
-            waitIntervalInMilliseconds: 0,
-            assertionReporter: $options->assertionReporter,
-        );
+        $instantOptions = $options->toInstantOptions();
 
         return $this->wait(
             $options->waitTimeoutInSeconds,
