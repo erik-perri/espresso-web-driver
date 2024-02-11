@@ -10,6 +10,7 @@ use EspressoWebDriver\Core\EspressoCore;
 use EspressoWebDriver\Core\EspressoOptions;
 use EspressoWebDriver\Tests\Feature\BaseFeatureTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversFunction;
 
 use function EspressoWebDriver\allOf;
 use function EspressoWebDriver\click;
@@ -20,6 +21,7 @@ use function EspressoWebDriver\withTagName;
 use function EspressoWebDriver\withText;
 
 #[CoversClass(EspressoCore::class)]
+#[CoversFunction('EspressoWebDriver\withDriver')]
 class EspressoCoreFeatureTest extends BaseFeatureTestCase
 {
     public function testConstrainsToRequestedContainer(): void
