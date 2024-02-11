@@ -22,7 +22,7 @@ class EspressoCoreInContainerTest extends BaseFeatureTestCase
     public function testConstrainsToRequestedContainer(): void
     {
         // Arrange
-        $driver = $this->driver()->get($this->mockStaticUrl('in-container.html'));
+        $driver = $this->driver()->get($this->mockStaticUrl('core/in-container.html'));
 
         $espresso = withDriver($driver, new EspressoOptions(waitTimeoutInSeconds: 1));
 
