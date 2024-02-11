@@ -7,25 +7,27 @@ namespace EspressoWebDriver\Interaction;
 use EspressoWebDriver\Action\ActionInterface;
 use EspressoWebDriver\Assertion\AssertionInterface;
 use EspressoWebDriver\Core\EspressoContext;
+use EspressoWebDriver\Core\MatchResult;
+use EspressoWebDriver\Exception\AmbiguousElementMatcherException;
 use EspressoWebDriver\Exception\AssertionFailedException;
+use EspressoWebDriver\Exception\NoMatchingElementException;
 use EspressoWebDriver\Exception\PerformException;
-use Facebook\WebDriver\WebDriverElement;
 
 final readonly class ElementInteraction implements InteractionInterface
 {
     public function __construct(
-        private WebDriverElement $element,
+        private MatchResult $result,
         private EspressoContext $context,
     ) {
         //
     }
 
     /**
-     * @throws AssertionFailedException
+     * @throws AmbiguousElementMatcherException|AssertionFailedException|NoMatchingElementException
      */
     public function check(AssertionInterface $assertion): InteractionInterface
     {
-        $result = $assertion->assert($this->element, $this->context);
+        $result = $assertion->assert($this->result, $this->context);
 
         $this->context->options->assertionReporter?->report(
             $result,
@@ -40,12 +42,14 @@ final readonly class ElementInteraction implements InteractionInterface
     }
 
     /**
-     * @throws PerformException
+     * @throws AmbiguousElementMatcherException|PerformException|NoMatchingElementException
      */
     public function perform(ActionInterface ...$actions): InteractionInterface
     {
+        $element = $this->result->single();
+
         foreach ($actions as $action) {
-            if (!$action->perform($this->element, $this->context)) {
+            if (!$action->perform($element, $this->context)) {
                 throw new PerformException($action);
             }
         }

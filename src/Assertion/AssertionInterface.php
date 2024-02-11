@@ -5,11 +5,16 @@ declare(strict_types=1);
 namespace EspressoWebDriver\Assertion;
 
 use EspressoWebDriver\Core\EspressoContext;
-use Facebook\WebDriver\WebDriverElement;
+use EspressoWebDriver\Core\MatchResult;
+use EspressoWebDriver\Exception\AmbiguousElementMatcherException;
+use EspressoWebDriver\Exception\NoMatchingElementException;
 
 interface AssertionInterface
 {
-    public function assert(WebDriverElement $container, EspressoContext $context): bool;
+    /**
+     * @throws AmbiguousElementMatcherException|NoMatchingElementException
+     */
+    public function assert(MatchResult $result, EspressoContext $context): bool;
 
     public function __toString(): string;
 }

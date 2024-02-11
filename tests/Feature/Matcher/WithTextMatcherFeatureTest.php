@@ -14,6 +14,7 @@ use EspressoWebDriver\Tests\Feature\BaseFeatureTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\CoversFunction;
 
+use function EspressoWebDriver\click;
 use function EspressoWebDriver\isDisplayed;
 use function EspressoWebDriver\matches;
 use function EspressoWebDriver\withDriver;
@@ -72,7 +73,11 @@ class WithTextMatcherFeatureTest extends BaseFeatureTestCase
         $espresso = withDriver($driver, $options);
 
         // Act
-        $espresso->onElement(withText('MOCK A'));
+        $espresso->onElement(withText('MOCK A'))
+            ->perform(click());
+
+        // Assert
+        // No assertions, only expectations.
     }
 
     public function testDoesNotMatchWithLeadingSpaces(): void
@@ -89,7 +94,11 @@ class WithTextMatcherFeatureTest extends BaseFeatureTestCase
         $espresso = withDriver($driver, $options);
 
         // Act
-        $espresso->onElement(withText('Mock B'));
+        $espresso->onElement(withText('Mock B'))
+            ->perform(click());
+
+        // Assert
+        // No assertions, only expectations.
     }
 
     public function testDoesNotMatchSubstrings(): void
@@ -106,6 +115,10 @@ class WithTextMatcherFeatureTest extends BaseFeatureTestCase
         $espresso = withDriver($driver, $options);
 
         // Act
-        $espresso->onElement(withText('Mock C'));
+        $espresso->onElement(withText('Mock C'))
+            ->perform(click());
+
+        // Assert
+        // No assertions, only expectations.
     }
 }

@@ -36,46 +36,22 @@ final readonly class EspressoCore
      */
     public function inContainer(MatcherInterface $matcher): self
     {
-        $container = $this->findSingleMatch($matcher);
+        $context = new EspressoContext($this->driver, $this->options);
+
+        $result = new MatchResult($matcher, $matcher->match($this->container, $context), $context);
+
+        $container = $result->single();
 
         return new self($this->driver, $this->options, $container);
     }
 
-    /**
-     * @throws AmbiguousElementMatcherException|NoMatchingElementException
-     */
     public function onElement(MatcherInterface $matcher): InteractionInterface
     {
-        $element = $this->findSingleMatch($matcher);
+        $context = new EspressoContext($this->driver, $this->options);
 
-        return new ElementInteraction($element, new EspressoContext($this->driver, $this->options));
-    }
+        $result = new MatchResult($matcher, $matcher->match($this->container, $context), $context);
 
-    /**
-     * @throws AmbiguousElementMatcherException|NoMatchingElementException
-     */
-    private function findSingleMatch(MatcherInterface $matcher): WebDriverElement
-    {
-        $elements = $matcher->match($this->container, new EspressoContext($this->driver, $this->options));
-        $elementCount = count($elements);
-
-        if ($elementCount === 0) {
-            $exception = new NoMatchingElementException($matcher);
-
-            $this->options->assertionReporter?->report(false, $exception->getMessage());
-
-            throw $exception;
-        }
-
-        if ($elementCount > 1) {
-            $exception = new AmbiguousElementMatcherException($elementCount, $matcher);
-
-            $this->options->assertionReporter?->report(false, $exception->getMessage());
-
-            throw $exception;
-        }
-
-        return reset($elements);
+        return new ElementInteraction($result, $context);
     }
 
     /**
