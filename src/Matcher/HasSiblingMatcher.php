@@ -21,27 +21,28 @@ final readonly class HasSiblingMatcher implements MatcherInterface
 
     public function match(WebDriverElement $container, EspressoOptions $options): array
     {
+        // Since we are waiting ourselves, we don't want the child matchers to wait as well.
+        $instantOptions = new EspressoOptions(
+            waitTimeoutInSeconds: 0,
+            waitIntervalInMilliseconds: 0,
+            assertionReporter: $options->assertionReporter,
+        );
+
         return $this->wait(
             $options->waitTimeoutInSeconds,
             $options->waitIntervalInMilliseconds,
-            fn () => $this->findSiblingElements($container),
+            fn () => $this->findSiblingElements($container, $instantOptions),
         );
     }
 
     /**
      * @return WebDriverElement[]
      */
-    private function findSiblingElements(WebDriverElement $container): array
+    private function findSiblingElements(WebDriverElement $container, EspressoOptions $options): array
     {
         $elements = [];
 
-        // Since we are waiting ourselves, we don't want the child matchers to wait as well.
-        $instantOptions = new EspressoOptions(
-            waitTimeoutInSeconds: 0,
-            waitIntervalInMilliseconds: 0,
-        );
-
-        $potentialSiblings = $this->matcher->match($container, $instantOptions);
+        $potentialSiblings = $this->matcher->match($container, $options);
 
         foreach ($potentialSiblings as $sibling) {
             try {

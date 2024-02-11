@@ -20,25 +20,26 @@ final readonly class HasDescendantMatcher implements MatcherInterface
 
     public function match(WebDriverElement $container, EspressoOptions $options): array
     {
+        // Since we are waiting ourselves, we don't want the child matchers to wait as well.
+        $instantOptions = new EspressoOptions(
+            waitTimeoutInSeconds: 0,
+            waitIntervalInMilliseconds: 0,
+            assertionReporter: $options->assertionReporter,
+        );
+
         return $this->wait(
             $options->waitTimeoutInSeconds,
             $options->waitIntervalInMilliseconds,
-            fn () => $this->findDescendantElements($container),
+            fn () => $this->findDescendantElements($container, $instantOptions),
         );
     }
 
     /**
      * @return WebDriverElement[]
      */
-    private function findDescendantElements(WebDriverElement $container): array
+    private function findDescendantElements(WebDriverElement $container, EspressoOptions $options): array
     {
-        // Since we are waiting ourselves, we don't want the child matchers to wait as well.
-        $instantOptions = new EspressoOptions(
-            waitTimeoutInSeconds: 0,
-            waitIntervalInMilliseconds: 0,
-        );
-
-        $descendants = $this->matcher->match($container, $instantOptions);
+        $descendants = $this->matcher->match($container, $options);
 
         $elements = [];
 
