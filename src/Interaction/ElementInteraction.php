@@ -23,7 +23,14 @@ final readonly class ElementInteraction implements InteractionInterface
      */
     public function check(AssertionInterface $assertion): InteractionInterface
     {
-        if (!$assertion->assert($this->element, $this->options)) {
+        $result = $assertion->assert($this->element, $this->options);
+
+        $this->options->assertionReporter?->report(
+            $result,
+            sprintf('Failed asserting that %s is true', $assertion),
+        );
+
+        if (!$result) {
             throw new AssertionFailedException($assertion);
         }
 

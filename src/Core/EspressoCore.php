@@ -60,11 +60,19 @@ final readonly class EspressoCore
         $elementCount = count($elements);
 
         if ($elementCount === 0) {
-            throw new NoMatchingElementException($matcher);
+            $exception = new NoMatchingElementException($matcher);
+
+            $this->options->assertionReporter?->report(false, $exception->getMessage());
+
+            throw $exception;
         }
 
         if ($elementCount > 1) {
-            throw new AmbiguousElementMatcherException($elementCount, $matcher);
+            $exception = new AmbiguousElementMatcherException($elementCount, $matcher);
+
+            $this->options->assertionReporter?->report(false, $exception->getMessage());
+
+            throw $exception;
         }
 
         return reset($elements);
