@@ -84,10 +84,12 @@ class MatchesAssertionTest extends BaseUnitTestCase
             ->method('__toString')
             ->willReturn('mock="test"');
 
-        // Act
         $assertion = new MatchesAssertion($mockMatcher);
 
+        // Act
+        $result = (string) $assertion;
+
         // Assert
-        $this->assertSame('matches(mock="test")', (string) $assertion);
+        $this->assertSame('matches(mock="test")', $result);
     }
 }

@@ -20,10 +20,12 @@ class HasDescendantMatcherTest extends BaseUnitTestCase
             ->method('__toString')
             ->willReturn('mock="test"');
 
-        // Act
         $matcher = new HasDescendantMatcher($mockMatcher);
 
+        // Act
+        $result = (string) $matcher;
+
         // Assert
-        $this->assertSame('descendant(mock="test")', (string) $matcher);
+        $this->assertSame('descendant(mock="test")', $result);
     }
 }
