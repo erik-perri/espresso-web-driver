@@ -14,9 +14,9 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\CoversFunction;
 
 use function EspressoWebDriver\click;
-use function EspressoWebDriver\doesNotMatch;
 use function EspressoWebDriver\isDisplayed;
 use function EspressoWebDriver\matches;
+use function EspressoWebDriver\not;
 use function EspressoWebDriver\scrollTo;
 use function EspressoWebDriver\withDriver;
 use function EspressoWebDriver\withText;
@@ -41,7 +41,7 @@ class IsDisplayedMatcherFeatureTest extends BaseFeatureTestCase
 
         // Act and Assert
         $hiddenUntilScrollElement
-            ->check(doesNotMatch(isDisplayed()))
+            ->check(not(matches(isDisplayed())))
             ->perform(scrollTo())
             ->check(matches(isDisplayed()));
     }
@@ -62,7 +62,7 @@ class IsDisplayedMatcherFeatureTest extends BaseFeatureTestCase
         $hiddenUntilClickElement = $espresso->onElement(withText('Hidden'));
 
         // Act and Assert
-        $hiddenUntilClickElement->check(doesNotMatch(isDisplayed()));
+        $hiddenUntilClickElement->check(not(matches(isDisplayed())));
 
         $targetElement->perform(click());
 

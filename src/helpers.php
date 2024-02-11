@@ -14,8 +14,8 @@ use EspressoWebDriver\Action\ScrollToAction;
 use EspressoWebDriver\Action\SubmitAction;
 use EspressoWebDriver\Action\TypeTextAction;
 use EspressoWebDriver\Assertion\AssertionInterface;
-use EspressoWebDriver\Assertion\DoesNotMatchAssertion;
 use EspressoWebDriver\Assertion\MatchesAssertion;
+use EspressoWebDriver\Assertion\NotAssertion;
 use EspressoWebDriver\Core\EspressoCore;
 use EspressoWebDriver\Core\EspressoOptions;
 use EspressoWebDriver\Exception\NoMatchingElementException;
@@ -83,15 +83,14 @@ function typeText(string $text): ActionInterface
 
 // region Assertions
 
-function doesNotMatch(MatcherInterface $assertion): AssertionInterface
-{
-    // TODO Figure out how to get a `not(MatcherInterface)` instead of this
-    return new DoesNotMatchAssertion($assertion);
-}
-
 function matches(MatcherInterface $assertion): AssertionInterface
 {
     return new MatchesAssertion($assertion);
+}
+
+function not(AssertionInterface $assertion): AssertionInterface
+{
+    return new NotAssertion($assertion);
 }
 
 // endregion
