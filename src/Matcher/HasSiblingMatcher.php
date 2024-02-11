@@ -36,9 +36,9 @@ final readonly class HasSiblingMatcher implements MatcherInterface
      */
     private function findSiblingElements(WebDriverElement $container, EspressoContext $context): array
     {
-        $elements = [];
-
         $potentialSiblings = $this->matcher->match($container, $context);
+
+        $elements = [];
 
         foreach ($potentialSiblings as $sibling) {
             try {
