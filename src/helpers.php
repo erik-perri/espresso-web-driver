@@ -9,6 +9,7 @@ namespace EspressoWebDriver;
 use EspressoWebDriver\Action\ActionInterface;
 use EspressoWebDriver\Action\ClearTextAction;
 use EspressoWebDriver\Action\ClickAction;
+use EspressoWebDriver\Action\FocusAction;
 use EspressoWebDriver\Action\ScrollToAction;
 use EspressoWebDriver\Action\SubmitAction;
 use EspressoWebDriver\Action\TypeTextAction;
@@ -56,6 +57,11 @@ function clearText(): ActionInterface
 function click(): ActionInterface
 {
     return new ClickAction();
+}
+
+function focus(): ActionInterface
+{
+    return new FocusAction();
 }
 
 function scrollTo(): ActionInterface

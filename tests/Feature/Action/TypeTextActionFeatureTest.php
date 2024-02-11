@@ -14,6 +14,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\CoversFunction;
 
 use function EspressoWebDriver\click;
+use function EspressoWebDriver\focus;
 use function EspressoWebDriver\typeText;
 use function EspressoWebDriver\withDriver;
 use function EspressoWebDriver\withId;
@@ -76,9 +77,7 @@ class TypeTextActionFeatureTest extends BaseFeatureTestCase
         // Act
         $espresso
             ->onElement(withId('test-c'))
-            // Click twice to open and close the select for focus
-            // TODO Add a way to focus elements like this
-            ->perform(click(), click(), typeText('Value C'));
+            ->perform(focus(), typeText('Value C'));
 
         // Assert
         $this->assertSame(
