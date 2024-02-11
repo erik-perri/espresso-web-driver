@@ -19,7 +19,7 @@ final readonly class SubmitAction implements ActionInterface
             'select',
             'textarea',
         ])) {
-            throw new RuntimeException(sprintf('Element [%1$s] is not a form element', $element->getTagName()));
+            throw new PerformException($this, sprintf('element [%1$s] is not a form element', $element->getTagName()));
         }
 
         $element->submit();
