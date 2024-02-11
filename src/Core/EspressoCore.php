@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace EspressoWebDriver\Core;
 
-use EspressoWebDriver\Exceptions\AmbiguousElementMatcherException;
-use EspressoWebDriver\Exceptions\NoMatchingElementException;
+use EspressoWebDriver\Exception\AmbiguousElementMatcherException;
+use EspressoWebDriver\Exception\NoMatchingElementException;
 use EspressoWebDriver\Interaction\ElementInteraction;
 use EspressoWebDriver\Interaction\InteractionInterface;
 use EspressoWebDriver\Matcher\MatcherInterface;

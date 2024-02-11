@@ -15,7 +15,7 @@ use EspressoWebDriver\Assertion\AssertionInterface;
 use EspressoWebDriver\Assertion\MatchesAssertion;
 use EspressoWebDriver\Core\EspressoCore;
 use EspressoWebDriver\Core\EspressoOptions;
-use EspressoWebDriver\Exceptions\NoMatchingElementException;
+use EspressoWebDriver\Exception\NoMatchingElementException;
 use EspressoWebDriver\Matcher\AllOfMatcher;
 use EspressoWebDriver\Matcher\AnyOfMatcher;
 use EspressoWebDriver\Matcher\HasDescendantMatcher;

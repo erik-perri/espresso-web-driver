@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace EspressoWebDriver\Exceptions;
+namespace EspressoWebDriver\Exception;
 
 use EspressoWebDriver\Action\ActionInterface;
 

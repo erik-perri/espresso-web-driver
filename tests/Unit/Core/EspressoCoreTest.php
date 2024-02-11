@@ -8,8 +8,8 @@ namespace EspressoWebDriver\Tests\Unit\Core;
 
 use EspressoWebDriver\Core\EspressoCore;
 use EspressoWebDriver\Core\EspressoOptions;
-use EspressoWebDriver\Exceptions\AmbiguousElementMatcherException;
-use EspressoWebDriver\Exceptions\NoMatchingElementException;
+use EspressoWebDriver\Exception\AmbiguousElementMatcherException;
+use EspressoWebDriver\Exception\NoMatchingElementException;
 use EspressoWebDriver\Interaction\InteractionInterface;
 use EspressoWebDriver\Tests\Unit\BaseUnitTestCase;
 use Facebook\WebDriver\Exception\NoSuchElementException;

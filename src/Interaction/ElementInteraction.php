@@ -7,8 +7,8 @@ namespace EspressoWebDriver\Interaction;
 use EspressoWebDriver\Action\ActionInterface;
 use EspressoWebDriver\Assertion\AssertionInterface;
 use EspressoWebDriver\Core\EspressoOptions;
-use EspressoWebDriver\Exceptions\AssertionFailedException;
-use EspressoWebDriver\Exceptions\PerformException;
+use EspressoWebDriver\Exception\AssertionFailedException;
+use EspressoWebDriver\Exception\PerformException;
 use Facebook\WebDriver\WebDriverElement;
 
 final readonly class ElementInteraction implements InteractionInterface
