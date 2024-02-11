@@ -1,0 +1,12 @@
+<html lang="en">
+<body>
+<button>Create element</button>
+<script>
+    document.querySelector('button').addEventListener('click', function() {
+        const element = document.createElement('div');
+        element.textContent = 'Mock element';
+        document.body.appendChild(element);
+    });
+</script>
+</body>
+</html>

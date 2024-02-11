@@ -14,6 +14,7 @@ use EspressoWebDriver\Action\ScrollToAction;
 use EspressoWebDriver\Action\SubmitAction;
 use EspressoWebDriver\Action\TypeTextAction;
 use EspressoWebDriver\Assertion\AssertionInterface;
+use EspressoWebDriver\Assertion\ExistsAssertion;
 use EspressoWebDriver\Assertion\MatchesAssertion;
 use EspressoWebDriver\Assertion\NotAssertion;
 use EspressoWebDriver\Core\EspressoCore;
@@ -82,6 +83,11 @@ function typeText(string $text): ActionInterface
 // endregion
 
 // region Assertions
+
+function exists(): AssertionInterface
+{
+    return new ExistsAssertion();
+}
 
 function matches(MatcherInterface $assertion): AssertionInterface
 {
