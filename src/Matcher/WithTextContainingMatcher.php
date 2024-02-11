@@ -42,9 +42,9 @@ final readonly class WithTextContainingMatcher implements MatcherInterface
             $elements,
             $container->findElements(
                 // TODO Figure out a better path that works for all languages
-                //      XPath's lower-case() is not supported
+                //      XPath's newer lower-case() or matches() are not supported
                 WebDriverBy::xpath(sprintf(
-                    '//*[contains(%1$s, "%2$s")]',
+                    './/*[contains(%1$s, "%2$s")]',
                     'translate(text(), "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "abcdefghijklmnopqrstuvwxyz")',
                     $this->text,
                 )),

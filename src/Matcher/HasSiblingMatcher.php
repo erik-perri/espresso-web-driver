@@ -44,7 +44,7 @@ final readonly class HasSiblingMatcher implements MatcherInterface
             try {
                 $parent = $sibling->findElement(WebDriverBy::xpath('./parent::*'));
 
-                $adjacentChildren = $parent->findElements(WebDriverBy::xpath('*'));
+                $adjacentChildren = $parent->findElements(WebDriverBy::xpath('./*'));
 
                 foreach ($adjacentChildren as $child) {
                     if ($child->getID() !== $sibling->getID()) {
