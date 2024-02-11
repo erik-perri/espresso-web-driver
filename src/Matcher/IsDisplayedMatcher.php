@@ -30,16 +30,18 @@ final readonly class IsDisplayedMatcher implements MatcherInterface
     {
         $elements = [];
 
-        if ($container->isDisplayed()) {
+        $checker = new ElementDisplayChecker($context->driver);
+
+        if ($checker->isDisplayed($container)) {
             $elements[] = $container;
         }
 
-        $visibleElements = $container->findElements(
+        $potentiallyVisibleElements = $container->findElements(
             WebDriverBy::cssSelector('*:not([style*="display: none"]):not([style*="visibility: hidden"])'),
         );
 
-        foreach ($visibleElements as $element) {
-            if ($element->isDisplayed()) {
+        foreach ($potentiallyVisibleElements as $element) {
+            if ($checker->isDisplayed($element)) {
                 $elements[] = $element;
             }
         }
