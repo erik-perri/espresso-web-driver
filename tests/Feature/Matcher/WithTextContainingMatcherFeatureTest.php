@@ -13,9 +13,11 @@ use EspressoWebDriver\Tests\Feature\BaseFeatureTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\CoversFunction;
 
+use function EspressoWebDriver\allOf;
 use function EspressoWebDriver\isDisplayed;
 use function EspressoWebDriver\matches;
 use function EspressoWebDriver\withDriver;
+use function EspressoWebDriver\withTagName;
 use function EspressoWebDriver\withTextContaining;
 
 #[CoversClass(WithTextContainingMatcher::class)]
@@ -35,7 +37,7 @@ class WithTextContainingMatcherFeatureTest extends BaseFeatureTestCase
         $espresso = withDriver($driver, $options);
 
         // Act and Assert
-        $espresso->onElement(withTextContaining('Mock A'))
+        $espresso->onElement(allOf(withTagName('li'), withTextContaining('Mock A')))
             ->check(matches(isDisplayed()));
     }
 
@@ -50,7 +52,7 @@ class WithTextContainingMatcherFeatureTest extends BaseFeatureTestCase
         );
 
         $espresso = withDriver($driver, $options)
-            ->inContainer(withTextContaining('Mock A'));
+            ->inContainer(allOf(withTagName('li'), withTextContaining('Mock A')));
 
         // Act and Assert
         $espresso->onElement(withTextContaining('Mock A'))
@@ -70,7 +72,7 @@ class WithTextContainingMatcherFeatureTest extends BaseFeatureTestCase
         $espresso = withDriver($driver, $options);
 
         // Act and Assert
-        $espresso->onElement(withTextContaining('MOCK A'))
+        $espresso->onElement(allOf(withTagName('li'), withTextContaining('MOCK A')))
             ->check(matches(isDisplayed()));
     }
 
@@ -87,7 +89,7 @@ class WithTextContainingMatcherFeatureTest extends BaseFeatureTestCase
         $espresso = withDriver($driver, $options);
 
         // Act and Assert
-        $espresso->onElement(withTextContaining('Mock B'))
+        $espresso->onElement(allOf(withTagName('li'), withTextContaining('Mock B')))
             ->check(matches(isDisplayed()));
     }
 
@@ -104,7 +106,7 @@ class WithTextContainingMatcherFeatureTest extends BaseFeatureTestCase
         $espresso = withDriver($driver, $options);
 
         // Act and Assert
-        $espresso->onElement(withTextContaining('Mock C'))
+        $espresso->onElement(allOf(withTagName('li'), withTextContaining('Mock C')))
             ->check(matches(isDisplayed()));
     }
 }

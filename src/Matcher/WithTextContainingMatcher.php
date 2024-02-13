@@ -45,7 +45,7 @@ final readonly class WithTextContainingMatcher implements MatcherInterface
             $container->findElements(WebDriverBy::xpath(sprintf(
                 './/*[contains(%1$s, "%2$s")]',
                 'translate(text(), "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "abcdefghijklmnopqrstuvwxyz")',
-                $this->text,
+                mb_strtolower($this->text),
             ))),
         );
     }
@@ -68,7 +68,7 @@ final readonly class WithTextContainingMatcher implements MatcherInterface
             $container->findElements(WebDriverBy::xpath(sprintf(
                 './/*[not(contains(%1$s, "%2$s"))]',
                 'translate(text(), "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "abcdefghijklmnopqrstuvwxyz")',
-                $this->text,
+                mb_strtolower($this->text),
             ))),
         );
     }
