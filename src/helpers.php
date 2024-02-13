@@ -41,7 +41,7 @@ use Facebook\WebDriver\WebDriver;
 /**
  * @throws NoMatchingElementException
  */
-function withDriver(WebDriver $driver, EspressoOptions $options = new EspressoOptions): EspressoCore
+function usingDriver(WebDriver $driver, EspressoOptions $options = new EspressoOptions): EspressoCore
 {
     return new EspressoCore($driver, $options);
 }

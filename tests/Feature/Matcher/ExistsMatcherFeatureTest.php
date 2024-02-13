@@ -18,7 +18,7 @@ use function EspressoWebDriver\click;
 use function EspressoWebDriver\exists;
 use function EspressoWebDriver\matches;
 use function EspressoWebDriver\not;
-use function EspressoWebDriver\withDriver;
+use function EspressoWebDriver\usingDriver;
 use function EspressoWebDriver\withTagName;
 use function EspressoWebDriver\withText;
 
@@ -36,7 +36,7 @@ class ExistsMatcherFeatureTest extends BaseFeatureTestCase
             assertionReporter: new PhpunitReporter,
         );
 
-        $espresso = withDriver($driver, $options);
+        $espresso = usingDriver($driver, $options);
 
         // Act and Assert
         $espresso

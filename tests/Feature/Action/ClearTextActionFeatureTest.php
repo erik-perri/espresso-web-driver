@@ -17,7 +17,7 @@ use function EspressoWebDriver\clearText;
 use function EspressoWebDriver\click;
 use function EspressoWebDriver\matches;
 use function EspressoWebDriver\typeText;
-use function EspressoWebDriver\withDriver;
+use function EspressoWebDriver\usingDriver;
 use function EspressoWebDriver\withId;
 use function EspressoWebDriver\withValue;
 
@@ -32,7 +32,7 @@ class ClearTextActionFeatureTest extends BaseFeatureTestCase
 
         $options = new EspressoOptions(waitTimeoutInSeconds: 0);
 
-        $espresso = withDriver($driver, $options);
+        $espresso = usingDriver($driver, $options);
 
         // Act
         $espresso
@@ -55,7 +55,7 @@ class ClearTextActionFeatureTest extends BaseFeatureTestCase
 
         $options = new EspressoOptions(waitTimeoutInSeconds: 0);
 
-        $espresso = withDriver($driver, $options);
+        $espresso = usingDriver($driver, $options);
 
         // Act
         $espresso

@@ -17,8 +17,8 @@ use function EspressoWebDriver\allOf;
 use function EspressoWebDriver\hasDescendant;
 use function EspressoWebDriver\matches;
 use function EspressoWebDriver\not;
+use function EspressoWebDriver\usingDriver;
 use function EspressoWebDriver\withClass;
-use function EspressoWebDriver\withDriver;
 use function EspressoWebDriver\withId;
 use function EspressoWebDriver\withTagName;
 use function EspressoWebDriver\withText;
@@ -37,7 +37,7 @@ class HasDescendantMatcherFeatureTest extends BaseFeatureTestCase
             assertionReporter: new PhpunitReporter,
         );
 
-        $espresso = withDriver($driver, $options);
+        $espresso = usingDriver($driver, $options);
 
         // Act and Assert
         $espresso->onElement(allOf(withClass('test'), hasDescendant(withText('Mock B'))))
@@ -54,7 +54,7 @@ class HasDescendantMatcherFeatureTest extends BaseFeatureTestCase
             assertionReporter: new PhpunitReporter,
         );
 
-        $espresso = withDriver($driver, $options);
+        $espresso = usingDriver($driver, $options);
 
         // Act and Assert
         $espresso->onElement(allOf(

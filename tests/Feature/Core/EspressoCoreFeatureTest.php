@@ -15,13 +15,13 @@ use PHPUnit\Framework\Attributes\CoversFunction;
 use function EspressoWebDriver\allOf;
 use function EspressoWebDriver\click;
 use function EspressoWebDriver\hasDescendant;
+use function EspressoWebDriver\usingDriver;
 use function EspressoWebDriver\withClass;
-use function EspressoWebDriver\withDriver;
 use function EspressoWebDriver\withTagName;
 use function EspressoWebDriver\withText;
 
 #[CoversClass(EspressoCore::class)]
-#[CoversFunction('EspressoWebDriver\withDriver')]
+#[CoversFunction('EspressoWebDriver\usingDriver')]
 class EspressoCoreFeatureTest extends BaseFeatureTestCase
 {
     public function testConstrainsToRequestedContainer(): void
@@ -31,7 +31,7 @@ class EspressoCoreFeatureTest extends BaseFeatureTestCase
 
         $options = new EspressoOptions(waitTimeoutInSeconds: 0);
 
-        $espresso = withDriver($driver, $options);
+        $espresso = usingDriver($driver, $options);
 
         // Contain the instance to an individual row, then click a matcher that would match many rows if not contained
         $containedEspresso = $espresso

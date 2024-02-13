@@ -1,7 +1,7 @@
 Testing how Espresso style matchers might work with WebDriver as an alternative to awkward contains and sibling Xpath expressions.
 
 ```php
-$espresso = withDriver($driver);
+$espresso = usingDriver($driver);
 
 $espresso
     ->onElement(allOf(
@@ -19,7 +19,7 @@ $espresso
 ```
 
 ```php
-$containedEspresso = withDriver($driver)
+$containedEspresso = usingDriver($driver)
     ->inContainer(allOf(
         withClass('row'),
         hasDescendant(withText('John Doe')),

@@ -18,7 +18,7 @@ use function EspressoWebDriver\isDisplayed;
 use function EspressoWebDriver\matches;
 use function EspressoWebDriver\not;
 use function EspressoWebDriver\scrollTo;
-use function EspressoWebDriver\withDriver;
+use function EspressoWebDriver\usingDriver;
 use function EspressoWebDriver\withText;
 
 #[CoversClass(IsDisplayedMatcher::class)]
@@ -35,7 +35,7 @@ class IsDisplayedMatcherFeatureTest extends BaseFeatureTestCase
             assertionReporter: new PhpunitReporter,
         );
 
-        $espresso = withDriver($driver, $options);
+        $espresso = usingDriver($driver, $options);
 
         $topElement = $espresso->onElement(withText('Mock A'));
         $bottomElement = $espresso->onElement(withText('Mock Z'));
@@ -66,7 +66,7 @@ class IsDisplayedMatcherFeatureTest extends BaseFeatureTestCase
             assertionReporter: new PhpunitReporter,
         );
 
-        $espresso = withDriver($driver, $options);
+        $espresso = usingDriver($driver, $options);
 
         $targetElement = $espresso->onElement(withText('Mock C'));
         $hiddenUntilClickElement = $espresso->onElement(withText('Hidden'));

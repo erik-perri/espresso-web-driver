@@ -16,7 +16,7 @@ use PHPUnit\Framework\Attributes\CoversFunction;
 use function EspressoWebDriver\click;
 use function EspressoWebDriver\focus;
 use function EspressoWebDriver\typeText;
-use function EspressoWebDriver\withDriver;
+use function EspressoWebDriver\usingDriver;
 use function EspressoWebDriver\withId;
 
 #[CoversClass(TypeTextAction::class)]
@@ -30,7 +30,7 @@ class TypeTextActionFeatureTest extends BaseFeatureTestCase
 
         $options = new EspressoOptions(waitTimeoutInSeconds: 0);
 
-        $espresso = withDriver($driver, $options);
+        $espresso = usingDriver($driver, $options);
 
         // Act
         $espresso
@@ -51,7 +51,7 @@ class TypeTextActionFeatureTest extends BaseFeatureTestCase
 
         $options = new EspressoOptions(waitTimeoutInSeconds: 0);
 
-        $espresso = withDriver($driver, $options);
+        $espresso = usingDriver($driver, $options);
 
         // Act
         $espresso
@@ -72,7 +72,7 @@ class TypeTextActionFeatureTest extends BaseFeatureTestCase
 
         $options = new EspressoOptions(waitTimeoutInSeconds: 0);
 
-        $espresso = withDriver($driver, $options);
+        $espresso = usingDriver($driver, $options);
 
         // Act
         $espresso

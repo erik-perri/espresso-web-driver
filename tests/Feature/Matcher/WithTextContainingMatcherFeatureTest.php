@@ -16,7 +16,7 @@ use PHPUnit\Framework\Attributes\CoversFunction;
 use function EspressoWebDriver\allOf;
 use function EspressoWebDriver\isDisplayed;
 use function EspressoWebDriver\matches;
-use function EspressoWebDriver\withDriver;
+use function EspressoWebDriver\usingDriver;
 use function EspressoWebDriver\withTagName;
 use function EspressoWebDriver\withTextContaining;
 
@@ -34,7 +34,7 @@ class WithTextContainingMatcherFeatureTest extends BaseFeatureTestCase
             assertionReporter: new PhpunitReporter,
         );
 
-        $espresso = withDriver($driver, $options);
+        $espresso = usingDriver($driver, $options);
 
         // Act and Assert
         $espresso->onElement(allOf(withTagName('li'), withTextContaining('Mock A')))
@@ -51,7 +51,7 @@ class WithTextContainingMatcherFeatureTest extends BaseFeatureTestCase
             assertionReporter: new PhpunitReporter,
         );
 
-        $espresso = withDriver($driver, $options)
+        $espresso = usingDriver($driver, $options)
             ->inContainer(allOf(withTagName('li'), withTextContaining('Mock A')));
 
         // Act and Assert
@@ -69,7 +69,7 @@ class WithTextContainingMatcherFeatureTest extends BaseFeatureTestCase
             assertionReporter: new PhpunitReporter,
         );
 
-        $espresso = withDriver($driver, $options);
+        $espresso = usingDriver($driver, $options);
 
         // Act and Assert
         $espresso->onElement(allOf(withTagName('li'), withTextContaining('MOCK A')))
@@ -86,7 +86,7 @@ class WithTextContainingMatcherFeatureTest extends BaseFeatureTestCase
             assertionReporter: new PhpunitReporter,
         );
 
-        $espresso = withDriver($driver, $options);
+        $espresso = usingDriver($driver, $options);
 
         // Act and Assert
         $espresso->onElement(allOf(withTagName('li'), withTextContaining('Mock B')))
@@ -103,7 +103,7 @@ class WithTextContainingMatcherFeatureTest extends BaseFeatureTestCase
             assertionReporter: new PhpunitReporter,
         );
 
-        $espresso = withDriver($driver, $options);
+        $espresso = usingDriver($driver, $options);
 
         // Act and Assert
         $espresso->onElement(allOf(withTagName('li'), withTextContaining('Mock C')))

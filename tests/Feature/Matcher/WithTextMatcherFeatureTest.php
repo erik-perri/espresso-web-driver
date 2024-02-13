@@ -17,7 +17,7 @@ use PHPUnit\Framework\Attributes\CoversFunction;
 use function EspressoWebDriver\click;
 use function EspressoWebDriver\isDisplayed;
 use function EspressoWebDriver\matches;
-use function EspressoWebDriver\withDriver;
+use function EspressoWebDriver\usingDriver;
 use function EspressoWebDriver\withText;
 
 #[CoversClass(WithTextMatcher::class)]
@@ -34,7 +34,7 @@ class WithTextMatcherFeatureTest extends BaseFeatureTestCase
             assertionReporter: new PhpunitReporter,
         );
 
-        $espresso = withDriver($driver, $options);
+        $espresso = usingDriver($driver, $options);
 
         // Act and Assert
         $espresso->onElement(withText('Mock A'))
@@ -51,7 +51,7 @@ class WithTextMatcherFeatureTest extends BaseFeatureTestCase
             assertionReporter: new PhpunitReporter,
         );
 
-        $espresso = withDriver($driver, $options)
+        $espresso = usingDriver($driver, $options)
             ->inContainer(withText('Mock A'));
 
         // Act and Assert
@@ -70,7 +70,7 @@ class WithTextMatcherFeatureTest extends BaseFeatureTestCase
 
         $options = new EspressoOptions(waitTimeoutInSeconds: 0);
 
-        $espresso = withDriver($driver, $options);
+        $espresso = usingDriver($driver, $options);
 
         // Act
         $espresso->onElement(withText('MOCK A'))
@@ -91,7 +91,7 @@ class WithTextMatcherFeatureTest extends BaseFeatureTestCase
 
         $options = new EspressoOptions(waitTimeoutInSeconds: 0);
 
-        $espresso = withDriver($driver, $options);
+        $espresso = usingDriver($driver, $options);
 
         // Act
         $espresso->onElement(withText('Mock B'))
@@ -112,7 +112,7 @@ class WithTextMatcherFeatureTest extends BaseFeatureTestCase
 
         $options = new EspressoOptions(waitTimeoutInSeconds: 0);
 
-        $espresso = withDriver($driver, $options);
+        $espresso = usingDriver($driver, $options);
 
         // Act
         $espresso->onElement(withText('Mock C'))
