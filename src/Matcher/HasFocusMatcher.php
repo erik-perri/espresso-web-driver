@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace EspressoWebDriver\Matcher;
 
-use EspressoWebDriver\Core\EspressoContext;
 use EspressoWebDriver\Traits\HasAutomaticWait;
 use Facebook\WebDriver\Exception\NoSuchElementException;
 use Facebook\WebDriver\WebDriverBy;
@@ -14,19 +13,15 @@ final readonly class HasFocusMatcher implements MatcherInterface
 {
     use HasAutomaticWait;
 
-    public function match(WebDriverElement $container, EspressoContext $context): array
+    public function match(MatchResult $container, MatchContext $context): MatchResult
     {
-        return $this->wait(
-            $context->options->waitTimeoutInSeconds,
-            $context->options->waitIntervalInMilliseconds,
-            fn () => $this->findElementsWithFocus($container),
-        );
+        return $this->waitForMatch($context, fn () => $this->matchElements($container->single(), $context));
     }
 
     /**
      * @return WebDriverElement[]
      */
-    private function findElementsWithFocus(WebDriverElement $container): array
+    private function matchElements(WebDriverElement $container, MatchContext $context): array
     {
         try {
             $parent = $container->findElement(WebDriverBy::xpath('./parent::*'));
@@ -34,7 +29,9 @@ final readonly class HasFocusMatcher implements MatcherInterface
             return [];
         }
 
-        return $parent->findElements(WebDriverBy::cssSelector(':focus'));
+        return $parent->findElements(WebDriverBy::cssSelector(
+            $context->isNegated ? ':not(:focus)' : ':focus',
+        ));
     }
 
     public function __toString(): string

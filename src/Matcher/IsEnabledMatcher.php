@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace EspressoWebDriver\Matcher;
 
-use EspressoWebDriver\Core\EspressoContext;
 use EspressoWebDriver\Traits\HasAutomaticWait;
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverElement;
@@ -13,19 +12,15 @@ final readonly class IsEnabledMatcher implements MatcherInterface
 {
     use HasAutomaticWait;
 
-    public function match(WebDriverElement $container, EspressoContext $context): array
+    public function match(MatchResult $container, MatchContext $context): MatchResult
     {
-        return $this->wait(
-            $context->options->waitTimeoutInSeconds,
-            $context->options->waitIntervalInMilliseconds,
-            fn () => $this->findEnabledElements($container),
-        );
+        return $this->waitForMatch($context, fn () => $this->matchElements($container->single(), $context));
     }
 
     /**
      * @return WebDriverElement[]
      */
-    private function findEnabledElements(WebDriverElement $container): array
+    private function matchElements(WebDriverElement $container, MatchContext $context): array
     {
         $elements = [];
 

@@ -9,8 +9,8 @@ namespace EspressoWebDriver\Tests\Unit\Assertion;
 use EspressoWebDriver\Assertion\MatchesAssertion;
 use EspressoWebDriver\Core\EspressoContext;
 use EspressoWebDriver\Core\EspressoOptions;
-use EspressoWebDriver\Core\MatchResult;
 use EspressoWebDriver\Matcher\MatcherInterface;
+use EspressoWebDriver\Matcher\MatchResult;
 use EspressoWebDriver\Tests\Unit\BaseUnitTestCase;
 use Facebook\WebDriver\WebDriver;
 use Facebook\WebDriver\WebDriverElement;
@@ -30,11 +30,11 @@ class MatchesAssertionTest extends BaseUnitTestCase
         $mockMatcher = $this->createMock(MatcherInterface::class);
         $mockMatcher
             ->method('match')
-            ->willReturn([
+            ->willReturn(new MatchResult($mockMatcher, [
                 $this->createMock(WebDriverElement::class),
                 $mockContainer,
                 $this->createMock(WebDriverElement::class),
-            ]);
+            ]));
 
         $mockOptions = new EspressoOptions(waitTimeoutInSeconds: 0);
 
@@ -65,9 +65,9 @@ class MatchesAssertionTest extends BaseUnitTestCase
         $mockMatcher = $this->createMock(MatcherInterface::class);
         $mockMatcher
             ->method('match')
-            ->willReturn([
+            ->willReturn(new MatchResult($mockMatcher, [
                 $this->createMock(WebDriverElement::class),
-            ]);
+            ]));
 
         $mockOptions = new EspressoOptions(waitTimeoutInSeconds: 0);
 

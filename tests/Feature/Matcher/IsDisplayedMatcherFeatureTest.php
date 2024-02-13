@@ -37,13 +37,23 @@ class IsDisplayedMatcherFeatureTest extends BaseFeatureTestCase
 
         $espresso = withDriver($driver, $options);
 
-        $hiddenUntilScrollElement = $espresso->onElement(withText('Mock X'));
+        $topElement = $espresso->onElement(withText('Mock A'));
+        $bottomElement = $espresso->onElement(withText('Mock Z'));
 
         // Act and Assert
-        $hiddenUntilScrollElement
-            ->check(not(matches(isDisplayed())))
+        $topElement
+            ->check(matches(isDisplayed()));
+        $bottomElement
+            ->check(matches(not(isDisplayed())))
             ->perform(scrollTo())
             ->check(matches(isDisplayed()));
+
+        $topElement
+            ->check(matches(not(isDisplayed())))
+            ->perform(scrollTo())
+            ->check(matches(isDisplayed()));
+        $bottomElement
+            ->check(matches(not(isDisplayed())));
     }
 
     public function testCannotSeeElementsThatAreHiddenWithCss(): void
@@ -62,10 +72,14 @@ class IsDisplayedMatcherFeatureTest extends BaseFeatureTestCase
         $hiddenUntilClickElement = $espresso->onElement(withText('Hidden'));
 
         // Act and Assert
-        $hiddenUntilClickElement->check(not(matches(isDisplayed())));
+        $hiddenUntilClickElement->check(matches(not(isDisplayed())));
 
         $targetElement->perform(click());
 
         $hiddenUntilClickElement->check(matches(isDisplayed()));
+
+        $targetElement->perform(click());
+
+        $hiddenUntilClickElement->check(matches(not(isDisplayed())));
     }
 }

@@ -5,36 +5,46 @@ declare(strict_types=1);
 namespace EspressoWebDriver\Traits;
 
 use Closure;
+use EspressoWebDriver\Matcher\MatchContext;
+use EspressoWebDriver\Matcher\MatchResult;
+use Facebook\WebDriver\WebDriverElement;
 
 trait HasAutomaticWait
 {
     /**
      * Executes the provided callback function in intervals until it returns a non-empty result or the timeout is reached.
      *
-     * @template T
-     *
-     * @param  Closure(): T  $callback
+     * @param  Closure(): array<WebDriverElement>  $callback
      */
-    protected function wait(int $timeoutInSeconds, int $intervalInMilliseconds, Closure $callback): mixed
+    protected function waitForMatch(MatchContext $context, Closure $callback): MatchResult
     {
-        if ($timeoutInSeconds < 1) {
-            return $callback();
+        if ($context->options->waitTimeoutInSeconds < 1) {
+            return new MatchResult(
+                matcher: $this,
+                result: $callback(),
+                isNegated: $context->isNegated,
+            );
         }
 
-        $start = (float) microtime(true);
-        $end = $start + $timeoutInSeconds;
-        $lastResult = null;
+        $startTime = (float) microtime(true);
+        $endTime = $startTime + $context->options->waitTimeoutInSeconds;
+        $waitIntervalInMicroseconds = $context->options->waitIntervalInMilliseconds * 1000;
+        $lastResult = [];
 
-        while (microtime(true) < $end) {
+        while (microtime(true) < $endTime) {
             $lastResult = $callback();
 
             if (!empty($lastResult)) {
-                return $lastResult;
+                break;
             }
 
-            usleep($intervalInMilliseconds * 1000);
+            usleep($waitIntervalInMicroseconds);
         }
 
-        return $lastResult;
+        return new MatchResult(
+            matcher: $this,
+            result: $lastResult,
+            isNegated: $context->isNegated,
+        );
     }
 }

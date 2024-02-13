@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace EspressoWebDriver\Assertion;
 
 use EspressoWebDriver\Core\EspressoContext;
-use EspressoWebDriver\Core\MatchResult;
 use EspressoWebDriver\Exception\AmbiguousElementMatcherException;
 use EspressoWebDriver\Exception\NoMatchingElementException;
+use EspressoWebDriver\Matcher\MatchContext;
 use EspressoWebDriver\Matcher\MatcherInterface;
+use EspressoWebDriver\Matcher\MatchResult;
 use Facebook\WebDriver\WebDriverElement;
 
 final readonly class MatchesAssertion implements AssertionInterface
@@ -21,18 +22,29 @@ final readonly class MatchesAssertion implements AssertionInterface
     /**
      * @throws AmbiguousElementMatcherException|NoMatchingElementException
      */
-    public function assert(MatchResult $result, EspressoContext $context): bool
+    public function assert(MatchResult $container, EspressoContext $context): bool
     {
-        $element = $result->single();
+        $matches = $this->matcher->match($container, new MatchContext(
+            driver: $context->driver,
+            isNegated: false,
+            options: $context->options,
+        ));
 
-        $matches = $this->matcher->match($element, $context);
-
-        $filteredToContainer = array_filter(
-            $matches,
-            fn (WebDriverElement $match) => $match->getID() === $element->getID(),
+        $filteredToResult = array_filter(
+            $matches->all(),
+            fn (WebDriverElement $match) => !empty(array_filter(
+                $container->all(),
+                fn (WebDriverElement $element) => $element->getID() === $match->getID()
+            )),
         );
 
-        return count($filteredToContainer) > 0;
+        $hasMatch = count($filteredToResult) > 0;
+
+        if ($matches->isNegated) {
+            return !$hasMatch;
+        }
+
+        return $hasMatch;
     }
 
     public function __toString(): string

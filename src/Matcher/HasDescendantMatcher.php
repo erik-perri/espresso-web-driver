@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace EspressoWebDriver\Matcher;
 
-use EspressoWebDriver\Core\EspressoContext;
+use EspressoWebDriver\Exception\AmbiguousElementMatcherException;
+use EspressoWebDriver\Exception\NoMatchingElementException;
 use EspressoWebDriver\Traits\HasAutomaticWait;
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverElement;
@@ -18,33 +19,50 @@ final readonly class HasDescendantMatcher implements MatcherInterface
         //
     }
 
-    public function match(WebDriverElement $container, EspressoContext $context): array
+    public function match(MatchResult $container, MatchContext $context): MatchResult
     {
-        // Since we are waiting ourselves, we don't want the child matchers to wait as well.
-        $instantOptions = $context->options->toInstantOptions();
-
-        return $this->wait(
-            $context->options->waitTimeoutInSeconds,
-            $context->options->waitIntervalInMilliseconds,
-            fn () => $this->findDescendantElements($container, new EspressoContext($context->driver, $instantOptions)),
-        );
+        return $this->waitForMatch($context, fn () => $this->matchElements($container, $context));
     }
 
     /**
      * @return WebDriverElement[]
+     *
+     * @throws AmbiguousElementMatcherException|NoMatchingElementException
      */
-    private function findDescendantElements(WebDriverElement $container, EspressoContext $context): array
+    private function matchElements(MatchResult $container, MatchContext $context): array
     {
-        $descendants = $this->matcher->match($container, $context);
+        $childContext = new MatchContext(
+            driver: $context->driver,
+            isNegated: $context->isNegated,
+            // Since we are waiting ourselves, we don't want the child matchers to wait as well.
+            options: $context->options->toInstantOptions(),
+        );
+
+        $descendantMatch = $this->matcher->match($container, $childContext);
 
         $elements = [];
 
-        foreach ($descendants as $descendant) {
+        foreach ($descendantMatch->all() as $descendant) {
+            /** @var WebDriverElement[] $ancestors */
             $ancestors = array_reverse($descendant->findElements(WebDriverBy::xpath('./ancestor::*')));
 
+            if (!count($ancestors)) {
+                continue;
+            }
+
             foreach ($ancestors as $ancestor) {
-                if ($ancestor->getID() === $container->getID()) {
-                    break;
+                if ($context->isNegated) {
+                    // Since something like withText will include parents that we don't want to include when negated
+                    // we need to check again without the negation.
+                    $ancestorMatch = $this->matcher->match(new MatchResult($this->matcher, [$ancestor]), new MatchContext(
+                        driver: $context->driver,
+                        isNegated: false,
+                        options: $context->options,
+                    ));
+
+                    if ($ancestorMatch->count()) {
+                        continue;
+                    }
                 }
 
                 $elements[] = $ancestor;

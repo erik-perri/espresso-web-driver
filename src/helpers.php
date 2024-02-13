@@ -14,20 +14,20 @@ use EspressoWebDriver\Action\ScrollToAction;
 use EspressoWebDriver\Action\SubmitAction;
 use EspressoWebDriver\Action\TypeTextAction;
 use EspressoWebDriver\Assertion\AssertionInterface;
-use EspressoWebDriver\Assertion\ExistsAssertion;
 use EspressoWebDriver\Assertion\MatchesAssertion;
-use EspressoWebDriver\Assertion\NotAssertion;
 use EspressoWebDriver\Core\EspressoCore;
 use EspressoWebDriver\Core\EspressoOptions;
 use EspressoWebDriver\Exception\NoMatchingElementException;
 use EspressoWebDriver\Matcher\AllOfMatcher;
 use EspressoWebDriver\Matcher\AnyOfMatcher;
+use EspressoWebDriver\Matcher\ExistsMatcher;
 use EspressoWebDriver\Matcher\HasDescendantMatcher;
 use EspressoWebDriver\Matcher\HasFocusMatcher;
 use EspressoWebDriver\Matcher\HasSiblingMatcher;
 use EspressoWebDriver\Matcher\IsDisplayedMatcher;
 use EspressoWebDriver\Matcher\IsEnabledMatcher;
 use EspressoWebDriver\Matcher\MatcherInterface;
+use EspressoWebDriver\Matcher\NotMatcher;
 use EspressoWebDriver\Matcher\WithClassMatcher;
 use EspressoWebDriver\Matcher\WithIdMatcher;
 use EspressoWebDriver\Matcher\WithTagNameMatcher;
@@ -84,19 +84,9 @@ function typeText(string $text): ActionInterface
 
 // region Assertions
 
-function exists(): AssertionInterface
-{
-    return new ExistsAssertion();
-}
-
 function matches(MatcherInterface $assertion): AssertionInterface
 {
     return new MatchesAssertion($assertion);
-}
-
-function not(AssertionInterface $assertion): AssertionInterface
-{
-    return new NotAssertion($assertion);
 }
 
 // endregion
@@ -111,6 +101,11 @@ function allOf(MatcherInterface ...$matchers): MatcherInterface
 function anyOf(MatcherInterface ...$assertions): MatcherInterface
 {
     return new AnyOfMatcher(...$assertions);
+}
+
+function exists(): MatcherInterface
+{
+    return new ExistsMatcher();
 }
 
 function hasDescendant(MatcherInterface $matcher): MatcherInterface
@@ -136,6 +131,11 @@ function isDisplayed(): MatcherInterface
 function isEnabled(): MatcherInterface
 {
     return new IsEnabledMatcher();
+}
+
+function not(MatcherInterface $assertionOrMatcher): MatcherInterface
+{
+    return new NotMatcher($assertionOrMatcher);
 }
 
 function withClass(string $class): MatcherInterface

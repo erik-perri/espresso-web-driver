@@ -16,8 +16,10 @@ use PHPUnit\Framework\Attributes\CoversFunction;
 use function EspressoWebDriver\allOf;
 use function EspressoWebDriver\hasDescendant;
 use function EspressoWebDriver\matches;
+use function EspressoWebDriver\not;
 use function EspressoWebDriver\withClass;
 use function EspressoWebDriver\withDriver;
+use function EspressoWebDriver\withId;
 use function EspressoWebDriver\withTagName;
 use function EspressoWebDriver\withText;
 
@@ -40,5 +42,26 @@ class HasDescendantMatcherFeatureTest extends BaseFeatureTestCase
         // Act and Assert
         $espresso->onElement(allOf(withClass('test'), hasDescendant(withText('Mock B'))))
             ->check(matches(withTagName('div')));
+    }
+
+    public function testNegatesBasedOnDescendant(): void
+    {
+        // Arrange
+        $driver = $this->driver()->get($this->mockStaticUrl('matchers/has-descendant.html'));
+
+        $options = new EspressoOptions(
+            waitTimeoutInSeconds: 0,
+            assertionReporter: new PhpunitReporter,
+        );
+
+        $espresso = withDriver($driver, $options);
+
+        // Act and Assert
+        $espresso->onElement(allOf(
+            withClass('test'),
+            hasDescendant(withText('Mock C')),
+            not(hasDescendant(withText('Mock D'))),
+        ))
+            ->check(matches(withId('without-mock-d')));
     }
 }

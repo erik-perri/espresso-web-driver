@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace EspressoWebDriver\Matcher;
 
-use EspressoWebDriver\Core\EspressoContext;
 use EspressoWebDriver\Traits\HasAutomaticWait;
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverElement;
@@ -18,19 +17,20 @@ final readonly class WithTextMatcher implements MatcherInterface
         //
     }
 
-    public function match(WebDriverElement $container, EspressoContext $context): array
+    public function match(MatchResult $container, MatchContext $context): MatchResult
     {
-        return $this->wait(
-            $context->options->waitTimeoutInSeconds,
-            $context->options->waitIntervalInMilliseconds,
-            fn () => $this->findElementsWithText($container),
+        return $this->waitForMatch(
+            $context,
+            fn () => $context->isNegated
+                ? $this->matchElementsWithoutText($container->single())
+                : $this->matchElementsWithText($container->single()),
         );
     }
 
     /**
      * @return WebDriverElement[]
      */
-    private function findElementsWithText(WebDriverElement $container): array
+    private function matchElementsWithText(WebDriverElement $container): array
     {
         $elements = [];
 
@@ -41,6 +41,23 @@ final readonly class WithTextMatcher implements MatcherInterface
         return array_merge(
             $elements,
             $container->findElements(WebDriverBy::xpath(sprintf('.//*[text()="%1$s"]', $this->text))),
+        );
+    }
+
+    /**
+     * @return WebDriverElement[]
+     */
+    private function matchElementsWithoutText(WebDriverElement $container): array
+    {
+        $elements = [];
+
+        if ($container->getText() !== $this->text) {
+            $elements[] = $container;
+        }
+
+        return array_merge(
+            $elements,
+            $container->findElements(WebDriverBy::xpath(sprintf('.//*[not(text()="%1$s")]', $this->text))),
         );
     }
 

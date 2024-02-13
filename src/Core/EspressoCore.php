@@ -8,17 +8,18 @@ use EspressoWebDriver\Exception\AmbiguousElementMatcherException;
 use EspressoWebDriver\Exception\NoMatchingElementException;
 use EspressoWebDriver\Interaction\ElementInteraction;
 use EspressoWebDriver\Interaction\InteractionInterface;
+use EspressoWebDriver\Matcher\MatchContext;
 use EspressoWebDriver\Matcher\MatcherInterface;
+use EspressoWebDriver\Matcher\MatchResult;
 use Facebook\WebDriver\Exception\NoSuchElementException;
 use Facebook\WebDriver\WebDriver;
 use Facebook\WebDriver\WebDriverBy;
-use Facebook\WebDriver\WebDriverElement;
 
 use function EspressoWebDriver\withTagName;
 
 final readonly class EspressoCore
 {
-    private WebDriverElement $container;
+    private MatchResult $container;
 
     /**
      * @throws NoMatchingElementException
@@ -26,7 +27,7 @@ final readonly class EspressoCore
     public function __construct(
         private WebDriver $driver,
         private EspressoOptions $options,
-        ?WebDriverElement $container = null,
+        ?MatchResult $container = null,
     ) {
         $this->container = $container ?? $this->findHtmlElement();
     }
@@ -36,20 +37,24 @@ final readonly class EspressoCore
      */
     public function inContainer(MatcherInterface $matcher): self
     {
-        $context = new EspressoContext($this->driver, $this->options);
+        $result = $matcher->match($this->container, new MatchContext(
+            driver: $this->driver,
+            isNegated: false,
+            options: $this->options,
+        ));
 
-        $result = new MatchResult($matcher, $matcher->match($this->container, $context));
-
-        $container = $result->single();
-
-        return new self($this->driver, $this->options, $container);
+        return new self($this->driver, $this->options, $result);
     }
 
     public function onElement(MatcherInterface $matcher): InteractionInterface
     {
         $context = new EspressoContext($this->driver, $this->options);
 
-        $result = new MatchResult($matcher, $matcher->match($this->container, $context));
+        $result = $matcher->match($this->container, new MatchContext(
+            driver: $this->driver,
+            isNegated: false,
+            options: $this->options,
+        ));
 
         return new ElementInteraction($result, $context);
     }
@@ -57,12 +62,18 @@ final readonly class EspressoCore
     /**
      * @throws NoMatchingElementException
      */
-    private function findHtmlElement(): WebDriverElement
+    private function findHtmlElement(): MatchResult
     {
+        $matcher = withTagName('html');
+
         try {
-            return $this->driver->findElement(WebDriverBy::tagName('html'));
+            return new MatchResult(
+                matcher: $matcher,
+                result: [$this->driver->findElement(WebDriverBy::tagName('html'))],
+                isNegated: false,
+            );
         } catch (NoSuchElementException) {
-            throw new NoMatchingElementException(withTagName('html'));
+            throw new NoMatchingElementException($matcher);
         }
     }
 }

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace EspressoWebDriver\Matcher;
 
-use EspressoWebDriver\Core\EspressoContext;
 use EspressoWebDriver\Traits\HasAutomaticWait;
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverElement;
@@ -18,19 +17,20 @@ final readonly class WithValueMatcher implements MatcherInterface
         //
     }
 
-    public function match(WebDriverElement $container, EspressoContext $context): array
+    public function match(MatchResult $container, MatchContext $context): MatchResult
     {
-        return $this->wait(
-            $context->options->waitTimeoutInSeconds,
-            $context->options->waitIntervalInMilliseconds,
-            fn () => $this->findElementsWithValue($container),
+        return $this->waitForMatch(
+            $context,
+            fn () => $context->isNegated
+                ? $this->matchElementsWithoutValue($container->single())
+                : $this->matchElementsWithValue($container->single()),
         );
     }
 
     /**
      * @return WebDriverElement[]
      */
-    private function findElementsWithValue(WebDriverElement $container): array
+    private function matchElementsWithValue(WebDriverElement $container): array
     {
         $elements = [];
 
@@ -40,7 +40,24 @@ final readonly class WithValueMatcher implements MatcherInterface
 
         return array_merge(
             $elements,
-            $container->findElements(WebDriverBy::xpath(sprintf('.//*[@value = "%1$s"]', $this->text))),
+            $container->findElements(WebDriverBy::cssSelector(sprintf('[value="%1$s"]', $this->text))),
+        );
+    }
+
+    /**
+     * @return WebDriverElement[]
+     */
+    private function matchElementsWithoutValue(WebDriverElement $container): array
+    {
+        $elements = [];
+
+        if ($container->getAttribute('value') !== $this->text) {
+            $elements[] = $container;
+        }
+
+        return array_merge(
+            $elements,
+            $container->findElements(WebDriverBy::cssSelector(sprintf(':not([value="%1$s"])', $this->text))),
         );
     }
 

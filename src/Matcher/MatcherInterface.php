@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace EspressoWebDriver\Matcher;
 
-use EspressoWebDriver\Core\EspressoContext;
-use Facebook\WebDriver\WebDriverElement;
+use EspressoWebDriver\Exception\AmbiguousElementMatcherException;
+use EspressoWebDriver\Exception\NoMatchingElementException;
 
 interface MatcherInterface
 {
     /**
-     * @return WebDriverElement[]
+     * @throws AmbiguousElementMatcherException|NoMatchingElementException
      */
-    public function match(WebDriverElement $container, EspressoContext $context): array;
+    public function match(MatchResult $container, MatchContext $context): MatchResult;
 
     public function __toString(): string;
 }

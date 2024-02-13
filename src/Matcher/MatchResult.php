@@ -2,11 +2,10 @@
 
 declare(strict_types=1);
 
-namespace EspressoWebDriver\Core;
+namespace EspressoWebDriver\Matcher;
 
 use EspressoWebDriver\Exception\AmbiguousElementMatcherException;
 use EspressoWebDriver\Exception\NoMatchingElementException;
-use EspressoWebDriver\Matcher\MatcherInterface;
 use Facebook\WebDriver\WebDriverElement;
 
 final readonly class MatchResult
@@ -17,8 +16,17 @@ final readonly class MatchResult
     public function __construct(
         private MatcherInterface $matcher,
         private array $result,
+        public bool $isNegated = false,
     ) {
         //
+    }
+
+    /**
+     * @return WebDriverElement[]
+     */
+    public function all(): array
+    {
+        return $this->result;
     }
 
     public function count(): int
@@ -42,5 +50,10 @@ final readonly class MatchResult
         }
 
         return array_values($this->result)[0];
+    }
+
+    public function __toString(): string
+    {
+        return sprintf('%1$s', $this->matcher);
     }
 }

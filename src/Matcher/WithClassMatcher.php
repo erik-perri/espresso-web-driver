@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace EspressoWebDriver\Matcher;
 
-use EspressoWebDriver\Core\EspressoContext;
 use EspressoWebDriver\Traits\HasAutomaticWait;
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverElement;
@@ -18,19 +17,20 @@ final readonly class WithClassMatcher implements MatcherInterface
         //
     }
 
-    public function match(WebDriverElement $container, EspressoContext $context): array
+    public function match(MatchResult $container, MatchContext $context): MatchResult
     {
-        return $this->wait(
-            $context->options->waitTimeoutInSeconds,
-            $context->options->waitIntervalInMilliseconds,
-            fn () => $this->findElementsWithClass($container),
+        return $this->waitForMatch(
+            $context,
+            fn () => $context->isNegated
+                ? $this->matchElementsWithoutClass($container->single())
+                : $this->matchElementsWithClass($container->single()),
         );
     }
 
     /**
      * @return WebDriverElement[]
      */
-    private function findElementsWithClass(WebDriverElement $container): array
+    private function matchElementsWithClass(WebDriverElement $container): array
     {
         $elements = [];
 
@@ -41,6 +41,23 @@ final readonly class WithClassMatcher implements MatcherInterface
         return array_merge(
             $elements,
             $container->findElements(WebDriverBy::className($this->class)),
+        );
+    }
+
+    /**
+     * @return WebDriverElement[]
+     */
+    private function matchElementsWithoutClass(WebDriverElement $container): array
+    {
+        $elements = [];
+
+        if (!$this->hasClass($container)) {
+            $elements[] = $container;
+        }
+
+        return array_merge(
+            $elements,
+            $container->findElements(WebDriverBy::cssSelector(sprintf(':not(.%1$s)', $this->class))),
         );
     }
 

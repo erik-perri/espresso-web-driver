@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace EspressoWebDriver\Matcher;
 
-use EspressoWebDriver\Core\EspressoContext;
+use EspressoWebDriver\Exception\AmbiguousElementMatcherException;
+use EspressoWebDriver\Exception\NoMatchingElementException;
 use EspressoWebDriver\Traits\HasAutomaticWait;
 use Facebook\WebDriver\Exception\NoSuchElementException;
 use Facebook\WebDriver\WebDriverBy;
@@ -19,28 +20,30 @@ final readonly class HasSiblingMatcher implements MatcherInterface
         //
     }
 
-    public function match(WebDriverElement $container, EspressoContext $context): array
+    public function match(MatchResult $container, MatchContext $context): MatchResult
     {
-        // Since we are waiting ourselves, we don't want the child matchers to wait as well.
-        $instantOptions = $context->options->toInstantOptions();
-
-        return $this->wait(
-            $context->options->waitTimeoutInSeconds,
-            $context->options->waitIntervalInMilliseconds,
-            fn () => $this->findSiblingElements($container, new EspressoContext($context->driver, $instantOptions)),
-        );
+        return $this->waitForMatch($context, fn () => $this->matchElements($container, $context));
     }
 
     /**
      * @return WebDriverElement[]
+     *
+     * @throws AmbiguousElementMatcherException|NoMatchingElementException
      */
-    private function findSiblingElements(WebDriverElement $container, EspressoContext $context): array
+    private function matchElements(MatchResult $container, MatchContext $context): array
     {
-        $potentialSiblings = $this->matcher->match($container, $context);
+        $childContext = new MatchContext(
+            driver: $context->driver,
+            isNegated: false,
+            // Since we are waiting ourselves, we don't want the child matchers to wait as well.
+            options: $context->options->toInstantOptions(),
+        );
+
+        $siblingResult = $this->matcher->match($container, $childContext);
 
         $elements = [];
 
-        foreach ($potentialSiblings as $sibling) {
+        foreach ($siblingResult->all() as $sibling) {
             try {
                 $parent = $sibling->findElement(WebDriverBy::xpath('./parent::*'));
 

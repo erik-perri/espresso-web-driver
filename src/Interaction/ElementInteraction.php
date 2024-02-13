@@ -7,11 +7,11 @@ namespace EspressoWebDriver\Interaction;
 use EspressoWebDriver\Action\ActionInterface;
 use EspressoWebDriver\Assertion\AssertionInterface;
 use EspressoWebDriver\Core\EspressoContext;
-use EspressoWebDriver\Core\MatchResult;
 use EspressoWebDriver\Exception\AmbiguousElementMatcherException;
 use EspressoWebDriver\Exception\AssertionFailedException;
 use EspressoWebDriver\Exception\NoMatchingElementException;
 use EspressoWebDriver\Exception\PerformException;
+use EspressoWebDriver\Matcher\MatchResult;
 
 final readonly class ElementInteraction implements InteractionInterface
 {
@@ -23,7 +23,7 @@ final readonly class ElementInteraction implements InteractionInterface
     }
 
     /**
-     * @throws AmbiguousElementMatcherException|AssertionFailedException|NoMatchingElementException
+     * @throws AssertionFailedException
      */
     public function check(AssertionInterface $assertion): InteractionInterface
     {
@@ -32,7 +32,7 @@ final readonly class ElementInteraction implements InteractionInterface
 
             $this->context->options->assertionReporter?->report(
                 $result,
-                sprintf('Failed asserting that %1$s is true', $assertion),
+                sprintf('Failed asserting that %1$s is true for %2$s', $assertion, $this->result),
             );
 
             if (!$result) {
@@ -41,7 +41,12 @@ final readonly class ElementInteraction implements InteractionInterface
         } catch (AmbiguousElementMatcherException|NoMatchingElementException $exception) {
             $this->context->options->assertionReporter?->report(
                 false,
-                sprintf('Failed asserting that %1$s is true. %2$s', $assertion, $exception->getMessage()),
+                sprintf(
+                    'Failed asserting that %1$s is true for %2$s. %3$s',
+                    $assertion,
+                    $this->result,
+                    $exception->getMessage(),
+                ),
             );
 
             throw new AssertionFailedException($assertion, $exception);

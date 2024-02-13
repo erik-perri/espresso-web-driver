@@ -4,19 +4,19 @@
 
 declare(strict_types=1);
 
-namespace Assertion;
+namespace EspressoWebDriver\Tests\Unit\Matcher;
 
-use EspressoWebDriver\Assertion\ExistsAssertion;
+use EspressoWebDriver\Matcher\ExistsMatcher;
 use EspressoWebDriver\Tests\Unit\BaseUnitTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversClass(ExistsAssertion::class)]
-class ExistsAssertionTest extends BaseUnitTestCase
+#[CoversClass(ExistsMatcher::class)]
+class ExistsMatcherTest extends BaseUnitTestCase
 {
     public function testExistsAssertionToString(): void
     {
         // Arrange
-        $assertion = new ExistsAssertion();
+        $assertion = new ExistsMatcher();
 
         // Act
         $result = (string) $assertion;

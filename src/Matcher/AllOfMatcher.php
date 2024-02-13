@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace EspressoWebDriver\Matcher;
 
-use EspressoWebDriver\Core\EspressoContext;
+use EspressoWebDriver\Exception\AmbiguousElementMatcherException;
+use EspressoWebDriver\Exception\NoMatchingElementException;
 use EspressoWebDriver\Traits\HasAutomaticWait;
 use Facebook\WebDriver\WebDriverElement;
 
@@ -22,40 +23,44 @@ final readonly class AllOfMatcher implements MatcherInterface
         $this->matchers = $matchers;
     }
 
-    public function match(WebDriverElement $container, EspressoContext $context): array
+    public function match(MatchResult $container, MatchContext $context): MatchResult
     {
-        // Since we are waiting ourselves, we don't want the child matchers to wait as well.
-        $instantOptions = $context->options->toInstantOptions();
-
-        return $this->wait(
-            $context->options->waitTimeoutInSeconds,
-            $context->options->waitIntervalInMilliseconds,
-            fn () => $this->findElements($container, new EspressoContext($context->driver, $instantOptions)),
-        );
+        return $this->waitForMatch($context, fn () => $this->matchElements($container, $context));
     }
 
     /**
      * @return WebDriverElement[]
+     *
+     * @throws AmbiguousElementMatcherException|NoMatchingElementException
      */
-    private function findElements(WebDriverElement $container, EspressoContext $context): array
+    private function matchElements(MatchResult $container, MatchContext $context): array
     {
-        $elementsByMatcher = [];
+        $childContext = new MatchContext(
+            driver: $context->driver,
+            isNegated: $context->isNegated,
+            // Since we are waiting ourselves, we don't want the child matchers to wait as well.
+            options: $context->options->toInstantOptions(),
+        );
+
+        $resultsByMatcher = [];
 
         foreach ($this->matchers as $matcher) {
-            $elementsByMatcher[] = $matcher->match($container, $context);
+            $resultsByMatcher[] = $matcher->match($container, $childContext);
         }
 
-        $result = array_shift($elementsByMatcher);
+        $firstResult = array_shift($resultsByMatcher);
 
-        if ($result === null) {
+        if ($firstResult === null) {
             return [];
         }
 
-        foreach ($elementsByMatcher as $elements) {
-            $result = array_uintersect($result, $elements, $this->compareElements(...));
+        $commonResults = $firstResult->all();
+
+        foreach ($resultsByMatcher as $result) {
+            $commonResults = array_uintersect($commonResults, $result->all(), $this->compareElements(...));
         }
 
-        return $result;
+        return $commonResults;
     }
 
     private function compareElements(WebDriverElement $a, WebDriverElement $b): int

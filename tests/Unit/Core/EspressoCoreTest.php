@@ -18,6 +18,7 @@ use Facebook\WebDriver\WebDriverElement;
 use PHPUnit\Framework\Attributes\CoversClass;
 
 use function EspressoWebDriver\click;
+use function EspressoWebDriver\withId;
 use function EspressoWebDriver\withText;
 
 #[CoversClass(EspressoCore::class)]
@@ -134,7 +135,8 @@ class EspressoCoreTest extends BaseUnitTestCase
 
         // Act
         $espresso = new EspressoCore($mockDriver, $mockOptions);
-        $espresso->inContainer(withText('mock'));
+        $espresso->inContainer(withText('mock'))
+            ->onElement(withId('mock'));
 
         // Assert
         // No assertions, only expectations.

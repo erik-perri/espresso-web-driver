@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace EspressoWebDriver\Matcher;
 
-use EspressoWebDriver\Core\EspressoContext;
 use EspressoWebDriver\Traits\HasAutomaticWait;
 use EspressoWebDriver\Utilities\ElementDisplayChecker;
 use Facebook\WebDriver\WebDriverBy;
@@ -14,19 +13,15 @@ final readonly class IsDisplayedMatcher implements MatcherInterface
 {
     use HasAutomaticWait;
 
-    public function match(WebDriverElement $container, EspressoContext $context): array
+    public function match(MatchResult $container, MatchContext $context): MatchResult
     {
-        return $this->wait(
-            $context->options->waitTimeoutInSeconds,
-            $context->options->waitIntervalInMilliseconds,
-            fn () => $this->findDisplayedElements($container, $context),
-        );
+        return $this->waitForMatch($context, fn () => $this->matchElements($container->single(), $context));
     }
 
     /**
      * @return WebDriverElement[]
      */
-    private function findDisplayedElements(WebDriverElement $container, EspressoContext $context): array
+    private function matchElements(WebDriverElement $container, MatchContext $context): array
     {
         $elements = [];
 
