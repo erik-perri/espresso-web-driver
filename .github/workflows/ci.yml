@@ -32,12 +32,17 @@ jobs:
       - run: composer install --prefer-dist --no-interaction --optimize-autoloader
       - run: composer check-code
       - run: php -S 0.0.0.0:8000 -t ./tests/static &
-      - run: composer test -- --coverage-clover=output.xml
+      - run: composer test -- --coverage-text>coverage.txt
         env:
           SELENIUM_DRIVER_URL: http://localhost:4444
           SELENIUM_START_URL: http://host.docker.internal:8000
-      - uses: sourcetoad/phpunit-coverage-action@v1
-        with:
-          clover_report_path: output.xml
-          min_coverage_percent: 41
-          fail_build_on_under: true
+      - name: Check Coverage
+        run: |
+          MINIMUM_COVERAGE=41
+          CLASSES_PERCENT=$(cat coverage.txt | awk '/Classes:/ {print $2; exit}' | tr -d '%')
+          METHODS_PERCENT=$(cat coverage.txt | awk '/Methods:/ {print $2; exit}' | tr -d '%')
+          AVERAGE_COVERAGE=$(echo "scale=2; ($CLASSES_PERCENT + $METHODS_PERCENT) / 2" | bc)
+          if [[ $(echo "$AVERAGE_COVERAGE < $MINIMUM_COVERAGE" | bc -l) == 1 ]]; then
+            echo "Code Coverage is $AVERAGE_COVERAGE%, which is below the accepted $MINIMUM_COVERAGE%."
+            exit 1
+          fi
