@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace EspressoWebDriver\Matcher;
 
-use EspressoWebDriver\Exception\AmbiguousElementMatcherException;
+use EspressoWebDriver\Exception\AmbiguousElementException;
 use EspressoWebDriver\Exception\NoMatchingElementException;
 use EspressoWebDriver\Traits\HasAutomaticWait;
 use Facebook\WebDriver\WebDriverElement;
@@ -31,7 +31,7 @@ final readonly class AnyOfMatcher implements MatcherInterface
     /**
      * @return WebDriverElement[]
      *
-     * @throws AmbiguousElementMatcherException|NoMatchingElementException
+     * @throws AmbiguousElementException|NoMatchingElementException
      */
     private function matchElements(MatchResult $container, MatchContext $context): array
     {

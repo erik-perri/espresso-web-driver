@@ -7,7 +7,7 @@ namespace EspressoWebDriver\Interaction;
 use EspressoWebDriver\Action\ActionInterface;
 use EspressoWebDriver\Assertion\AssertionInterface;
 use EspressoWebDriver\Core\EspressoContext;
-use EspressoWebDriver\Exception\AmbiguousElementMatcherException;
+use EspressoWebDriver\Exception\AmbiguousElementException;
 use EspressoWebDriver\Exception\AssertionFailedException;
 use EspressoWebDriver\Exception\NoMatchingElementException;
 use EspressoWebDriver\Exception\PerformException;
@@ -38,7 +38,7 @@ final readonly class ElementInteraction implements InteractionInterface
             if (!$result) {
                 throw new AssertionFailedException($assertion);
             }
-        } catch (AmbiguousElementMatcherException|NoMatchingElementException $exception) {
+        } catch (AmbiguousElementException|NoMatchingElementException $exception) {
             $this->context->options->assertionReporter?->report(
                 false,
                 sprintf(
@@ -56,7 +56,7 @@ final readonly class ElementInteraction implements InteractionInterface
     }
 
     /**
-     * @throws AmbiguousElementMatcherException|PerformException|NoMatchingElementException
+     * @throws AmbiguousElementException|PerformException|NoMatchingElementException
      */
     public function perform(ActionInterface ...$actions): InteractionInterface
     {

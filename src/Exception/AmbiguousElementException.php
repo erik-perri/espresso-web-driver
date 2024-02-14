@@ -6,7 +6,7 @@ namespace EspressoWebDriver\Exception;
 
 use EspressoWebDriver\Matcher\MatcherInterface;
 
-class AmbiguousElementMatcherException extends EspressoWebDriverException
+class AmbiguousElementException extends EspressoWebDriverException
 {
     public function __construct(int $count, MatcherInterface $matcher)
     {

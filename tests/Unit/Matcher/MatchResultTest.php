@@ -6,7 +6,7 @@ declare(strict_types=1);
 
 namespace EspressoWebDriver\Tests\Unit\Matcher;
 
-use EspressoWebDriver\Exception\AmbiguousElementMatcherException;
+use EspressoWebDriver\Exception\AmbiguousElementException;
 use EspressoWebDriver\Exception\NoMatchingElementException;
 use EspressoWebDriver\Matcher\MatcherInterface;
 use EspressoWebDriver\Matcher\MatchResult;
@@ -67,7 +67,7 @@ class MatchResultTest extends TestCase
     public function testMatchResultThrowsAmbiguousElementMatcherException()
     {
         // Expectations
-        $this->expectException(AmbiguousElementMatcherException::class);
+        $this->expectException(AmbiguousElementException::class);
         $this->expectExceptionMessage('2 elements found for matcher');
 
         // Arrange

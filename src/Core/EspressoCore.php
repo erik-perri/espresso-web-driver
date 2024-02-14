@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace EspressoWebDriver\Core;
 
-use EspressoWebDriver\Exception\AmbiguousElementMatcherException;
+use EspressoWebDriver\Exception\AmbiguousElementException;
 use EspressoWebDriver\Exception\NoMatchingElementException;
 use EspressoWebDriver\Interaction\ElementInteraction;
 use EspressoWebDriver\Interaction\InteractionInterface;
@@ -33,7 +33,7 @@ final readonly class EspressoCore
     }
 
     /**
-     * @throws AmbiguousElementMatcherException|NoMatchingElementException
+     * @throws AmbiguousElementException|NoMatchingElementException
      */
     public function inContainer(MatcherInterface $matcher): self
     {

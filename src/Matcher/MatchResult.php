@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace EspressoWebDriver\Matcher;
 
-use EspressoWebDriver\Exception\AmbiguousElementMatcherException;
+use EspressoWebDriver\Exception\AmbiguousElementException;
 use EspressoWebDriver\Exception\NoMatchingElementException;
 use Facebook\WebDriver\WebDriverElement;
 
@@ -35,7 +35,7 @@ final readonly class MatchResult
     }
 
     /**
-     * @throws AmbiguousElementMatcherException|NoMatchingElementException
+     * @throws AmbiguousElementException|NoMatchingElementException
      */
     public function single(): WebDriverElement
     {
@@ -46,7 +46,7 @@ final readonly class MatchResult
         }
 
         if ($elementCount > 1) {
-            throw new AmbiguousElementMatcherException($elementCount, $this->matcher);
+            throw new AmbiguousElementException($elementCount, $this->matcher);
         }
 
         return array_values($this->result)[0];

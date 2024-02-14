@@ -8,7 +8,7 @@ namespace EspressoWebDriver\Tests\Unit\Core;
 
 use EspressoWebDriver\Core\EspressoCore;
 use EspressoWebDriver\Core\EspressoOptions;
-use EspressoWebDriver\Exception\AmbiguousElementMatcherException;
+use EspressoWebDriver\Exception\AmbiguousElementException;
 use EspressoWebDriver\Exception\NoMatchingElementException;
 use EspressoWebDriver\Interaction\InteractionInterface;
 use EspressoWebDriver\Tests\Unit\BaseUnitTestCase;
@@ -79,7 +79,7 @@ class EspressoCoreTest extends BaseUnitTestCase
     public function testThrowsExceptionWhenMultipleElementsAreFoundWhileMatching(): void
     {
         // Expectations
-        $this->expectException(AmbiguousElementMatcherException::class);
+        $this->expectException(AmbiguousElementException::class);
         $this->expectExceptionMessage('2 elements found for text="mock"');
 
         // Arrange
@@ -112,7 +112,7 @@ class EspressoCoreTest extends BaseUnitTestCase
     public function testThrowsExceptionWhenMultipleElementsAreFoundWhileContaining(): void
     {
         // Expectations
-        $this->expectException(AmbiguousElementMatcherException::class);
+        $this->expectException(AmbiguousElementException::class);
         $this->expectExceptionMessage('2 elements found for text="mock"');
 
         // Arrange
