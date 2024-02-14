@@ -9,6 +9,8 @@ use EspressoWebDriver\Exception\PerformException;
 use Facebook\WebDriver\WebDriverElement;
 use Facebook\WebDriver\WebDriverHasInputDevices;
 use Facebook\WebDriver\WebDriverKeys;
+use ReflectionClass;
+use ReflectionClassConstant;
 
 /**
  * Sends the given keys to the browser.
@@ -44,6 +46,16 @@ final readonly class SendKeysAction implements ActionInterface
 
     public function __toString(): string
     {
-        return 'clearText';
+        $keys = [];
+        $webDriverKeys = new ReflectionClass(WebDriverKeys::class);
+        $knownKeys = $webDriverKeys->getConstants(ReflectionClassConstant::IS_PUBLIC);
+
+        foreach ($this->keys as $key) {
+            $constant = array_search($key, $knownKeys);
+
+            $keys[] = $constant !== false ? $constant : $key;
+        }
+
+        return sprintf('sendKeys(%1$s)', implode(', ', $keys));
     }
 }
