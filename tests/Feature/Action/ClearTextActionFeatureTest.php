@@ -8,6 +8,7 @@ namespace Action;
 
 use EspressoWebDriver\Action\ClearTextAction;
 use EspressoWebDriver\Core\EspressoOptions;
+use EspressoWebDriver\Reporter\PhpunitReporter;
 use EspressoWebDriver\Tests\Feature\BaseFeatureTestCase;
 use Facebook\WebDriver\WebDriverBy;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -28,7 +29,7 @@ class ClearTextActionFeatureTest extends BaseFeatureTestCase
     public function testClearsTextInTextInputs(): void
     {
         // Arrange
-        $driver = $this->driver()->get($this->mockStaticUrl('actions/type-text.html'));
+        $driver = $this->driver()->get($this->mockStaticUrl('actions/clear-text.html'));
 
         $options = new EspressoOptions(waitTimeoutInSeconds: 0);
 
@@ -51,16 +52,21 @@ class ClearTextActionFeatureTest extends BaseFeatureTestCase
     public function testClearsTextInTextareaInputs(): void
     {
         // Arrange
-        $driver = $this->driver()->get($this->mockStaticUrl('actions/type-text.html'));
+        $driver = $this->driver()->get($this->mockStaticUrl('actions/clear-text.html'));
 
-        $options = new EspressoOptions(waitTimeoutInSeconds: 0);
+        $options = new EspressoOptions(
+            waitTimeoutInSeconds: 0,
+            assertionReporter: new PhpunitReporter,
+        );
 
         $espresso = usingDriver($driver, $options);
 
         // Act
         $espresso
             ->onElement(withId('test-b'))
-            ->perform(click(), typeText('Value B\nWith new line'))
+            ->perform(clearText())
+            ->check(matches(withValue('')))
+            ->perform(typeText('Value B\nWith new line'))
             ->check(matches(withValue('Value B\nWith new line')))
             ->perform(clearText());
 

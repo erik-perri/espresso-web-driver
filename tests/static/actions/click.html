@@ -1,0 +1,30 @@
+<html lang="en">
+<head>
+    <title>send-keys</title>
+    <style>
+        .modal {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<label>
+    Test A
+    <input id="test-a" type="text" value="Value A"/>
+</label>
+
+<button>Open modal</button>
+<div class="modal">
+    Modal content
+</div>
+
+<script>
+    document.querySelector('button').addEventListener('click', function () {
+        document.querySelector('.modal').style.display =
+            document.querySelector('.modal').style.display === 'block'
+                ? 'none'
+                : 'block';
+    });
+</script>
+</body>
+</html>

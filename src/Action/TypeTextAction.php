@@ -7,6 +7,9 @@ namespace EspressoWebDriver\Action;
 use EspressoWebDriver\Core\EspressoContext;
 use Facebook\WebDriver\WebDriverElement;
 
+/**
+ * Selects the matched element and types the given text into it.
+ */
 final readonly class TypeTextAction implements ActionInterface
 {
     public function __construct(private string $text)

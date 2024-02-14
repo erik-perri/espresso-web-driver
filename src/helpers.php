@@ -11,6 +11,7 @@ use EspressoWebDriver\Action\ClearTextAction;
 use EspressoWebDriver\Action\ClickAction;
 use EspressoWebDriver\Action\FocusAction;
 use EspressoWebDriver\Action\ScrollToAction;
+use EspressoWebDriver\Action\SendKeysAction;
 use EspressoWebDriver\Action\SubmitAction;
 use EspressoWebDriver\Action\TypeTextAction;
 use EspressoWebDriver\Assertion\AssertionInterface;
@@ -35,6 +36,7 @@ use EspressoWebDriver\Matcher\WithTextContainingMatcher;
 use EspressoWebDriver\Matcher\WithTextMatcher;
 use EspressoWebDriver\Matcher\WithValueMatcher;
 use Facebook\WebDriver\WebDriver;
+use Facebook\WebDriver\WebDriverKeys;
 
 // region Core
 
@@ -70,11 +72,24 @@ function scrollTo(): ActionInterface
     return new ScrollToAction();
 }
 
+/**
+ * Sends the specified keys to the browser.
+ *
+ * @see WebDriverKeys
+ */
+function sendKeys(string ...$keys): ActionInterface
+{
+    return new SendKeysAction(...$keys);
+}
+
 function submit(): ActionInterface
 {
     return new SubmitAction();
 }
 
+/**
+ * Selects the matched element and types the given text.
+ */
 function typeText(string $text): ActionInterface
 {
     return new TypeTextAction($text);
