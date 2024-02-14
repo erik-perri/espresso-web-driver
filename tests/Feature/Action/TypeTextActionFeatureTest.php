@@ -13,7 +13,6 @@ use Facebook\WebDriver\WebDriverBy;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\CoversFunction;
 
-use function EspressoWebDriver\click;
 use function EspressoWebDriver\focus;
 use function EspressoWebDriver\typeText;
 use function EspressoWebDriver\usingDriver;
@@ -35,7 +34,7 @@ class TypeTextActionFeatureTest extends BaseFeatureTestCase
         // Act
         $espresso
             ->onElement(withId('test-a'))
-            ->perform(click(), typeText('Value A'));
+            ->perform(typeText('Value A'));
 
         // Assert
         $this->assertSame(
@@ -56,7 +55,7 @@ class TypeTextActionFeatureTest extends BaseFeatureTestCase
         // Act
         $espresso
             ->onElement(withId('test-b'))
-            ->perform(click(), typeText("Value B\nWith new line"));
+            ->perform(typeText("Value B\nWith new line"));
 
         // Assert
         $this->assertSame(

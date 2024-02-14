@@ -15,7 +15,6 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\CoversFunction;
 
 use function EspressoWebDriver\clearText;
-use function EspressoWebDriver\click;
 use function EspressoWebDriver\matches;
 use function EspressoWebDriver\typeText;
 use function EspressoWebDriver\usingDriver;
@@ -38,7 +37,7 @@ class ClearTextActionFeatureTest extends BaseFeatureTestCase
         // Act
         $espresso
             ->onElement(withId('test-a'))
-            ->perform(click(), typeText('Value A'))
+            ->perform(typeText('Value A'))
             ->check(matches(withValue('Value A')))
             ->perform(clearText());
 
