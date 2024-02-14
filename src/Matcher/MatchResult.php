@@ -54,6 +54,13 @@ final readonly class MatchResult
 
     public function __toString(): string
     {
-        return sprintf('%1$s', $this->matcher);
+        $count = $this->count();
+
+        return sprintf(
+            '%1$s (%2$s %3$s)',
+            $this->matcher,
+            number_format($count),
+            $count === 1 ? 'element' : 'elements',
+        );
     }
 }

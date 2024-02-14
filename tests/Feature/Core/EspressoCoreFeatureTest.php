@@ -6,8 +6,10 @@ declare(strict_types=1);
 
 namespace EspressoWebDriver\Tests\Feature\Core;
 
+use EspressoWebDriver\Core\EspressoContext;
 use EspressoWebDriver\Core\EspressoCore;
 use EspressoWebDriver\Core\EspressoOptions;
+use EspressoWebDriver\Matcher\MatchContext;
 use EspressoWebDriver\Tests\Feature\BaseFeatureTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\CoversFunction;
@@ -20,7 +22,10 @@ use function EspressoWebDriver\withClass;
 use function EspressoWebDriver\withTagName;
 use function EspressoWebDriver\withText;
 
+#[CoversClass(EspressoContext::class)]
 #[CoversClass(EspressoCore::class)]
+#[CoversClass(EspressoOptions::class)]
+#[CoversClass(MatchContext::class)]
 #[CoversFunction('EspressoWebDriver\usingDriver')]
 class EspressoCoreFeatureTest extends BaseFeatureTestCase
 {
