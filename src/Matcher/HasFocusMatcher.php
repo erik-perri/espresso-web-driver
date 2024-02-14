@@ -26,12 +26,12 @@ final readonly class HasFocusMatcher implements MatcherInterface
         try {
             $parent = $container->findElement(WebDriverBy::xpath('./parent::*'));
         } catch (NoSuchElementException) {
+            // If we cannot find the parent there is no way for us to find the focused element.
+            // TODO Should this be an exception?
             return [];
         }
 
-        return $parent->findElements(WebDriverBy::cssSelector(
-            $context->isNegated ? ':not(:focus)' : ':focus',
-        ));
+        return $parent->findElements(WebDriverBy::cssSelector(':focus'));
     }
 
     public function __toString(): string
