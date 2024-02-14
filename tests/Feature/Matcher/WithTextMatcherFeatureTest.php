@@ -14,10 +14,14 @@ use EspressoWebDriver\Tests\Feature\BaseFeatureTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\CoversFunction;
 
+use function EspressoWebDriver\allOf;
 use function EspressoWebDriver\click;
 use function EspressoWebDriver\isDisplayed;
 use function EspressoWebDriver\matches;
+use function EspressoWebDriver\not;
 use function EspressoWebDriver\usingDriver;
+use function EspressoWebDriver\withClass;
+use function EspressoWebDriver\withTagName;
 use function EspressoWebDriver\withText;
 
 #[CoversClass(WithTextMatcher::class)]
@@ -38,7 +42,29 @@ class WithTextMatcherFeatureTest extends BaseFeatureTestCase
 
         // Act and Assert
         $espresso->onElement(withText('Mock A'))
-            ->check(matches(isDisplayed()));
+            ->check(matches(withClass('a')));
+    }
+
+    public function testMatchesNegativeExactly(): void
+    {
+        // Arrange
+        $driver = $this->driver()->get($this->mockStaticUrl('matchers/with-text.html'));
+
+        $options = new EspressoOptions(
+            waitTimeoutInSeconds: 0,
+            assertionReporter: new PhpunitReporter,
+        );
+
+        $espresso = usingDriver($driver, $options);
+
+        // Act and Assert
+        $espresso->onElement(allOf(
+            withTagName('li'),
+            not(withText('Mock A')),
+            not(withText('Mock B')),
+            not(withText('Another D')),
+        ))
+            ->check(matches(withClass('c')));
     }
 
     public function testMatchesContainer(): void
@@ -56,6 +82,24 @@ class WithTextMatcherFeatureTest extends BaseFeatureTestCase
 
         // Act and Assert
         $espresso->onElement(withText('Mock A'))
+            ->check(matches(isDisplayed()));
+    }
+
+    public function testMatchesNegativeContainer(): void
+    {
+        // Arrange
+        $driver = $this->driver()->get($this->mockStaticUrl('matchers/with-text.html'));
+
+        $options = new EspressoOptions(
+            waitTimeoutInSeconds: 0,
+            assertionReporter: new PhpunitReporter,
+        );
+
+        $espresso = usingDriver($driver, $options)
+            ->inContainer(withText('Another D'));
+
+        // Act and Assert
+        $espresso->onElement(not(withText('Mock A')))
             ->check(matches(isDisplayed()));
     }
 
@@ -84,7 +128,7 @@ class WithTextMatcherFeatureTest extends BaseFeatureTestCase
     {
         // Expectations
         $this->expectException(NoMatchingElementException::class);
-        $this->expectExceptionMessage('No element found for text="Mock B"');
+        $this->expectExceptionMessage('No element found for text="Text surrounding Mock C as a test"');
 
         // Arrange
         $driver = $this->driver()->get($this->mockStaticUrl('matchers/with-text.html'));
@@ -94,7 +138,7 @@ class WithTextMatcherFeatureTest extends BaseFeatureTestCase
         $espresso = usingDriver($driver, $options);
 
         // Act
-        $espresso->onElement(withText('Mock B'))
+        $espresso->onElement(withText('Text surrounding Mock C as a test'))
             ->perform(click());
 
         // Assert

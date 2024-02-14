@@ -16,8 +16,10 @@ use PHPUnit\Framework\Attributes\CoversFunction;
 use function EspressoWebDriver\allOf;
 use function EspressoWebDriver\isDisplayed;
 use function EspressoWebDriver\matches;
+use function EspressoWebDriver\not;
 use function EspressoWebDriver\usingDriver;
 use function EspressoWebDriver\withTagName;
+use function EspressoWebDriver\withText;
 use function EspressoWebDriver\withTextContaining;
 
 #[CoversClass(WithTextContainingMatcher::class)]
@@ -56,6 +58,24 @@ class WithTextContainingMatcherFeatureTest extends BaseFeatureTestCase
 
         // Act and Assert
         $espresso->onElement(withTextContaining('Mock A'))
+            ->check(matches(isDisplayed()));
+    }
+
+    public function testMatchesNegativeContainer(): void
+    {
+        // Arrange
+        $driver = $this->driver()->get($this->mockStaticUrl('matchers/with-text.html'));
+
+        $options = new EspressoOptions(
+            waitTimeoutInSeconds: 0,
+            assertionReporter: new PhpunitReporter,
+        );
+
+        $espresso = usingDriver($driver, $options)
+            ->inContainer(allOf(withTagName('li'), withTextContaining('Another D')));
+
+        // Act and Assert
+        $espresso->onElement(not(withTextContaining('Mock')))
             ->check(matches(isDisplayed()));
     }
 
@@ -108,5 +128,22 @@ class WithTextContainingMatcherFeatureTest extends BaseFeatureTestCase
         // Act and Assert
         $espresso->onElement(allOf(withTagName('li'), withTextContaining('Mock C')))
             ->check(matches(isDisplayed()));
+    }
+
+    public function testMatchesNegativeSubstrings(): void
+    {
+        // Arrange
+        $driver = $this->driver()->get($this->mockStaticUrl('matchers/with-text.html'));
+
+        $options = new EspressoOptions(
+            waitTimeoutInSeconds: 0,
+            assertionReporter: new PhpunitReporter,
+        );
+
+        $espresso = usingDriver($driver, $options);
+
+        // Act and Assert
+        $espresso->onElement(allOf(withTagName('li'), not(withTextContaining('mock'))))
+            ->check(matches(withText('Another D')));
     }
 }
