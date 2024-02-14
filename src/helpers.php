@@ -178,9 +178,9 @@ function withTextContaining(string $text): MatcherInterface
     return new WithTextContainingMatcher($text);
 }
 
-function withValue(string $text): MatcherInterface
+function withValue(string $value): MatcherInterface
 {
-    return new WithValueMatcher($text);
+    return new WithValueMatcher($value);
 }
 
 // endregion

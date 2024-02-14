@@ -12,7 +12,7 @@ final readonly class WithValueMatcher implements MatcherInterface
 {
     use HasAutomaticWait;
 
-    public function __construct(private string $text)
+    public function __construct(private string $value)
     {
         //
     }
@@ -34,13 +34,13 @@ final readonly class WithValueMatcher implements MatcherInterface
     {
         $elements = [];
 
-        if ($container->getAttribute('value') === $this->text) {
+        if ($container->getAttribute('value') === $this->value) {
             $elements[] = $container;
         }
 
         return array_merge(
             $elements,
-            $container->findElements(WebDriverBy::cssSelector(sprintf('[value="%1$s"]', $this->text))),
+            $container->findElements(WebDriverBy::cssSelector(sprintf('[value="%1$s"]', $this->value))),
         );
     }
 
@@ -51,18 +51,18 @@ final readonly class WithValueMatcher implements MatcherInterface
     {
         $elements = [];
 
-        if ($container->getAttribute('value') !== $this->text) {
+        if ($container->getAttribute('value') !== $this->value) {
             $elements[] = $container;
         }
 
         return array_merge(
             $elements,
-            $container->findElements(WebDriverBy::cssSelector(sprintf(':not([value="%1$s"])', $this->text))),
+            $container->findElements(WebDriverBy::cssSelector(sprintf(':not([value="%1$s"])', $this->value))),
         );
     }
 
     public function __toString(): string
     {
-        return sprintf('value="%1$s"', $this->text);
+        return sprintf('value="%1$s"', $this->value);
     }
 }

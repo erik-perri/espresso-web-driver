@@ -12,7 +12,8 @@ use Facebook\WebDriver\WebDriverElement;
 trait HasAutomaticWait
 {
     /**
-     * Executes the provided callback function in intervals until it returns a non-empty result or the timeout is reached.
+     * Executes the provided callback function in intervals until it returns a non-empty result or the timeout is
+     * reached.
      *
      * @param  Closure(): array<WebDriverElement>  $callback
      */

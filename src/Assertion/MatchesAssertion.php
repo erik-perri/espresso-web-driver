@@ -34,7 +34,7 @@ final readonly class MatchesAssertion implements AssertionInterface
             $matches->all(),
             fn (WebDriverElement $match) => !empty(array_filter(
                 $container->all(),
-                fn (WebDriverElement $element) => $element->getID() === $match->getID()
+                fn (WebDriverElement $element) => $element->getID() === $match->getID(),
             )),
         );
 
