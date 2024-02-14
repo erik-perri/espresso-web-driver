@@ -13,7 +13,7 @@ final readonly class ExistsMatcher implements MatcherInterface
         try {
             $container->single();
         } catch (NoMatchingElementException) {
-            return new MatchResult(matcher: $this, result: [], isNegated: $context->isNegated);
+            return new MatchResult(matcher: $this, result: [], isExpectingEmpty: $context->isNegated);
         }
 
         return $container;

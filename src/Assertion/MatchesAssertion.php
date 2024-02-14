@@ -40,7 +40,7 @@ final readonly class MatchesAssertion implements AssertionInterface
 
         $hasMatch = count($filteredToResult) > 0;
 
-        if ($matches->isNegated) {
+        if ($matches->isExpectingEmpty) {
             return !$hasMatch;
         }
 

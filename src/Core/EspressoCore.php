@@ -70,7 +70,6 @@ final readonly class EspressoCore
             return new MatchResult(
                 matcher: $matcher,
                 result: [$this->driver->findElement(WebDriverBy::tagName('html'))],
-                isNegated: false,
             );
         } catch (NoSuchElementException) {
             throw new NoMatchingElementException($matcher);

@@ -22,11 +22,7 @@ final readonly class NotMatcher implements MatcherInterface
                 options: $context->options,
             ));
         } catch (NoMatchingElementException) {
-            return new MatchResult(
-                matcher: $this,
-                result: [],
-                isNegated: $context->isNegated,
-            );
+            return new MatchResult(matcher: $this, result: []);
         }
     }
 

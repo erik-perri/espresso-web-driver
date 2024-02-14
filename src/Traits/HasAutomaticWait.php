@@ -20,11 +20,7 @@ trait HasAutomaticWait
     protected function waitForMatch(MatchContext $context, Closure $callback): MatchResult
     {
         if ($context->options->waitTimeoutInSeconds < 1) {
-            return new MatchResult(
-                matcher: $this,
-                result: $callback(),
-                isNegated: $context->isNegated,
-            );
+            return new MatchResult(matcher: $this, result: $callback());
         }
 
         $startTime = (float) microtime(true);
@@ -42,10 +38,6 @@ trait HasAutomaticWait
             usleep($waitIntervalInMicroseconds);
         }
 
-        return new MatchResult(
-            matcher: $this,
-            result: $lastResult,
-            isNegated: $context->isNegated,
-        );
+        return new MatchResult(matcher: $this, result: $lastResult);
     }
 }

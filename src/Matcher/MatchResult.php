@@ -16,7 +16,7 @@ final readonly class MatchResult
     public function __construct(
         private MatcherInterface $matcher,
         private array $result,
-        public bool $isNegated = false,
+        public bool $isExpectingEmpty = false,
     ) {
         //
     }
