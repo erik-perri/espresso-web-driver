@@ -15,13 +15,18 @@ final readonly class IsDisplayedMatcher implements MatcherInterface
 
     public function match(MatchResult $container, MatchContext $context): MatchResult
     {
-        return $this->waitForMatch($context, fn () => $this->matchElements($container->single(), $context));
+        return $this->waitForMatch(
+            $context,
+            fn () => $context->isNegated
+                ? $this->matchHiddenElements($container->single(), $context)
+                : $this->matchDisplayedElements($container->single(), $context),
+        );
     }
 
     /**
      * @return WebDriverElement[]
      */
-    private function matchElements(WebDriverElement $container, MatchContext $context): array
+    private function matchDisplayedElements(WebDriverElement $container, MatchContext $context): array
     {
         $elements = [];
 
@@ -37,6 +42,31 @@ final readonly class IsDisplayedMatcher implements MatcherInterface
 
         foreach ($potentiallyVisibleElements as $element) {
             if ($checker->isDisplayed($element)) {
+                $elements[] = $element;
+            }
+        }
+
+        return $elements;
+    }
+
+    /**
+     * @return WebDriverElement[]
+     */
+    private function matchHiddenElements(WebDriverElement $container, MatchContext $context): array
+    {
+        $elements = [];
+
+        $checker = new ElementDisplayChecker($context->driver);
+
+        if (!$checker->isDisplayed($container)) {
+            $elements[] = $container;
+        }
+
+        // TODO This is probably a bad idea on dom heavy pages
+        $potentiallyHiddenElements = $container->findElements(WebDriverBy::cssSelector('*'));
+
+        foreach ($potentiallyHiddenElements as $element) {
+            if (!$checker->isDisplayed($element)) {
                 $elements[] = $element;
             }
         }

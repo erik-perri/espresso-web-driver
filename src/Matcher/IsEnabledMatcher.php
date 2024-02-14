@@ -14,13 +14,42 @@ final readonly class IsEnabledMatcher implements MatcherInterface
 
     public function match(MatchResult $container, MatchContext $context): MatchResult
     {
-        return $this->waitForMatch($context, fn () => $this->matchElements($container->single(), $context));
+        return $this->waitForMatch(
+            $context,
+            fn () => $context->isNegated
+                ? $this->matchDisabledElements($container->single(), $context)
+                : $this->matchEnabledElements($container->single(), $context),
+        );
     }
 
     /**
      * @return WebDriverElement[]
      */
-    private function matchElements(WebDriverElement $container, MatchContext $context): array
+    private function matchDisabledElements(WebDriverElement $container, MatchContext $context): array
+    {
+        $elements = [];
+
+        if (!$container->isEnabled()) {
+            $elements[] = $container;
+        }
+
+        $possibleElements = $container->findElements(
+            WebDriverBy::cssSelector('button, fieldset, optgroup, option, select, textarea, input'),
+        );
+
+        foreach ($possibleElements as $element) {
+            if (!$element->isEnabled()) {
+                $elements[] = $element;
+            }
+        }
+
+        return $elements;
+    }
+
+    /**
+     * @return WebDriverElement[]
+     */
+    private function matchEnabledElements(WebDriverElement $container, MatchContext $context): array
     {
         $elements = [];
 

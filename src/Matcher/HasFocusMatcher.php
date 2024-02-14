@@ -15,13 +15,18 @@ final readonly class HasFocusMatcher implements MatcherInterface
 
     public function match(MatchResult $container, MatchContext $context): MatchResult
     {
-        return $this->waitForMatch($context, fn () => $this->matchElements($container->single(), $context));
+        return $this->waitForMatch(
+            $context,
+            fn () => $context->isNegated
+                ? $this->matchUnfocusedElements($container->single(), $context)
+                : $this->matchFocusedElements($container->single(), $context),
+        );
     }
 
     /**
      * @return WebDriverElement[]
      */
-    private function matchElements(WebDriverElement $container, MatchContext $context): array
+    private function matchFocusedElements(WebDriverElement $container, MatchContext $context): array
     {
         try {
             $parent = $container->findElement(WebDriverBy::xpath('./parent::*'));
@@ -32,6 +37,22 @@ final readonly class HasFocusMatcher implements MatcherInterface
         }
 
         return $parent->findElements(WebDriverBy::cssSelector(':focus'));
+    }
+
+    /**
+     * @return WebDriverElement[]
+     */
+    private function matchUnfocusedElements(WebDriverElement $container, MatchContext $context): array
+    {
+        try {
+            $parent = $container->findElement(WebDriverBy::xpath('./parent::*'));
+        } catch (NoSuchElementException) {
+            // If we cannot find the parent there is no way for us to find the focused element.
+            // TODO Should this be an exception?
+            return [$container];
+        }
+
+        return $parent->findElements(WebDriverBy::cssSelector(':not(:focus)'));
     }
 
     public function __toString(): string
