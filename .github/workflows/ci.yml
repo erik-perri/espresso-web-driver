@@ -28,10 +28,16 @@ jobs:
       - uses: shivammathur/setup-php@v2
         with:
           php-version: 8.3
+          coverage: xdebug
       - run: composer install --prefer-dist --no-interaction --optimize-autoloader
       - run: composer check-code
       - run: php -S 0.0.0.0:8000 -t ./tests/static &
-      - run: composer test
+      - run: composer test --coverage-clover=output.xml
         env:
           SELENIUM_DRIVER_URL: http://localhost:4444
           SELENIUM_START_URL: http://host.docker.internal:8000
+      - uses: sourcetoad/phpunit-coverage-action@v1
+        with:
+          clover_report_path: output.xml
+          min_coverage_percent: 50
+          fail_build_on_under: true
