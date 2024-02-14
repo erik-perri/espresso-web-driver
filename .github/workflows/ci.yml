@@ -32,7 +32,7 @@ jobs:
       - run: composer install --prefer-dist --no-interaction --optimize-autoloader
       - run: composer check-code
       - run: php -S 0.0.0.0:8000 -t ./tests/static &
-      - run: composer test --coverage-clover=output.xml
+      - run: composer test -- --coverage-clover=output.xml
         env:
           SELENIUM_DRIVER_URL: http://localhost:4444
           SELENIUM_START_URL: http://host.docker.internal:8000
