@@ -16,7 +16,7 @@ final readonly class ScrollToAction implements ActionInterface
     public function perform(WebDriverElement $element, EspressoContext $context): bool
     {
         if (!method_exists($context->driver, 'executeScript')) {
-            throw new PerformException($this, 'driver does not have access to executeScript');
+            throw new PerformException($this, $element, 'driver does not have access to executeScript');
         }
 
         $context->driver->executeScript('arguments[0].scrollIntoView(true);', [$element]);

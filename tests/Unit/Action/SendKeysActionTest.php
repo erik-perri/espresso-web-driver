@@ -48,13 +48,15 @@ class SendKeysActionTest extends BaseUnitTestCase
         // Expectations
         $this->expectException(PerformException::class);
         $this->expectExceptionMessage(
-            'Failed to perform action sendKeys(), driver does not have access to input devices',
+            'Failed to perform action sendKeys() on <textarea>, driver does not have access to input devices',
         );
 
         // Arrange
         $assertion = new SendKeysAction();
 
         $element = $this->createMock(WebDriverElement::class);
+        $element->expects($this->once())->method('getTagName')->willReturn('textarea');
+
         $context = new EspressoContext(
             driver: $this->createMock(WebDriver::class),
             options: new EspressoOptions(),

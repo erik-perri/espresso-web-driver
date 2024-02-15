@@ -64,7 +64,7 @@ final readonly class ElementInteraction implements InteractionInterface
 
         foreach ($actions as $action) {
             if (!$action->perform($element, $this->context)) {
-                throw new PerformException($action);
+                throw new PerformException($action, $element);
             }
         }
 
