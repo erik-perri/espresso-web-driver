@@ -38,14 +38,24 @@ final readonly class ElementInteraction implements InteractionInterface
             if (!$result) {
                 throw new AssertionFailedException($assertion);
             }
-        } catch (AmbiguousElementException|NoMatchingElementException $exception) {
+        } catch (NoMatchingElementException $exception) {
             $this->context->options->assertionReporter?->report(
                 false,
                 sprintf(
-                    'Failed asserting that %1$s is true for %2$s. %3$s',
+                    'Failed asserting that %1$s is true for %2$s, no matching element was found.',
                     $assertion,
                     $this->result,
-                    $exception->getMessage(),
+                ),
+            );
+
+            throw new AssertionFailedException($assertion, $exception);
+        } catch (AmbiguousElementException $exception) {
+            $this->context->options->assertionReporter?->report(
+                false,
+                sprintf(
+                    'Failed asserting that %1$s is true for %2$s, multiple matching elements were found.',
+                    $assertion,
+                    $this->result,
                 ),
             );
 
