@@ -13,7 +13,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 #[CoversClass(ExistsMatcher::class)]
 class ExistsMatcherTest extends BaseUnitTestCase
 {
-    public function testExistsAssertionToString(): void
+    public function testExistsMatcherToString(): void
     {
         // Arrange
         $assertion = new ExistsMatcher();

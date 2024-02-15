@@ -13,7 +13,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 #[CoversClass(WithTextContainingMatcher::class)]
 class WithTextContainingMatcherTest extends BaseUnitTestCase
 {
-    public function testWithTextToString(): void
+    public function testWithTextContainingToString(): void
     {
         // Arrange
         $matcher = new WithTextContainingMatcher('mock');

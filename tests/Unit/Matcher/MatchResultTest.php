@@ -17,7 +17,7 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(MatchResult::class)]
 class MatchResultTest extends TestCase
 {
-    public function testMatchResultArrayWrappers()
+    public function testMatchResultArrayWrappers(): void
     {
         // Arrange
         $matcher = $this->createMock(MatcherInterface::class);
@@ -42,7 +42,7 @@ class MatchResultTest extends TestCase
         $this->assertSame(2, $count);
     }
 
-    public function testMatchResultToString()
+    public function testMatchResultToString(): void
     {
         // Arrange
         $matcher = $this->createMock(MatcherInterface::class);
@@ -64,7 +64,7 @@ class MatchResultTest extends TestCase
         $this->assertSame('matcher (1 element)', $resultAsString);
     }
 
-    public function testMatchResultThrowsAmbiguousElementMatcherException()
+    public function testMatchResultThrowsAmbiguousElementMatcherException(): void
     {
         // Expectations
         $this->expectException(AmbiguousElementException::class);
@@ -94,7 +94,7 @@ class MatchResultTest extends TestCase
         // No assertions, only expectations.
     }
 
-    public function testMatchResultThrowsNoMatchingElementException()
+    public function testMatchResultThrowsNoMatchingElementException(): void
     {
         // Expectations
         $this->expectException(NoMatchingElementException::class);

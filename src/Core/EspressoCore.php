@@ -46,6 +46,9 @@ final readonly class EspressoCore
         return new self($this->driver, $this->options, $result);
     }
 
+    /**
+     * @throws AmbiguousElementException|NoMatchingElementException
+     */
     public function onElement(MatcherInterface $matcher): InteractionInterface
     {
         $context = new EspressoContext($this->driver, $this->options);
