@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace EspressoWebDriver\Matcher;
 
-use EspressoWebDriver\Exception\AmbiguousElementException;
 use EspressoWebDriver\Exception\NoMatchingElementException;
+use EspressoWebDriver\Exception\NoParentException;
 use EspressoWebDriver\Traits\HasAutomaticWait;
 use Facebook\WebDriver\Exception\NoSuchElementException;
 use Facebook\WebDriver\WebDriverBy;
@@ -20,6 +20,9 @@ final readonly class HasSiblingMatcher implements MatcherInterface
         //
     }
 
+    /**
+     * @throws NoMatchingElementException|NoParentException
+     */
     public function match(MatchResult $container, MatchContext $context): MatchResult
     {
         return $this->waitForMatch($context, fn () => $this->matchElements($container, $context));
@@ -28,7 +31,7 @@ final readonly class HasSiblingMatcher implements MatcherInterface
     /**
      * @return WebDriverElement[]
      *
-     * @throws AmbiguousElementException|NoMatchingElementException
+     * @throws NoMatchingElementException|NoParentException
      */
     private function matchElements(MatchResult $container, MatchContext $context): array
     {
@@ -56,6 +59,7 @@ final readonly class HasSiblingMatcher implements MatcherInterface
                 }
             } catch (NoSuchElementException) {
                 // If we couldn't find the parent, we can't find the siblings.
+                throw new NoParentException($this, $sibling);
             }
         }
 

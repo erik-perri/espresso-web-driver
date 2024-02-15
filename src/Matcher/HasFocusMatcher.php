@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace EspressoWebDriver\Matcher;
 
+use EspressoWebDriver\Exception\AmbiguousElementException;
+use EspressoWebDriver\Exception\NoMatchingElementException;
+use EspressoWebDriver\Exception\NoParentException;
 use EspressoWebDriver\Traits\HasAutomaticWait;
 use Facebook\WebDriver\Exception\NoSuchElementException;
 use Facebook\WebDriver\WebDriverBy;
@@ -13,6 +16,9 @@ final readonly class HasFocusMatcher implements MatcherInterface
 {
     use HasAutomaticWait;
 
+    /**
+     * @throws AmbiguousElementException|NoMatchingElementException|NoParentException
+     */
     public function match(MatchResult $container, MatchContext $context): MatchResult
     {
         return $this->waitForMatch(
@@ -25,6 +31,8 @@ final readonly class HasFocusMatcher implements MatcherInterface
 
     /**
      * @return WebDriverElement[]
+     *
+     * @throws NoParentException
      */
     private function matchFocusedElements(WebDriverElement $container, MatchContext $context): array
     {
@@ -32,8 +40,7 @@ final readonly class HasFocusMatcher implements MatcherInterface
             $parent = $container->findElement(WebDriverBy::xpath('./parent::*'));
         } catch (NoSuchElementException) {
             // If we cannot find the parent there is no way for us to find the focused element.
-            // TODO Should this be an exception?
-            return [];
+            throw new NoParentException($this, $container);
         }
 
         return $parent->findElements(WebDriverBy::cssSelector(':focus'));
@@ -41,6 +48,8 @@ final readonly class HasFocusMatcher implements MatcherInterface
 
     /**
      * @return WebDriverElement[]
+     *
+     * @throws NoParentException
      */
     private function matchUnfocusedElements(WebDriverElement $container, MatchContext $context): array
     {
@@ -48,8 +57,7 @@ final readonly class HasFocusMatcher implements MatcherInterface
             $parent = $container->findElement(WebDriverBy::xpath('./parent::*'));
         } catch (NoSuchElementException) {
             // If we cannot find the parent there is no way for us to find the focused element.
-            // TODO Should this be an exception?
-            return [$container];
+            throw new NoParentException($this, $container);
         }
 
         return $parent->findElements(WebDriverBy::cssSelector(':not(:focus)'));
