@@ -16,6 +16,7 @@ use Facebook\WebDriver\WebDriverElement;
 use Facebook\WebDriver\WebDriverKeys;
 use PHPUnit\Framework\Attributes\CoversClass;
 
+#[CoversClass(PerformException::class)]
 #[CoversClass(SendKeysAction::class)]
 class SendKeysActionTest extends BaseUnitTestCase
 {

@@ -26,6 +26,7 @@ use function EspressoWebDriver\withId;
 use function EspressoWebDriver\withTagName;
 
 #[CoversClass(HasFocusMatcher::class)]
+#[CoversClass(NoParentException::class)]
 #[CoversFunction('EspressoWebDriver\hasFocus')]
 class HasFocusFeatureTest extends BaseFeatureTestCase
 {
