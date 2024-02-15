@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace EspressoWebDriver\Utilities;
 
+use EspressoWebDriver\Exception\EspressoWebDriverException;
 use Facebook\WebDriver\WebDriver;
 use Facebook\WebDriver\WebDriverElement;
-use RuntimeException;
 
 final class ElementDisplayChecker
 {
@@ -45,7 +45,9 @@ final class ElementDisplayChecker
     {
         if (!method_exists($this->driver, 'executeScript')) {
             // TODO Custom exception?
-            throw new RuntimeException('Cannot check displayed state, driver does not have access to executeScript');
+            throw new EspressoWebDriverException(
+                'Cannot check displayed state, driver does not have access to executeScript',
+            );
         }
 
         $this->scrollX = $this->driver->executeScript('return window.scrollX;');
