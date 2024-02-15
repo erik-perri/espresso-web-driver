@@ -21,16 +21,6 @@ final readonly class HasDescendantMatcher implements MatcherInterface
 
     public function match(MatchResult $container, MatchContext $context): MatchResult
     {
-        return $this->waitForMatch($context, fn () => $this->matchElements($container, $context));
-    }
-
-    /**
-     * @return WebDriverElement[]
-     *
-     * @throws AmbiguousElementException|NoMatchingElementException
-     */
-    private function matchElements(MatchResult $container, MatchContext $context): array
-    {
         $childContext = new MatchContext(
             driver: $context->driver,
             isNegated: $context->isNegated,
@@ -38,7 +28,19 @@ final readonly class HasDescendantMatcher implements MatcherInterface
             options: $context->options->toInstantOptions(),
         );
 
-        $descendantMatch = $this->matcher->match($container, $childContext);
+        return $this->waitForMatch($context, fn () => $context->isNegated
+            ? $this->matchElementsWithoutDescendants($container, $childContext)
+            : $this->matchElementsWithDescendants($container, $childContext));
+    }
+
+    /**
+     * @return array<string, WebDriverElement>
+     *
+     * @throws AmbiguousElementException|NoMatchingElementException
+     */
+    private function matchElementsWithDescendants(MatchResult $container, MatchContext $context): array
+    {
+        $descendantMatch = $this->matcher->match($container, $context);
 
         $elements = [];
 
@@ -51,24 +53,38 @@ final readonly class HasDescendantMatcher implements MatcherInterface
             }
 
             foreach ($ancestors as $ancestor) {
-                if ($context->isNegated) {
-                    // Since something like withText will include parents that we don't want to include when negated
-                    // we need to check again without the negation.
-                    $ancestorMatch = $this->matcher->match(
-                        new MatchResult($this->matcher, [$ancestor]),
-                        new MatchContext(
-                            driver: $context->driver,
-                            isNegated: false,
-                            options: $context->options,
-                        ),
-                    );
+                $elements[$ancestor->getID()] = $ancestor;
+            }
+        }
 
-                    if ($ancestorMatch->count()) {
-                        continue;
-                    }
+        return $elements;
+    }
+
+    /**
+     * @return array<string, WebDriverElement>
+     *
+     * @throws AmbiguousElementException|NoMatchingElementException
+     */
+    private function matchElementsWithoutDescendants(MatchResult $container, MatchContext $context): array
+    {
+        // Find any elements that are the descendants we want to negate.
+        $descendantsAndAncestors = $this->matchElementsWithDescendants($container, new MatchContext(
+            driver: $context->driver,
+            isNegated: false,
+            options: $context->options,
+        ));
+
+        // Find all elements that are not those.
+        $elements = [];
+
+        foreach ($container->all() as $containerElement) {
+            // TODO This is probably a bad idea on dom heavy pages
+            $potentiallyNotDescendants = $containerElement->findElements(WebDriverBy::cssSelector('*'));
+
+            foreach ($potentiallyNotDescendants as $element) {
+                if (!isset($descendantsAndAncestors[$element->getID()])) {
+                    $elements[$element->getID()] = $element;
                 }
-
-                $elements[] = $ancestor;
             }
         }
 
