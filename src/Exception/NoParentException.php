@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace EspressoWebDriver\Exception;
 
 use EspressoWebDriver\Matcher\MatcherInterface;
-use EspressoWebDriver\Utilities\ElementInterpreter;
+use EspressoWebDriver\Utilities\ElementLogger;
 use Facebook\WebDriver\WebDriverElement;
 
 class NoParentException extends EspressoWebDriverException
@@ -14,7 +14,7 @@ class NoParentException extends EspressoWebDriverException
     {
         parent::__construct(sprintf(
             'Unable to locate a parent while checking %1$s for %2$s',
-            new ElementInterpreter($element),
+            new ElementLogger($element),
             $matcher,
         ));
     }

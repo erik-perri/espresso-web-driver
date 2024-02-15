@@ -6,7 +6,7 @@ namespace EspressoWebDriver\Utilities;
 
 use Facebook\WebDriver\WebDriverElement;
 
-final readonly class ElementInterpreter
+final readonly class ElementLogger
 {
     public function __construct(private WebDriverElement $element)
     {
