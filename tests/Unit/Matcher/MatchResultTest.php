@@ -7,7 +7,6 @@ declare(strict_types=1);
 namespace EspressoWebDriver\Tests\Unit\Matcher;
 
 use EspressoWebDriver\Exception\AmbiguousElementException;
-use EspressoWebDriver\Exception\EspressoWebDriverException;
 use EspressoWebDriver\Exception\NoMatchingElementException;
 use EspressoWebDriver\Matcher\MatcherInterface;
 use EspressoWebDriver\Matcher\MatchResult;
@@ -16,7 +15,6 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(AmbiguousElementException::class)]
-#[CoversClass(EspressoWebDriverException::class)]
 #[CoversClass(MatchResult::class)]
 #[CoversClass(NoMatchingElementException::class)]
 class MatchResultTest extends TestCase
