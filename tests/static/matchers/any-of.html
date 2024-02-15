@@ -1,0 +1,14 @@
+<html lang="en">
+<body>
+
+<div class="row">
+    <div class="status">Processing</div>
+</div>
+
+<script>
+    document.querySelector('.status').addEventListener('click', function () {
+        this.textContent = this.textContent === 'Processing' ? 'Done' : 'Processing';
+    });
+</script>
+</body>
+</html>
