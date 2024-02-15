@@ -57,10 +57,6 @@ final readonly class AnyOfMatcher implements MatcherInterface
         $elementsById = [];
 
         foreach ($mergedElements as $element) {
-            if (isset($elementsById[$element->getID()])) {
-                continue;
-            }
-
             $elementsById[$element->getID()] = $element;
         }
 
