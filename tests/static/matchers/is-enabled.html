@@ -1,0 +1,43 @@
+<html lang="en">
+<body>
+
+<button>Enabled</button>
+<button disabled>Disabled</button>
+
+<fieldset>
+    <legend>Enabled</legend>
+</fieldset>
+
+<fieldset disabled>
+    <legend>Disabled</legend>
+</fieldset>
+
+<label><input type="text" value="Enabled"></label>
+<label><input type="text" value="Disabled" disabled></label>
+
+<label>
+    <select class="enabled">
+        <option class="option">Enabled</option>
+        <option class="option" disabled>Disabled</option>
+
+        <optgroup label="Enabled">
+            <option>Enabled</option>
+        </optgroup>
+
+        <optgroup label="Disabled" disabled>
+            <option>Disabled</option>
+        </optgroup>
+    </select>
+</label>
+
+<label>
+    <select class="disabled" disabled>
+        <option>Disabled</option>
+    </select>
+</label>
+
+<label><textarea>Enabled</textarea></label>
+<label><textarea disabled>Disabled</textarea></label>
+
+</body>
+</html>
