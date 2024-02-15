@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace EspressoWebDriver\Utilities;
 
 use EspressoWebDriver\Exception\EspressoWebDriverException;
+use Facebook\WebDriver\JavaScriptExecutor;
 use Facebook\WebDriver\WebDriver;
 use Facebook\WebDriver\WebDriverElement;
 
@@ -18,6 +19,9 @@ final class ElementDisplayChecker
 
     private int $viewportHeight = 0;
 
+    /**
+     * @throws EspressoWebDriverException
+     */
     public function __construct(private readonly WebDriver $driver)
     {
         $this->updateViewport();
@@ -43,7 +47,7 @@ final class ElementDisplayChecker
 
     public function updateViewport(): void
     {
-        if (!method_exists($this->driver, 'executeScript')) {
+        if (!($this->driver instanceof JavaScriptExecutor)) {
             // TODO Custom exception?
             throw new EspressoWebDriverException(
                 'Cannot check displayed state, driver does not have access to executeScript',

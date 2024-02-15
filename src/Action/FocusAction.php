@@ -6,6 +6,7 @@ namespace EspressoWebDriver\Action;
 
 use EspressoWebDriver\Core\EspressoContext;
 use EspressoWebDriver\Exception\PerformException;
+use Facebook\WebDriver\JavaScriptExecutor;
 use Facebook\WebDriver\WebDriverElement;
 
 final readonly class FocusAction implements ActionInterface
@@ -15,7 +16,7 @@ final readonly class FocusAction implements ActionInterface
      */
     public function perform(WebDriverElement $element, EspressoContext $context): bool
     {
-        if (!method_exists($context->driver, 'executeScript')) {
+        if (!($context->driver instanceof JavaScriptExecutor)) {
             throw new PerformException($this, $element, 'driver does not have access to executeScript');
         }
 
