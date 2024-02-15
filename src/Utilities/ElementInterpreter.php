@@ -23,7 +23,9 @@ final readonly class ElementInterpreter
         $notableAttributeNames = [
             'alt',
             'class',
+            'disabled',
             'href',
+            'id',
             'name',
             'src',
             'title',
