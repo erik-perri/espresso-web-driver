@@ -54,11 +54,14 @@ final readonly class HasDescendantMatcher implements MatcherInterface
                 if ($context->isNegated) {
                     // Since something like withText will include parents that we don't want to include when negated
                     // we need to check again without the negation.
-                    $ancestorMatch = $this->matcher->match(new MatchResult($this->matcher, [$ancestor]), new MatchContext(
-                        driver: $context->driver,
-                        isNegated: false,
-                        options: $context->options,
-                    ));
+                    $ancestorMatch = $this->matcher->match(
+                        new MatchResult($this->matcher, [$ancestor]),
+                        new MatchContext(
+                            driver: $context->driver,
+                            isNegated: false,
+                            options: $context->options,
+                        ),
+                    );
 
                     if ($ancestorMatch->count()) {
                         continue;

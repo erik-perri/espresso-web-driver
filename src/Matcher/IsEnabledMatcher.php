@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace EspressoWebDriver\Matcher;
 
+use EspressoWebDriver\Exception\AmbiguousElementException;
+use EspressoWebDriver\Exception\NoMatchingElementException;
 use EspressoWebDriver\Traits\HasAutomaticWait;
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverElement;
@@ -12,20 +14,23 @@ final readonly class IsEnabledMatcher implements MatcherInterface
 {
     use HasAutomaticWait;
 
+    /**
+     * @throws AmbiguousElementException|NoMatchingElementException
+     */
     public function match(MatchResult $container, MatchContext $context): MatchResult
     {
         return $this->waitForMatch(
             $context,
             fn () => $context->isNegated
-                ? $this->matchDisabledElements($container->single(), $context)
-                : $this->matchEnabledElements($container->single(), $context),
+                ? $this->matchDisabledElements($container->single())
+                : $this->matchEnabledElements($container->single()),
         );
     }
 
     /**
      * @return WebDriverElement[]
      */
-    private function matchDisabledElements(WebDriverElement $container, MatchContext $context): array
+    private function matchDisabledElements(WebDriverElement $container): array
     {
         $elements = [];
 
@@ -49,7 +54,7 @@ final readonly class IsEnabledMatcher implements MatcherInterface
     /**
      * @return WebDriverElement[]
      */
-    private function matchEnabledElements(WebDriverElement $container, MatchContext $context): array
+    private function matchEnabledElements(WebDriverElement $container): array
     {
         $elements = [];
 

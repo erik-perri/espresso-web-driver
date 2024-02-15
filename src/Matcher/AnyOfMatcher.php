@@ -23,6 +23,9 @@ final readonly class AnyOfMatcher implements MatcherInterface
         $this->matchers = $matchers;
     }
 
+    /**
+     * @throws AmbiguousElementException|NoMatchingElementException
+     */
     public function match(MatchResult $container, MatchContext $context): MatchResult
     {
         return $this->waitForMatch($context, fn () => $this->matchElements($container, $context));

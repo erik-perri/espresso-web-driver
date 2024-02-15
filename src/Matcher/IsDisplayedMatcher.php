@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace EspressoWebDriver\Matcher;
 
+use EspressoWebDriver\Exception\AmbiguousElementException;
+use EspressoWebDriver\Exception\NoMatchingElementException;
 use EspressoWebDriver\Traits\HasAutomaticWait;
 use EspressoWebDriver\Utilities\ElementDisplayChecker;
 use Facebook\WebDriver\WebDriverBy;
@@ -13,6 +15,9 @@ final readonly class IsDisplayedMatcher implements MatcherInterface
 {
     use HasAutomaticWait;
 
+    /**
+     * @throws AmbiguousElementException|NoMatchingElementException
+     */
     public function match(MatchResult $container, MatchContext $context): MatchResult
     {
         return $this->waitForMatch(

@@ -24,8 +24,8 @@ final readonly class HasFocusMatcher implements MatcherInterface
         return $this->waitForMatch(
             $context,
             fn () => $context->isNegated
-                ? $this->matchUnfocusedElements($container->single(), $context)
-                : $this->matchFocusedElements($container->single(), $context),
+                ? $this->matchUnfocusedElements($container->single())
+                : $this->matchFocusedElements($container->single()),
         );
     }
 
@@ -34,7 +34,7 @@ final readonly class HasFocusMatcher implements MatcherInterface
      *
      * @throws NoParentException
      */
-    private function matchFocusedElements(WebDriverElement $container, MatchContext $context): array
+    private function matchFocusedElements(WebDriverElement $container): array
     {
         try {
             $parent = $container->findElement(WebDriverBy::xpath('./parent::*'));
@@ -51,7 +51,7 @@ final readonly class HasFocusMatcher implements MatcherInterface
      *
      * @throws NoParentException
      */
-    private function matchUnfocusedElements(WebDriverElement $container, MatchContext $context): array
+    private function matchUnfocusedElements(WebDriverElement $container): array
     {
         try {
             $parent = $container->findElement(WebDriverBy::xpath('./parent::*'));
