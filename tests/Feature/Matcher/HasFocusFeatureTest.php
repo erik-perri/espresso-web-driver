@@ -7,6 +7,7 @@ declare(strict_types=1);
 namespace EspressoWebDriver\Tests\Feature\Matcher;
 
 use EspressoWebDriver\Core\EspressoOptions;
+use EspressoWebDriver\Exception\NoParentException;
 use EspressoWebDriver\Matcher\HasFocusMatcher;
 use EspressoWebDriver\Reporter\PhpunitReporter;
 use EspressoWebDriver\Tests\Feature\BaseFeatureTestCase;
@@ -15,7 +16,6 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\CoversFunction;
 
 use function EspressoWebDriver\click;
-use function EspressoWebDriver\focus;
 use function EspressoWebDriver\hasFocus;
 use function EspressoWebDriver\matches;
 use function EspressoWebDriver\not;
@@ -118,8 +118,12 @@ class HasFocusFeatureTest extends BaseFeatureTestCase
         $input->check(matches(hasFocus()));
     }
 
-    public function testFocusIsAlwaysFalseWhenSelectingFromTheHighestLevel(): void
+    public function testThrowsExceptionWhenCallingOnTheTopLevelElement(): void
     {
+        // Expectations
+        $this->expectException(NoParentException::class);
+        $this->expectExceptionMessage('Unable to locate a parent while checking <html> for focused');
+
         // Arrange
         $driver = $this->driver()->get($this->mockStaticUrl('matchers/has-focus.html'));
 
@@ -130,9 +134,35 @@ class HasFocusFeatureTest extends BaseFeatureTestCase
 
         $espresso = usingDriver($driver, $options);
 
-        // Act and Assert
+        // Act
         $espresso->onElement(withTagName('html'))
-            ->perform(focus())
+            ->check(matches(hasFocus()));
+
+        // Assert
+        // No assertions, only expectations.
+    }
+
+    public function testThrowsExceptionWhenCallingNegativeOnTheTopLevelElement(): void
+    {
+        // Expectations
+        $this->expectException(NoParentException::class);
+        $this->expectExceptionMessage('Unable to locate a parent while checking <html> for focused');
+
+        // Arrange
+        $driver = $this->driver()->get($this->mockStaticUrl('matchers/has-focus.html'));
+
+        $options = new EspressoOptions(
+            waitTimeoutInSeconds: 0,
+            assertionReporter: new PhpunitReporter,
+        );
+
+        $espresso = usingDriver($driver, $options);
+
+        // Act
+        $espresso->onElement(withTagName('html'))
             ->check(matches(not(hasFocus())));
+
+        // Assert
+        // No assertions, only expectations.
     }
 }
