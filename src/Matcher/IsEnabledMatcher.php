@@ -14,6 +14,8 @@ final readonly class IsEnabledMatcher implements MatcherInterface
 {
     use HasAutomaticWait;
 
+    private const FORM_ELEMENT_SELECTOR = 'button, fieldset, input, optgroup, option, select, textarea';
+
     /**
      * @throws AmbiguousElementException|NoMatchingElementException
      */
@@ -34,16 +36,16 @@ final readonly class IsEnabledMatcher implements MatcherInterface
     {
         $elements = [];
 
-        if (!$container->isEnabled()) {
+        if (!$this->isEnabled($container)) {
             $elements[] = $container;
         }
 
         $possibleElements = $container->findElements(
-            WebDriverBy::cssSelector('button, fieldset, optgroup, option, select, textarea, input'),
+            WebDriverBy::cssSelector(self::FORM_ELEMENT_SELECTOR),
         );
 
         foreach ($possibleElements as $element) {
-            if (!$element->isEnabled()) {
+            if (!$this->isEnabled($element)) {
                 $elements[] = $element;
             }
         }
@@ -58,21 +60,27 @@ final readonly class IsEnabledMatcher implements MatcherInterface
     {
         $elements = [];
 
-        if ($container->isEnabled()) {
+        if ($this->isEnabled($container)) {
             $elements[] = $container;
         }
 
         $possibleElements = $container->findElements(
-            WebDriverBy::cssSelector('button, fieldset, optgroup, option, select, textarea, input'),
+            WebDriverBy::cssSelector(self::FORM_ELEMENT_SELECTOR),
         );
 
         foreach ($possibleElements as $element) {
-            if ($element->isEnabled()) {
+            if ($this->isEnabled($element)) {
                 $elements[] = $element;
             }
         }
 
         return $elements;
+    }
+
+    private function isEnabled(WebDriverElement $element): bool
+    {
+        return $element->isEnabled()
+            && !in_array($element->getAttribute('disabled'), ['true', 'disabled'], true);
     }
 
     public function __toString(): string
