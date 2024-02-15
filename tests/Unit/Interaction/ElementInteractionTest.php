@@ -222,7 +222,7 @@ class ElementInteractionTest extends BaseUnitTestCase
     {
         // Arrange
         /**
-         * @var MockObject|WebDriver&JavaScriptExecutor $mockDriver
+         * @var MockObject|WebDriver|JavaScriptExecutor $mockDriver
          */
         $mockDriver = $this->createMockForIntersectionOfInterfaces([WebDriver::class, JavaScriptExecutor::class]);
 
@@ -260,7 +260,7 @@ class ElementInteractionTest extends BaseUnitTestCase
     {
         // Arrange
         /**
-         * @var MockObject|WebDriver&JavaScriptExecutor $mockDriver
+         * @var MockObject|WebDriver|JavaScriptExecutor $mockDriver
          */
         $mockDriver = $this->createMockForIntersectionOfInterfaces([WebDriver::class, JavaScriptExecutor::class]);
 

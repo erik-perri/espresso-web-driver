@@ -46,7 +46,7 @@ class ElementDisplayCheckerTest extends BaseUnitTestCase
     {
         // Arrange
         /**
-         * @var MockObject|WebDriver&JavaScriptExecutor $mockDriver
+         * @var MockObject|WebDriver|JavaScriptExecutor $mockDriver
          */
         $mockDriver = $this->createMockForIntersectionOfInterfaces([WebDriver::class, JavaScriptExecutor::class]);
         $mockDriver
@@ -91,7 +91,7 @@ class ElementDisplayCheckerTest extends BaseUnitTestCase
     ): void {
         // Arrange
         /**
-         * @var MockObject|WebDriver&JavaScriptExecutor $mockDriver
+         * @var MockObject|WebDriver|JavaScriptExecutor $mockDriver
          */
         $mockDriver = $this->createMockForIntersectionOfInterfaces([WebDriver::class, JavaScriptExecutor::class]);
         $mockDriver

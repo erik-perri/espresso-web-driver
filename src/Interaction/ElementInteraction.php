@@ -66,7 +66,7 @@ final readonly class ElementInteraction implements InteractionInterface
     }
 
     /**
-     * @throws AmbiguousElementException|PerformException|NoMatchingElementException
+     * @throws AmbiguousElementException|NoMatchingElementException|PerformException
      */
     public function perform(ActionInterface ...$actions): InteractionInterface
     {
