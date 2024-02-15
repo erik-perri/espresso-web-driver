@@ -38,7 +38,7 @@ jobs:
           SELENIUM_START_URL: http://host.docker.internal:8000
       - name: Check Coverage
         run: |
-          MINIMUM_COVERAGE=41
+          MINIMUM_COVERAGE=80
           CLASSES_PERCENT=$(cat coverage.txt | awk '/Classes:/ {print $2; exit}' | tr -d '%')
           METHODS_PERCENT=$(cat coverage.txt | awk '/Methods:/ {print $2; exit}' | tr -d '%')
           AVERAGE_COVERAGE=$(echo "scale=2; ($CLASSES_PERCENT + $METHODS_PERCENT) / 2" | bc)
