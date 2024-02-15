@@ -120,4 +120,24 @@ class MatchResultTest extends TestCase
         // Assert
         // No assertions, only expectations.
     }
+
+    public function testMatchResultSingleReturnsOnlyElement(): void
+    {
+        // Arrange
+        $mockMatcher = $this->createMock(MatcherInterface::class);
+
+        $mockElement = $this->createMock(WebDriverElement::class);
+
+        $result = new MatchResult(
+            $mockMatcher,
+            [$mockElement],
+            false,
+        );
+
+        // Act
+        $single = $result->single();
+
+        // Assert
+        $this->assertSame($mockElement, $single);
+    }
 }

@@ -17,12 +17,16 @@ use EspressoWebDriver\Matcher\MatcherInterface;
 use EspressoWebDriver\Matcher\MatchResult;
 use EspressoWebDriver\Reporter\AssertionReporterInterface;
 use EspressoWebDriver\Tests\Unit\BaseUnitTestCase;
+use Facebook\WebDriver\JavaScriptExecutor;
 use Facebook\WebDriver\WebDriver;
 use Facebook\WebDriver\WebDriverElement;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\MockObject\MockObject;
 
+use function EspressoWebDriver\click;
 use function EspressoWebDriver\isDisplayed;
 use function EspressoWebDriver\matches;
+use function EspressoWebDriver\withTagName;
 
 #[CoversClass(AssertionFailedException::class)]
 #[CoversClass(ElementInteraction::class)]
@@ -212,5 +216,76 @@ class ElementInteractionTest extends BaseUnitTestCase
 
         // Assert
         // No assertions, only expectations.
+    }
+
+    public function testCheckProvidesFluentInterface(): void
+    {
+        // Arrange
+        /**
+         * @var MockObject|WebDriver&JavaScriptExecutor $mockDriver
+         */
+        $mockDriver = $this->createMockForIntersectionOfInterfaces([WebDriver::class, JavaScriptExecutor::class]);
+
+        $mockMatcher = $this->createMock(MatcherInterface::class);
+
+        $mockElement = $this->createMock(WebDriverElement::class);
+        $mockElement
+            ->method('getTagName')
+            ->willReturn('mock');
+        $mockElement
+            ->method('findElements')
+            ->willReturn([
+                $this->createMock(WebDriverElement::class),
+            ]);
+
+        $mockOptions = new EspressoOptions(waitTimeoutInSeconds: 0);
+
+        $mockContext = new EspressoContext(
+            driver: $mockDriver,
+            options: $mockOptions,
+        );
+
+        $mockResult = new MatchResult($mockMatcher, [$mockElement]);
+
+        $interaction = new ElementInteraction($mockResult, $mockContext);
+
+        // Act
+        $result = $interaction->check(matches(withTagName('mock')));
+
+        // Assert
+        $this->assertSame($interaction, $result);
+    }
+
+    public function testPerformProvidesFluentInterface(): void
+    {
+        // Arrange
+        /**
+         * @var MockObject|WebDriver&JavaScriptExecutor $mockDriver
+         */
+        $mockDriver = $this->createMockForIntersectionOfInterfaces([WebDriver::class, JavaScriptExecutor::class]);
+
+        $mockMatcher = $this->createMock(MatcherInterface::class);
+
+        $mockElement = $this->createMock(WebDriverElement::class);
+        $mockElement
+            ->method('click')
+            ->willReturn(true);
+
+        $mockOptions = new EspressoOptions(waitTimeoutInSeconds: 0);
+
+        $mockContext = new EspressoContext(
+            driver: $mockDriver,
+            options: $mockOptions,
+        );
+
+        $mockResult = new MatchResult($mockMatcher, [$mockElement]);
+
+        $interaction = new ElementInteraction($mockResult, $mockContext);
+
+        // Act
+        $result = $interaction->perform(click());
+
+        // Assert
+        $this->assertSame($interaction, $result);
     }
 }
