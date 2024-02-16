@@ -15,7 +15,7 @@ use Facebook\WebDriver\WebDriverKeys;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\CoversFunction;
 
-use function EspressoWebDriver\displayedInViewport;
+use function EspressoWebDriver\displayed;
 use function EspressoWebDriver\focus;
 use function EspressoWebDriver\matches;
 use function EspressoWebDriver\not;
@@ -66,14 +66,14 @@ class SendKeysActionFeatureTest extends BaseFeatureTestCase
         $button = $espresso->onElement(withTagName('button'));
 
         // Act and Assert
-        $modal->check(matches(not(displayedInViewport())));
+        $modal->check(matches(not(displayed())));
 
         $button->perform(focus(), sendKeys(WebDriverKeys::SPACE));
 
-        $modal->check(matches(displayedInViewport()));
+        $modal->check(matches(displayed()));
 
         $button->perform(sendKeys(WebDriverKeys::ESCAPE));
 
-        $modal->check(matches(not(displayedInViewport())));
+        $modal->check(matches(not(displayed())));
     }
 }

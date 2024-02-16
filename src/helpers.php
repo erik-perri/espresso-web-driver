@@ -21,6 +21,8 @@ use EspressoWebDriver\Core\EspressoOptions;
 use EspressoWebDriver\Exception\NoMatchingElementException;
 use EspressoWebDriver\Matcher\AllOfMatcher;
 use EspressoWebDriver\Matcher\AnyOfMatcher;
+use EspressoWebDriver\Matcher\DisplayedInViewportMatcher;
+use EspressoWebDriver\Matcher\DisplayedMatcher;
 use EspressoWebDriver\Matcher\ExistsMatcher;
 use EspressoWebDriver\Matcher\HasDescendantMatcher;
 use EspressoWebDriver\Matcher\HasFocusMatcher;
@@ -118,7 +120,15 @@ function anyOf(MatcherInterface ...$assertions): MatcherInterface
 }
 
 /**
- * Exists checks if the element is visible on the page and in the viewport.
+ * Matches elements visible on the page (not necessarily within in the viewport).
+ */
+function displayed(): MatcherInterface
+{
+    return new DisplayedMatcher();
+}
+
+/**
+ * Matches elements visible on the page and in the viewport.
  */
 function displayedInViewport(): MatcherInterface
 {
@@ -126,7 +136,7 @@ function displayedInViewport(): MatcherInterface
 }
 
 /**
- * Exists checks if the element exists in the DOM, regardless of visibility.
+ * Matches elements that exist in the DOM, regardless of visibility.
  */
 function exists(): MatcherInterface
 {

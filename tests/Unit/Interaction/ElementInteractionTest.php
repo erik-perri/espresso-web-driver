@@ -24,7 +24,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 
 use function EspressoWebDriver\click;
-use function EspressoWebDriver\displayedInViewport;
+use function EspressoWebDriver\displayed;
 use function EspressoWebDriver\matches;
 use function EspressoWebDriver\withTagName;
 
@@ -121,7 +121,7 @@ class ElementInteractionTest extends BaseUnitTestCase
         $interaction = new ElementInteraction($mockResult, $mockContext);
 
         // Act
-        $interaction->check(matches(displayedInViewport()));
+        $interaction->check(matches(displayed()));
 
         // Assert
         // No assertions, only expectations.
@@ -166,7 +166,7 @@ class ElementInteractionTest extends BaseUnitTestCase
         $interaction = new ElementInteraction($mockResult, $mockContext);
 
         // Act
-        $interaction->check(matches(displayedInViewport()));
+        $interaction->check(matches(displayed()));
 
         // Assert
         // No assertions, only expectations.
