@@ -7,14 +7,14 @@ declare(strict_types=1);
 namespace EspressoWebDriver\Tests\Feature\Matcher;
 
 use EspressoWebDriver\Core\EspressoOptions;
-use EspressoWebDriver\Matcher\IsDisplayedMatcher;
+use EspressoWebDriver\Matcher\DisplayedInViewportMatcher;
 use EspressoWebDriver\Reporter\PhpunitReporter;
 use EspressoWebDriver\Tests\Feature\BaseFeatureTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\CoversFunction;
 
 use function EspressoWebDriver\click;
-use function EspressoWebDriver\isDisplayed;
+use function EspressoWebDriver\displayedInViewport;
 use function EspressoWebDriver\matches;
 use function EspressoWebDriver\not;
 use function EspressoWebDriver\scrollTo;
@@ -22,14 +22,14 @@ use function EspressoWebDriver\usingDriver;
 use function EspressoWebDriver\withClass;
 use function EspressoWebDriver\withText;
 
-#[CoversClass(IsDisplayedMatcher::class)]
-#[CoversFunction('EspressoWebDriver\isDisplayed')]
-class IsDisplayedMatcherFeatureTest extends BaseFeatureTestCase
+#[CoversClass(DisplayedInViewportMatcher::class)]
+#[CoversFunction('EspressoWebDriver\displayedInViewport')]
+class DisplayedInViewportMatcherFeatureTest extends BaseFeatureTestCase
 {
     public function testCannotSeeElementsThatAreOutOfTheViewport(): void
     {
         // Arrange
-        $driver = $this->driver()->get($this->mockStaticUrl('matchers/is-displayed.html'));
+        $driver = $this->driver()->get($this->mockStaticUrl('matchers/displayed.html'));
 
         $options = new EspressoOptions(
             waitTimeoutInSeconds: 0,
@@ -43,24 +43,24 @@ class IsDisplayedMatcherFeatureTest extends BaseFeatureTestCase
 
         // Act and Assert
         $topElement
-            ->check(matches(isDisplayed()));
+            ->check(matches(displayedInViewport()));
         $bottomElement
-            ->check(matches(not(isDisplayed())))
+            ->check(matches(not(displayedInViewport())))
             ->perform(scrollTo())
-            ->check(matches(isDisplayed()));
+            ->check(matches(displayedInViewport()));
 
         $topElement
-            ->check(matches(not(isDisplayed())))
+            ->check(matches(not(displayedInViewport())))
             ->perform(scrollTo())
-            ->check(matches(isDisplayed()));
+            ->check(matches(displayedInViewport()));
         $bottomElement
-            ->check(matches(not(isDisplayed())));
+            ->check(matches(not(displayedInViewport())));
     }
 
     public function testCannotSeeElementsThatAreHiddenWithCss(): void
     {
         // Arrange
-        $driver = $this->driver()->get($this->mockStaticUrl('matchers/is-displayed.html'));
+        $driver = $this->driver()->get($this->mockStaticUrl('matchers/displayed.html'));
 
         $options = new EspressoOptions(
             waitTimeoutInSeconds: 0,
@@ -73,14 +73,14 @@ class IsDisplayedMatcherFeatureTest extends BaseFeatureTestCase
         $hiddenUntilClickElement = $espresso->onElement(withClass('hidden'));
 
         // Act and Assert
-        $hiddenUntilClickElement->check(matches(not(isDisplayed())));
+        $hiddenUntilClickElement->check(matches(not(displayedInViewport())));
 
         $targetElement->perform(click());
 
-        $hiddenUntilClickElement->check(matches(isDisplayed()));
+        $hiddenUntilClickElement->check(matches(displayedInViewport()));
 
         $targetElement->perform(click());
 
-        $hiddenUntilClickElement->check(matches(not(isDisplayed())));
+        $hiddenUntilClickElement->check(matches(not(displayedInViewport())));
     }
 }

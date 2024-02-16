@@ -16,7 +16,7 @@ use PHPUnit\Framework\Attributes\CoversFunction;
 
 use function EspressoWebDriver\allOf;
 use function EspressoWebDriver\click;
-use function EspressoWebDriver\isDisplayed;
+use function EspressoWebDriver\displayedInViewport;
 use function EspressoWebDriver\matches;
 use function EspressoWebDriver\not;
 use function EspressoWebDriver\usingDriver;
@@ -82,7 +82,7 @@ class WithTextMatcherFeatureTest extends BaseFeatureTestCase
 
         // Act and Assert
         $espresso->onElement(withText('Mock A'))
-            ->check(matches(isDisplayed()));
+            ->check(matches(displayedInViewport()));
     }
 
     public function testMatchesNegativeContainer(): void
@@ -100,7 +100,7 @@ class WithTextMatcherFeatureTest extends BaseFeatureTestCase
 
         // Act and Assert
         $espresso->onElement(not(withText('Mock A')))
-            ->check(matches(isDisplayed()));
+            ->check(matches(displayedInViewport()));
     }
 
     public function testDoesNotMatchWhenCaseIsWrong(): void

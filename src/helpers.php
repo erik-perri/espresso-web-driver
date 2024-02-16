@@ -25,7 +25,6 @@ use EspressoWebDriver\Matcher\ExistsMatcher;
 use EspressoWebDriver\Matcher\HasDescendantMatcher;
 use EspressoWebDriver\Matcher\HasFocusMatcher;
 use EspressoWebDriver\Matcher\HasSiblingMatcher;
-use EspressoWebDriver\Matcher\IsDisplayedMatcher;
 use EspressoWebDriver\Matcher\IsEnabledMatcher;
 use EspressoWebDriver\Matcher\MatcherInterface;
 use EspressoWebDriver\Matcher\NotMatcher;
@@ -118,6 +117,17 @@ function anyOf(MatcherInterface ...$assertions): MatcherInterface
     return new AnyOfMatcher(...$assertions);
 }
 
+/**
+ * Exists checks if the element is visible on the page and in the viewport.
+ */
+function displayedInViewport(): MatcherInterface
+{
+    return new DisplayedInViewportMatcher();
+}
+
+/**
+ * Exists checks if the element exists in the DOM, regardless of visibility.
+ */
 function exists(): MatcherInterface
 {
     return new ExistsMatcher();
@@ -136,11 +146,6 @@ function hasFocus(): MatcherInterface
 function hasSibling(MatcherInterface $matcher): MatcherInterface
 {
     return new HasSiblingMatcher($matcher);
-}
-
-function isDisplayed(): MatcherInterface
-{
-    return new IsDisplayedMatcher();
 }
 
 function isEnabled(): MatcherInterface

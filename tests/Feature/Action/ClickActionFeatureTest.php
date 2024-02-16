@@ -16,7 +16,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\CoversFunction;
 
 use function EspressoWebDriver\click;
-use function EspressoWebDriver\isDisplayed;
+use function EspressoWebDriver\displayedInViewport;
 use function EspressoWebDriver\matches;
 use function EspressoWebDriver\not;
 use function EspressoWebDriver\sendKeys;
@@ -66,14 +66,14 @@ class ClickActionFeatureTest extends BaseFeatureTestCase
         $button = $espresso->onElement(withTagName('button'));
 
         // Act and Assert
-        $modal->check(matches(not(isDisplayed())));
+        $modal->check(matches(not(displayedInViewport())));
 
         $button->perform(click());
 
-        $modal->check(matches(isDisplayed()));
+        $modal->check(matches(displayedInViewport()));
 
         $button->perform(click());
 
-        $modal->check(matches(not(isDisplayed())));
+        $modal->check(matches(not(displayedInViewport())));
     }
 }

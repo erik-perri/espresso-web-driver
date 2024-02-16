@@ -5,36 +5,40 @@ declare(strict_types=1);
 namespace EspressoWebDriver\Matcher;
 
 use EspressoWebDriver\Exception\AmbiguousElementException;
+use EspressoWebDriver\Exception\EspressoWebDriverException;
 use EspressoWebDriver\Exception\NoMatchingElementException;
 use EspressoWebDriver\Traits\HasAutomaticWait;
 use EspressoWebDriver\Utilities\ElementDisplayChecker;
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverElement;
 
-final readonly class IsDisplayedMatcher implements MatcherInterface
+final readonly class DisplayedInViewportMatcher implements MatcherInterface
 {
     use HasAutomaticWait;
 
     /**
-     * @throws AmbiguousElementException|NoMatchingElementException
+     * @throws AmbiguousElementException|EspressoWebDriverException|NoMatchingElementException
      */
     public function match(MatchResult $container, MatchContext $context): MatchResult
     {
         return $this->waitForMatch(
             $context,
             fn () => $context->isNegated
-                ? $this->matchHiddenElements($container->single(), $context)
-                : $this->matchDisplayedElements($container->single(), $context),
+                ? $this->matchOffScreenElements($container->single(), $context)
+                : $this->matchOnScreenElements($container->single(), $context),
         );
     }
 
     /**
      * @return WebDriverElement[]
+     *
+     * @throws EspressoWebDriverException
      */
-    private function matchDisplayedElements(WebDriverElement $container, MatchContext $context): array
+    private function matchOnScreenElements(WebDriverElement $container, MatchContext $context): array
     {
         $elements = [];
 
+        // TODO Move to a part of context for reuse of values? How would we know when to update?
         $checker = new ElementDisplayChecker($context->driver);
 
         if ($checker->isDisplayed($container)) {
@@ -56,8 +60,10 @@ final readonly class IsDisplayedMatcher implements MatcherInterface
 
     /**
      * @return WebDriverElement[]
+     *
+     * @throws EspressoWebDriverException
      */
-    private function matchHiddenElements(WebDriverElement $container, MatchContext $context): array
+    private function matchOffScreenElements(WebDriverElement $container, MatchContext $context): array
     {
         $elements = [];
 
@@ -81,6 +87,6 @@ final readonly class IsDisplayedMatcher implements MatcherInterface
 
     public function __toString(): string
     {
-        return 'displayed';
+        return 'displayedInViewport';
     }
 }
