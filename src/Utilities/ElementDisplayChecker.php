@@ -45,6 +45,9 @@ final class ElementDisplayChecker
             $elementRight <= ($this->scrollX + $this->viewportWidth);
     }
 
+    /**
+     * @throws EspressoWebDriverException
+     */
     public function updateViewport(): void
     {
         if (!($this->driver instanceof JavaScriptExecutor)) {

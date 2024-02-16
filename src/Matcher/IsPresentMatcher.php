@@ -7,7 +7,7 @@ namespace EspressoWebDriver\Matcher;
 use EspressoWebDriver\Exception\AmbiguousElementException;
 use EspressoWebDriver\Exception\NoMatchingElementException;
 
-final readonly class ExistsMatcher implements MatcherInterface
+final readonly class IsPresentMatcher implements MatcherInterface
 {
     /**
      * @throws AmbiguousElementException
@@ -25,6 +25,6 @@ final readonly class ExistsMatcher implements MatcherInterface
 
     public function __toString(): string
     {
-        return 'exists';
+        return 'present';
     }
 }

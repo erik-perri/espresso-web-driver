@@ -7,14 +7,14 @@ declare(strict_types=1);
 namespace EspressoWebDriver\Tests\Feature\Matcher;
 
 use EspressoWebDriver\Core\EspressoOptions;
-use EspressoWebDriver\Matcher\DisplayedInViewportMatcher;
+use EspressoWebDriver\Matcher\IsDisplayedInViewportMatcher;
 use EspressoWebDriver\Reporter\PhpunitReporter;
 use EspressoWebDriver\Tests\Feature\BaseFeatureTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\CoversFunction;
 
 use function EspressoWebDriver\click;
-use function EspressoWebDriver\displayedInViewport;
+use function EspressoWebDriver\isDisplayedInViewport;
 use function EspressoWebDriver\matches;
 use function EspressoWebDriver\not;
 use function EspressoWebDriver\scrollTo;
@@ -22,9 +22,9 @@ use function EspressoWebDriver\usingDriver;
 use function EspressoWebDriver\withClass;
 use function EspressoWebDriver\withText;
 
-#[CoversClass(DisplayedInViewportMatcher::class)]
-#[CoversFunction('EspressoWebDriver\displayedInViewport')]
-class DisplayedInViewportMatcherFeatureTest extends BaseFeatureTestCase
+#[CoversClass(IsDisplayedInViewportMatcher::class)]
+#[CoversFunction('EspressoWebDriver\isDisplayedInViewport')]
+class IsDisplayedInViewportMatcherFeatureTest extends BaseFeatureTestCase
 {
     public function testCannotSeeElementsThatAreOutOfTheViewport(): void
     {
@@ -43,18 +43,18 @@ class DisplayedInViewportMatcherFeatureTest extends BaseFeatureTestCase
 
         // Act and Assert
         $topElement
-            ->check(matches(displayedInViewport()));
+            ->check(matches(isDisplayedInViewport()));
         $bottomElement
-            ->check(matches(not(displayedInViewport())))
+            ->check(matches(not(isDisplayedInViewport())))
             ->perform(scrollTo())
-            ->check(matches(displayedInViewport()));
+            ->check(matches(isDisplayedInViewport()));
 
         $topElement
-            ->check(matches(not(displayedInViewport())))
+            ->check(matches(not(isDisplayedInViewport())))
             ->perform(scrollTo())
-            ->check(matches(displayedInViewport()));
+            ->check(matches(isDisplayedInViewport()));
         $bottomElement
-            ->check(matches(not(displayedInViewport())));
+            ->check(matches(not(isDisplayedInViewport())));
     }
 
     public function testCannotSeeElementsThatAreHiddenWithCss(): void
@@ -73,14 +73,14 @@ class DisplayedInViewportMatcherFeatureTest extends BaseFeatureTestCase
         $hiddenUntilClickElement = $espresso->onElement(withClass('hidden'));
 
         // Act and Assert
-        $hiddenUntilClickElement->check(matches(not(displayedInViewport())));
+        $hiddenUntilClickElement->check(matches(not(isDisplayedInViewport())));
 
         $targetElement->perform(click());
 
-        $hiddenUntilClickElement->check(matches(displayedInViewport()));
+        $hiddenUntilClickElement->check(matches(isDisplayedInViewport()));
 
         $targetElement->perform(click());
 
-        $hiddenUntilClickElement->check(matches(not(displayedInViewport())));
+        $hiddenUntilClickElement->check(matches(not(isDisplayedInViewport())));
     }
 }

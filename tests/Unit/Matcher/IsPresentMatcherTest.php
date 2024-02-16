@@ -6,22 +6,22 @@ declare(strict_types=1);
 
 namespace EspressoWebDriver\Tests\Unit\Matcher;
 
-use EspressoWebDriver\Matcher\ExistsMatcher;
+use EspressoWebDriver\Matcher\IsPresentMatcher;
 use EspressoWebDriver\Tests\Unit\BaseUnitTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversClass(ExistsMatcher::class)]
-class ExistsMatcherTest extends BaseUnitTestCase
+#[CoversClass(IsPresentMatcher::class)]
+class IsPresentMatcherTest extends BaseUnitTestCase
 {
-    public function testExistsMatcherToString(): void
+    public function testPresentMatcherToString(): void
     {
         // Arrange
-        $assertion = new ExistsMatcher();
+        $assertion = new IsPresentMatcher();
 
         // Act
         $result = (string) $assertion;
 
         // Assert
-        $this->assertSame('exists', $result);
+        $this->assertSame('present', $result);
     }
 }

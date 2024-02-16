@@ -21,13 +21,13 @@ use EspressoWebDriver\Core\EspressoOptions;
 use EspressoWebDriver\Exception\NoMatchingElementException;
 use EspressoWebDriver\Matcher\AllOfMatcher;
 use EspressoWebDriver\Matcher\AnyOfMatcher;
-use EspressoWebDriver\Matcher\DisplayedInViewportMatcher;
-use EspressoWebDriver\Matcher\DisplayedMatcher;
-use EspressoWebDriver\Matcher\ExistsMatcher;
 use EspressoWebDriver\Matcher\HasDescendantMatcher;
 use EspressoWebDriver\Matcher\HasFocusMatcher;
 use EspressoWebDriver\Matcher\HasSiblingMatcher;
+use EspressoWebDriver\Matcher\IsDisplayedInViewportMatcher;
+use EspressoWebDriver\Matcher\IsDisplayedMatcher;
 use EspressoWebDriver\Matcher\IsEnabledMatcher;
+use EspressoWebDriver\Matcher\IsPresentMatcher;
 use EspressoWebDriver\Matcher\MatcherInterface;
 use EspressoWebDriver\Matcher\NotMatcher;
 use EspressoWebDriver\Matcher\WithClassMatcher;
@@ -119,30 +119,6 @@ function anyOf(MatcherInterface ...$assertions): MatcherInterface
     return new AnyOfMatcher(...$assertions);
 }
 
-/**
- * Matches elements visible on the page (not necessarily within in the viewport).
- */
-function displayed(): MatcherInterface
-{
-    return new DisplayedMatcher();
-}
-
-/**
- * Matches elements visible on the page and in the viewport.
- */
-function displayedInViewport(): MatcherInterface
-{
-    return new DisplayedInViewportMatcher();
-}
-
-/**
- * Matches elements that exist in the DOM, regardless of visibility.
- */
-function exists(): MatcherInterface
-{
-    return new ExistsMatcher();
-}
-
 function hasDescendant(MatcherInterface $matcher): MatcherInterface
 {
     return new HasDescendantMatcher($matcher);
@@ -158,9 +134,33 @@ function hasSibling(MatcherInterface $matcher): MatcherInterface
     return new HasSiblingMatcher($matcher);
 }
 
+/**
+ * Matches elements visible on the page (not necessarily within in the viewport).
+ */
+function isDisplayed(): MatcherInterface
+{
+    return new IsDisplayedMatcher();
+}
+
+/**
+ * Matches elements visible on the page and in the viewport.
+ */
+function isDisplayedInViewport(): MatcherInterface
+{
+    return new IsDisplayedInViewportMatcher();
+}
+
 function isEnabled(): MatcherInterface
 {
     return new IsEnabledMatcher();
+}
+
+/**
+ * Matches elements that exist in the DOM, regardless of visibility.
+ */
+function isPresent(): MatcherInterface
+{
+    return new IsPresentMatcher();
 }
 
 function not(MatcherInterface $assertionOrMatcher): MatcherInterface

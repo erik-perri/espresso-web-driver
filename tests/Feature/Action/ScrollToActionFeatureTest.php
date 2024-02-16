@@ -13,7 +13,7 @@ use EspressoWebDriver\Tests\Feature\BaseFeatureTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\CoversFunction;
 
-use function EspressoWebDriver\displayedInViewport;
+use function EspressoWebDriver\isDisplayedInViewport;
 use function EspressoWebDriver\matches;
 use function EspressoWebDriver\scrollTo;
 use function EspressoWebDriver\usingDriver;
@@ -39,6 +39,6 @@ class ScrollToActionFeatureTest extends BaseFeatureTestCase
         $espresso
             ->onElement(withText('Mock Z'))
             ->perform(scrollTo())
-            ->check(matches(displayedInViewport()));
+            ->check(matches(isDisplayedInViewport()));
     }
 }

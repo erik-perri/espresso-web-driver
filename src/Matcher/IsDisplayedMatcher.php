@@ -10,7 +10,7 @@ use EspressoWebDriver\Traits\HasAutomaticWait;
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverElement;
 
-final readonly class DisplayedMatcher implements MatcherInterface
+final readonly class IsDisplayedMatcher implements MatcherInterface
 {
     use HasAutomaticWait;
 

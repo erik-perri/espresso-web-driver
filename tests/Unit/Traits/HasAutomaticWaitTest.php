@@ -7,7 +7,7 @@ declare(strict_types=1);
 namespace EspressoWebDriver\Tests\Unit\Traits;
 
 use EspressoWebDriver\Core\EspressoOptions;
-use EspressoWebDriver\Matcher\DisplayedMatcher;
+use EspressoWebDriver\Matcher\IsDisplayedMatcher;
 use EspressoWebDriver\Matcher\MatchContext;
 use EspressoWebDriver\Matcher\MatchResult;
 use EspressoWebDriver\Tests\Unit\BaseUnitTestCase;
@@ -19,7 +19,7 @@ use Symfony\Bridge\PhpUnit\ClockMock;
 
 use function EspressoWebDriver\withTagName;
 
-#[CoversClass(DisplayedMatcher::class)]
+#[CoversClass(IsDisplayedMatcher::class)]
 class HasAutomaticWaitTest extends BaseUnitTestCase
 {
     protected function setUp(): void
@@ -34,7 +34,7 @@ class HasAutomaticWaitTest extends BaseUnitTestCase
         ClockMock::withClockMock(false);
     }
 
-    public function testRetriesTheExpectedAmountOfTimes()
+    public function testRetriesTheExpectedAmountOfTimes(): void
     {
         // Arrange
         $configuredDelayInMilliseconds = 160;
@@ -63,7 +63,7 @@ class HasAutomaticWaitTest extends BaseUnitTestCase
             ),
         );
 
-        $matcher = new DisplayedMatcher();
+        $matcher = new IsDisplayedMatcher();
 
         // Act
         $result = $matcher->match($matchResult, $matchContext);
@@ -72,7 +72,7 @@ class HasAutomaticWaitTest extends BaseUnitTestCase
         $this->assertEquals(0, $result->count());
     }
 
-    public function testReturnsEarlyOnSuccess()
+    public function testReturnsEarlyOnSuccess(): void
     {
         // Arrange
         $configuredDelayInMilliseconds = 100;
@@ -111,7 +111,7 @@ class HasAutomaticWaitTest extends BaseUnitTestCase
             ),
         );
 
-        $matcher = new DisplayedMatcher();
+        $matcher = new IsDisplayedMatcher();
 
         // Act
         $result = $matcher->match($matchResult, $matchContext);
