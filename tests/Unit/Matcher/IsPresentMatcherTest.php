@@ -22,6 +22,6 @@ class IsPresentMatcherTest extends BaseUnitTestCase
         $result = (string) $assertion;
 
         // Assert
-        $this->assertSame('present', $result);
+        $this->assertSame('isPresent', $result);
     }
 }

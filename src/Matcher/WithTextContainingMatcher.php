@@ -75,6 +75,6 @@ final readonly class WithTextContainingMatcher implements MatcherInterface
 
     public function __toString(): string
     {
-        return sprintf('textContaining="%1$s"', $this->text);
+        return sprintf('withTextContaining(%1$s)', $this->text);
     }
 }

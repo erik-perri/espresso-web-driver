@@ -26,6 +26,6 @@ class HasSiblingMatcherTest extends BaseUnitTestCase
         $result = (string) $matcher;
 
         // Assert
-        $this->assertSame('sibling(mock)', $result);
+        $this->assertSame('hasSibling(mock)', $result);
     }
 }

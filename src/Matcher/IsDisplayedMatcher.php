@@ -76,6 +76,6 @@ final readonly class IsDisplayedMatcher implements MatcherInterface
 
     public function __toString(): string
     {
-        return 'displayed';
+        return 'isDisplayed';
     }
 }

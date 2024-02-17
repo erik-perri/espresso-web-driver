@@ -107,7 +107,7 @@ class WithTextMatcherFeatureTest extends BaseFeatureTestCase
     {
         // Expectations
         $this->expectException(NoMatchingElementException::class);
-        $this->expectExceptionMessage('No element found for text="MOCK A"');
+        $this->expectExceptionMessage('No element found for withText(MOCK A)');
 
         // Arrange
         $driver = $this->driver()->get($this->mockStaticUrl('matchers/with-text.html'));
@@ -149,7 +149,7 @@ class WithTextMatcherFeatureTest extends BaseFeatureTestCase
     {
         // Expectations
         $this->expectException(NoMatchingElementException::class);
-        $this->expectExceptionMessage('No element found for text="Mock C"');
+        $this->expectExceptionMessage('No element found for withText(Mock C)');
 
         // Arrange
         $driver = $this->driver()->get($this->mockStaticUrl('matchers/with-text.html'));

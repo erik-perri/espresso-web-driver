@@ -33,6 +33,6 @@ class AllOfMatcherTest extends BaseUnitTestCase
         $result = (string) $assertion;
 
         // Assert
-        $this->assertSame('all(mock1; mock2)', $result);
+        $this->assertSame('allOf(mock1; mock2)', $result);
     }
 }

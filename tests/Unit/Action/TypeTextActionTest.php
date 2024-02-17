@@ -49,6 +49,6 @@ class TypeTextActionTest extends BaseUnitTestCase
         $result = (string) $assertion;
 
         // Assert
-        $this->assertSame('typeText("Mock Keys")', $result);
+        $this->assertSame('typeText(Mock Keys)', $result);
     }
 }

@@ -102,6 +102,6 @@ final readonly class HasSiblingMatcher implements MatcherInterface
 
     public function __toString(): string
     {
-        return sprintf('sibling(%1$s)', $this->matcher);
+        return sprintf('hasSibling(%1$s)', $this->matcher);
     }
 }

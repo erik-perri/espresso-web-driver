@@ -20,7 +20,7 @@ class HasDescendantMatcherTest extends BaseUnitTestCase
         $mockMatcher = $this->createMock(MatcherInterface::class);
         $mockMatcher
             ->method('__toString')
-            ->willReturn('mock="test"');
+            ->willReturn('mock(test)');
 
         $matcher = new HasDescendantMatcher($mockMatcher);
 
@@ -28,6 +28,6 @@ class HasDescendantMatcherTest extends BaseUnitTestCase
         $result = (string) $matcher;
 
         // Assert
-        $this->assertSame('descendant(mock="test")', $result);
+        $this->assertSame('hasDescendant(mock(test))', $result);
     }
 }

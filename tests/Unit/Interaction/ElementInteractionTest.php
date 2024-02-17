@@ -89,7 +89,7 @@ class ElementInteractionTest extends BaseUnitTestCase
     {
         // Expectations
         $this->expectException(AssertionFailedException::class);
-        $this->expectExceptionMessage('Failed to assert matches(displayed), No element found for mock');
+        $this->expectExceptionMessage('Failed to assert matches(isDisplayed), No element found for mock');
 
         // Arrange
         $mockMatcher = $this->createMock(MatcherInterface::class);
@@ -103,7 +103,7 @@ class ElementInteractionTest extends BaseUnitTestCase
             ->method('report')
             ->with(
                 false,
-                'Failed asserting that matches(displayed) is true for mock (0 elements), no matching element was found.',
+                'Failed asserting that matches(isDisplayed) is true for mock (0 elements), no matching element was found.',
             );
 
         $mockOptions = new EspressoOptions(
@@ -131,7 +131,7 @@ class ElementInteractionTest extends BaseUnitTestCase
     {
         // Expectations
         $this->expectException(AssertionFailedException::class);
-        $this->expectExceptionMessage('Failed to assert matches(displayed), 2 elements found for mock');
+        $this->expectExceptionMessage('Failed to assert matches(isDisplayed), 2 elements found for mock');
 
         // Arrange
         $mockMatcher = $this->createMock(MatcherInterface::class);
@@ -145,7 +145,7 @@ class ElementInteractionTest extends BaseUnitTestCase
             ->method('report')
             ->with(
                 false,
-                'Failed asserting that matches(displayed) is true for mock (2 elements), multiple matching elements were found.',
+                'Failed asserting that matches(isDisplayed) is true for mock (2 elements), multiple matching elements were found.',
             );
 
         $mockOptions = new EspressoOptions(

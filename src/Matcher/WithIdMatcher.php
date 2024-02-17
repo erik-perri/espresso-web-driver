@@ -63,6 +63,6 @@ final readonly class WithIdMatcher implements MatcherInterface
 
     public function __toString(): string
     {
-        return sprintf('id="%1$s"', $this->id);
+        return sprintf('withId(%1$s)', $this->id);
     }
 }

@@ -22,6 +22,6 @@ class WithValueMatcherTest extends BaseUnitTestCase
         $result = (string) $matcher;
 
         // Assert
-        $this->assertSame('value="mock"', $result);
+        $this->assertSame('withValue(mock)', $result);
     }
 }

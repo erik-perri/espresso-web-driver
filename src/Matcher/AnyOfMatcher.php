@@ -66,7 +66,7 @@ final readonly class AnyOfMatcher implements MatcherInterface
     public function __toString(): string
     {
         return sprintf(
-            'any(%1$s)',
+            'anyOf(%1$s)',
             implode('; ', array_map(fn (MatcherInterface $matcher) => (string) $matcher, $this->matchers)),
         );
     }

@@ -20,6 +20,6 @@ class WithClassMatcherTest extends BaseUnitTestCase
         $result = (string) $matcher;
 
         // Assert
-        $this->assertSame('class="mock"', $result);
+        $this->assertSame('withClass(mock)', $result);
     }
 }

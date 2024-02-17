@@ -22,6 +22,6 @@ class WithTextContainingMatcherTest extends BaseUnitTestCase
         $result = (string) $matcher;
 
         // Assert
-        $this->assertSame('textContaining="mock"', $result);
+        $this->assertSame('withTextContaining(mock)', $result);
     }
 }

@@ -28,7 +28,7 @@ class EspressoCoreTest extends BaseUnitTestCase
     {
         // Expectations
         $this->expectException(NoMatchingElementException::class);
-        $this->expectExceptionMessage('No element found for tagName="html"');
+        $this->expectExceptionMessage('No element found for withTagName(html)');
 
         // Arrange
         $mockDriver = $this->createMock(WebDriver::class);
@@ -50,7 +50,7 @@ class EspressoCoreTest extends BaseUnitTestCase
     {
         // Expectations
         $this->expectException(NoMatchingElementException::class);
-        $this->expectExceptionMessage('No element found for text="mock"');
+        $this->expectExceptionMessage('No element found for withText(mock)');
 
         // Arrange
         $mockHtmlElement = $this->createMock(WebDriverElement::class);
@@ -80,7 +80,7 @@ class EspressoCoreTest extends BaseUnitTestCase
     {
         // Expectations
         $this->expectException(AmbiguousElementException::class);
-        $this->expectExceptionMessage('2 elements found for text="mock"');
+        $this->expectExceptionMessage('2 elements found for withText(mock)');
 
         // Arrange
         $mockHtmlElement = $this->createMock(WebDriverElement::class);
@@ -113,7 +113,7 @@ class EspressoCoreTest extends BaseUnitTestCase
     {
         // Expectations
         $this->expectException(AmbiguousElementException::class);
-        $this->expectExceptionMessage('2 elements found for text="mock"');
+        $this->expectExceptionMessage('2 elements found for withText(mock)');
 
         // Arrange
         $mockHtmlElement = $this->createMock(WebDriverElement::class);

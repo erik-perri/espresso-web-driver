@@ -85,6 +85,6 @@ final readonly class IsEnabledMatcher implements MatcherInterface
 
     public function __toString(): string
     {
-        return 'enabled';
+        return 'isEnabled';
     }
 }

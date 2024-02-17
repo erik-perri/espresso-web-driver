@@ -87,6 +87,6 @@ final readonly class IsDisplayedInViewportMatcher implements MatcherInterface
 
     public function __toString(): string
     {
-        return 'displayedInViewport';
+        return 'isDisplayedInViewport';
     }
 }

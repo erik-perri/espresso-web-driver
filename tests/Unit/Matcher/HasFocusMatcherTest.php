@@ -22,6 +22,6 @@ class HasFocusMatcherTest extends BaseUnitTestCase
         $result = (string) $matcher;
 
         // Assert
-        $this->assertSame('focused', $result);
+        $this->assertSame('hasFocus', $result);
     }
 }

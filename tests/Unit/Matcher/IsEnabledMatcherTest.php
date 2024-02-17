@@ -22,6 +22,6 @@ class IsEnabledMatcherTest extends BaseUnitTestCase
         $result = (string) $matcher;
 
         // Assert
-        $this->assertSame('enabled', $result);
+        $this->assertSame('isEnabled', $result);
     }
 }

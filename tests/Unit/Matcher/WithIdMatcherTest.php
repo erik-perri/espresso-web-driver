@@ -20,6 +20,6 @@ class WithIdMatcherTest extends BaseUnitTestCase
         $result = (string) $matcher;
 
         // Assert
-        $this->assertSame('id="mock"', $result);
+        $this->assertSame('withId(mock)', $result);
     }
 }

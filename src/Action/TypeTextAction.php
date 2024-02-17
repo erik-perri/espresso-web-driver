@@ -26,6 +26,6 @@ final readonly class TypeTextAction implements ActionInterface
 
     public function __toString(): string
     {
-        return sprintf('typeText("%1$s")', $this->text);
+        return sprintf('typeText(%1$s)', $this->text);
     }
 }

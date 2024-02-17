@@ -20,6 +20,6 @@ class WithTagNameMatcherTest extends BaseUnitTestCase
         $result = (string) $matcher;
 
         // Assert
-        $this->assertSame('tagName="mock"', $result);
+        $this->assertSame('withTagName(mock)', $result);
     }
 }

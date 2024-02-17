@@ -25,6 +25,6 @@ final readonly class IsPresentMatcher implements MatcherInterface
 
     public function __toString(): string
     {
-        return 'present';
+        return 'isPresent';
     }
 }

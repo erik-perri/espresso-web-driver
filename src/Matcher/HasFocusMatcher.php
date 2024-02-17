@@ -65,6 +65,6 @@ final readonly class HasFocusMatcher implements MatcherInterface
 
     public function __toString(): string
     {
-        return 'focused';
+        return 'hasFocus';
     }
 }

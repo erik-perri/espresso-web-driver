@@ -123,7 +123,7 @@ class HasFocusFeatureTest extends BaseFeatureTestCase
     {
         // Expectations
         $this->expectException(NoParentException::class);
-        $this->expectExceptionMessage('Unable to locate a parent while checking <html> for focused');
+        $this->expectExceptionMessage('Unable to locate a parent while checking <html> for hasFocus');
 
         // Arrange
         $driver = $this->driver()->get($this->mockStaticUrl('matchers/has-focus.html'));
@@ -147,7 +147,7 @@ class HasFocusFeatureTest extends BaseFeatureTestCase
     {
         // Expectations
         $this->expectException(NoParentException::class);
-        $this->expectExceptionMessage('Unable to locate a parent while checking <html> for focused');
+        $this->expectExceptionMessage('Unable to locate a parent while checking <html> for hasFocus');
 
         // Arrange
         $driver = $this->driver()->get($this->mockStaticUrl('matchers/has-focus.html'));

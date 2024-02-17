@@ -33,6 +33,6 @@ class AnyOfMatcherTest extends BaseUnitTestCase
         $result = (string) $assertion;
 
         // Assert
-        $this->assertSame('any(mock1; mock2)', $result);
+        $this->assertSame('anyOf(mock1; mock2)', $result);
     }
 }

@@ -76,6 +76,6 @@ final readonly class WithClassMatcher implements MatcherInterface
 
     public function __toString(): string
     {
-        return sprintf('class="%1$s"', $this->class);
+        return sprintf('withClass(%1$s)', $this->class);
     }
 }

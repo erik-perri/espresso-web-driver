@@ -89,6 +89,6 @@ final readonly class HasDescendantMatcher implements MatcherInterface
 
     public function __toString(): string
     {
-        return sprintf('descendant(%1$s)', $this->matcher);
+        return sprintf('hasDescendant(%1$s)', $this->matcher);
     }
 }

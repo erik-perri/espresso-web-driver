@@ -63,6 +63,6 @@ final readonly class WithValueMatcher implements MatcherInterface
 
     public function __toString(): string
     {
-        return sprintf('value="%1$s"', $this->value);
+        return sprintf('withValue(%1$s)', $this->value);
     }
 }
