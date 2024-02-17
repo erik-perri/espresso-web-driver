@@ -45,11 +45,10 @@ final readonly class IsDisplayedInViewportMatcher implements MatcherInterface
             $elements[] = $container;
         }
 
-        $potentiallyVisibleElements = $container->findElements(
-            WebDriverBy::cssSelector('*:not([style*="display: none"]):not([style*="visibility: hidden"])'),
-        );
+        // TODO This is probably a bad idea on dom heavy pages
+        $potentialElements = $container->findElements(WebDriverBy::cssSelector('*'));
 
-        foreach ($potentiallyVisibleElements as $element) {
+        foreach ($potentialElements as $element) {
             if ($checker->isDisplayed($element)) {
                 $elements[] = $element;
             }
@@ -74,9 +73,9 @@ final readonly class IsDisplayedInViewportMatcher implements MatcherInterface
         }
 
         // TODO This is probably a bad idea on dom heavy pages
-        $potentiallyHiddenElements = $container->findElements(WebDriverBy::cssSelector('*'));
+        $potentialElements = $container->findElements(WebDriverBy::cssSelector('*'));
 
-        foreach ($potentiallyHiddenElements as $element) {
+        foreach ($potentialElements as $element) {
             if (!$checker->isDisplayed($element)) {
                 $elements[] = $element;
             }
