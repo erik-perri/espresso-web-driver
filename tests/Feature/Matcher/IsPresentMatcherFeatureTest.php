@@ -29,7 +29,7 @@ class IsPresentMatcherFeatureTest extends BaseFeatureTestCase
     public function testChecksElementExistence(): void
     {
         // Arrange
-        $driver = $this->driver()->get($this->mockStaticUrl('matchers/present.html'));
+        $driver = $this->driver()->get($this->mockStaticUrl('matchers/is-present.html'));
 
         $options = new EspressoOptions(
             waitTimeoutInSeconds: 0,

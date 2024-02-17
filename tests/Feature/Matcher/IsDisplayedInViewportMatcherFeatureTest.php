@@ -29,7 +29,7 @@ class IsDisplayedInViewportMatcherFeatureTest extends BaseFeatureTestCase
     public function testCannotSeeElementsThatAreOutOfTheViewport(): void
     {
         // Arrange
-        $driver = $this->driver()->get($this->mockStaticUrl('matchers/displayed.html'));
+        $driver = $this->driver()->get($this->mockStaticUrl('matchers/is-displayed.html'));
 
         $options = new EspressoOptions(
             waitTimeoutInSeconds: 0,
@@ -60,7 +60,7 @@ class IsDisplayedInViewportMatcherFeatureTest extends BaseFeatureTestCase
     public function testCannotSeeElementsThatAreHiddenWithCss(): void
     {
         // Arrange
-        $driver = $this->driver()->get($this->mockStaticUrl('matchers/displayed.html'));
+        $driver = $this->driver()->get($this->mockStaticUrl('matchers/is-displayed.html'));
 
         $options = new EspressoOptions(
             waitTimeoutInSeconds: 0,
