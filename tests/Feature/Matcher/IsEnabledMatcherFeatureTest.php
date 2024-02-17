@@ -38,7 +38,8 @@ class IsEnabledMatcherFeatureTest extends BaseFeatureTestCase
             assertionReporter: new PhpunitReporter,
         );
 
-        $espresso = usingDriver($driver, $options);
+        $espresso = usingDriver($driver, $options)
+            ->inContainer(withClass('buttons'));
 
         // Act and Assert
         $espresso->onElement(allOf(withTagName('button'), isEnabled()))
@@ -64,6 +65,23 @@ class IsEnabledMatcherFeatureTest extends BaseFeatureTestCase
             ->check(matches(hasDescendant(withText('Enabled'))));
         $espresso->onElement(allOf(withTagName('fieldset'), not(isEnabled())))
             ->check(matches(hasDescendant(withText('Disabled'))));
+    }
+
+    public function testIsEnabledWorksOnFieldSetsChildren(): void
+    {
+        // Arrange
+        $driver = $this->driver()->get($this->mockStaticUrl('matchers/is-enabled.html'));
+
+        $options = new EspressoOptions(
+            waitTimeoutInSeconds: 0,
+            assertionReporter: new PhpunitReporter,
+        );
+
+        $espresso = usingDriver($driver, $options);
+
+        // Act and Assert
+        $espresso->onElement(allOf(withTagName('fieldset'), not(isEnabled())))
+            ->check(matches(hasDescendant(allOf(withTagName('button'), not(isEnabled())))));
     }
 
     public function testIsEnabledWorksOnInputs(): void

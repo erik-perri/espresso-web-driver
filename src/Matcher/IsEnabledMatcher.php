@@ -32,9 +32,21 @@ final readonly class IsEnabledMatcher implements MatcherInterface
      */
     private function matchDisabledElements(WebDriverElement $container): array
     {
-        return $container->findElements(
+        $disabledElements = $container->findElements(
             WebDriverBy::xpath('descendant-or-self::*[@disabled]'),
         );
+
+        $descendantsOfDisabledFieldSets = $container->findElements(
+            WebDriverBy::xpath('descendant-or-self::fieldset[@disabled]//*'),
+        );
+
+        $elements = [];
+
+        foreach (array_merge($disabledElements, $descendantsOfDisabledFieldSets) as $element) {
+            $elements[$element->getID()] = $element;
+        }
+
+        return $elements;
     }
 
     /**
@@ -42,7 +54,7 @@ final readonly class IsEnabledMatcher implements MatcherInterface
      */
     private function matchEnabledElements(WebDriverElement $container): array
     {
-        return $container->findElements(
+        $allElements = $container->findElements(
             WebDriverBy::xpath(
                 'descendant-or-self::*['
                 .'not(@disabled) and '
@@ -50,6 +62,21 @@ final readonly class IsEnabledMatcher implements MatcherInterface
                 .']',
             ),
         );
+
+        $enabledElements = [];
+
+        foreach ($allElements as $element) {
+            $disabledFieldsetAncestors = $element->findElements(
+                WebDriverBy::xpath('.//ancestor::fieldset[@disabled]'),
+            );
+            if (count($disabledFieldsetAncestors) > 0) {
+                continue;
+            }
+
+            $enabledElements[] = $element;
+        }
+
+        return $enabledElements;
     }
 
     public function __toString(): string
