@@ -9,8 +9,8 @@ namespace EspressoWebDriver\Tests\Feature\Matcher;
 use EspressoWebDriver\Core\EspressoOptions;
 use EspressoWebDriver\Exception\NoMatchingElementException;
 use EspressoWebDriver\Matcher\WithTextMatcher;
-use EspressoWebDriver\Reporter\PhpunitReporter;
 use EspressoWebDriver\Tests\Feature\BaseFeatureTestCase;
+use EspressoWebDriver\Tests\Helpers\PhpunitReporter;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\CoversFunction;
 

@@ -8,8 +8,8 @@ namespace Action;
 
 use EspressoWebDriver\Action\ScrollToAction;
 use EspressoWebDriver\Core\EspressoOptions;
-use EspressoWebDriver\Reporter\PhpunitReporter;
 use EspressoWebDriver\Tests\Feature\BaseFeatureTestCase;
+use EspressoWebDriver\Tests\Helpers\PhpunitReporter;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\CoversFunction;
 

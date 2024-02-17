@@ -8,8 +8,8 @@ namespace Action;
 
 use EspressoWebDriver\Action\ClickAction;
 use EspressoWebDriver\Core\EspressoOptions;
-use EspressoWebDriver\Reporter\PhpunitReporter;
 use EspressoWebDriver\Tests\Feature\BaseFeatureTestCase;
+use EspressoWebDriver\Tests\Helpers\PhpunitReporter;
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverKeys;
 use PHPUnit\Framework\Attributes\CoversClass;
