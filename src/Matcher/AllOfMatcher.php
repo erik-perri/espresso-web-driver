@@ -73,9 +73,6 @@ final readonly class AllOfMatcher implements MatcherInterface
 
     public function __toString(): string
     {
-        return sprintf(
-            'allOf(%1$s)',
-            implode('; ', array_map(fn (MatcherInterface $matcher) => (string) $matcher, $this->matchers)),
-        );
+        return sprintf('allOf(%1$s)', implode('; ', $this->matchers));
     }
 }
