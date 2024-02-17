@@ -4,18 +4,10 @@ expressions.
 ```php
 $espresso = usingDriver($driver);
 
-$espresso
-    ->onElement(allOf(
-        withTagName('input'),
-        hasSibling(allOf(withTagName('label'), withText('First name'))),
-    ))
+$espresso->onElement(withLabel('First name')),
     ->perform(typeText('John'));
 
-$espresso
-    ->onElement(allOf(
-        withTagName('input'),
-        hasSibling(allOf(withTagName('label'), withText('Last name'))),
-    ))
+$espresso->onElement(withLabel('Last name')),
     ->perform(
         typeText('Doe'),
         submit(),
@@ -29,7 +21,6 @@ $containedEspresso = usingDriver($driver)
         hasDescendant(withText('John Doe')),
     ));
 
-$containedEspresso
-    ->onElement(withText('Edit'))
+$containedEspresso->onElement(withText('Edit'))
     ->perform(click());
 ```
