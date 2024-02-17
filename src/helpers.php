@@ -24,6 +24,7 @@ use EspressoWebDriver\Matcher\AnyOfMatcher;
 use EspressoWebDriver\Matcher\HasDescendantMatcher;
 use EspressoWebDriver\Matcher\HasFocusMatcher;
 use EspressoWebDriver\Matcher\HasSiblingMatcher;
+use EspressoWebDriver\Matcher\IsCheckedMatcher;
 use EspressoWebDriver\Matcher\IsDisplayedInViewportMatcher;
 use EspressoWebDriver\Matcher\IsDisplayedMatcher;
 use EspressoWebDriver\Matcher\IsEnabledMatcher;
@@ -133,6 +134,11 @@ function hasFocus(): MatcherInterface
 function hasSibling(MatcherInterface $matcher): MatcherInterface
 {
     return new HasSiblingMatcher($matcher);
+}
+
+function isChecked(): MatcherInterface
+{
+    return new IsCheckedMatcher();
 }
 
 /**
