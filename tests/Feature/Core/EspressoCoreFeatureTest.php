@@ -17,6 +17,7 @@ use PHPUnit\Framework\Attributes\CoversFunction;
 use function EspressoWebDriver\allOf;
 use function EspressoWebDriver\click;
 use function EspressoWebDriver\hasDescendant;
+use function EspressoWebDriver\matches;
 use function EspressoWebDriver\usingDriver;
 use function EspressoWebDriver\withClass;
 use function EspressoWebDriver\withTagName;
@@ -26,6 +27,7 @@ use function EspressoWebDriver\withText;
 #[CoversClass(EspressoCore::class)]
 #[CoversClass(EspressoOptions::class)]
 #[CoversClass(MatchContext::class)]
+#[CoversFunction('EspressoWebDriver\matches')]
 #[CoversFunction('EspressoWebDriver\usingDriver')]
 class EspressoCoreFeatureTest extends BaseFeatureTestCase
 {
@@ -45,6 +47,7 @@ class EspressoCoreFeatureTest extends BaseFeatureTestCase
         // Act
         $containedEspresso
             ->onElement(withTagName('a'))
+            ->check(matches(withText('Edit')))
             ->perform(click());
 
         // Assert
