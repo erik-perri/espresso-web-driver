@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace EspressoWebDriver\Matcher;
 
+use EspressoWebDriver\Core\EspressoContext;
 use EspressoWebDriver\Exception\AmbiguousElementException;
 use EspressoWebDriver\Exception\EspressoWebDriverException;
 use EspressoWebDriver\Exception\NoMatchingElementException;
@@ -19,7 +20,7 @@ final readonly class IsDisplayedInViewportMatcher implements MatcherInterface
     /**
      * @throws AmbiguousElementException|EspressoWebDriverException|NoMatchingElementException
      */
-    public function match(MatchResult $container, MatchContext $context): MatchResult
+    public function match(MatchResult $container, EspressoContext $context): MatchResult
     {
         return $this->waitForMatch(
             $context,
@@ -34,7 +35,7 @@ final readonly class IsDisplayedInViewportMatcher implements MatcherInterface
      *
      * @throws EspressoWebDriverException
      */
-    private function matchOnScreenElements(WebDriverElement $container, MatchContext $context): array
+    private function matchOnScreenElements(WebDriverElement $container, EspressoContext $context): array
     {
         $elements = [];
 
@@ -62,7 +63,7 @@ final readonly class IsDisplayedInViewportMatcher implements MatcherInterface
      *
      * @throws EspressoWebDriverException
      */
-    private function matchOffScreenElements(WebDriverElement $container, MatchContext $context): array
+    private function matchOffScreenElements(WebDriverElement $container, EspressoContext $context): array
     {
         $elements = [];
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace EspressoWebDriver\Matcher;
 
+use EspressoWebDriver\Core\EspressoContext;
 use EspressoWebDriver\Exception\AmbiguousElementException;
 use EspressoWebDriver\Exception\NoMatchingElementException;
 use EspressoWebDriver\Traits\HasAutomaticWait;
@@ -26,7 +27,7 @@ final readonly class AllOfMatcher implements MatcherInterface
     /**
      * @throws AmbiguousElementException|NoMatchingElementException
      */
-    public function match(MatchResult $container, MatchContext $context): MatchResult
+    public function match(MatchResult $container, EspressoContext $context): MatchResult
     {
         return $this->waitForMatch($context, fn () => $this->matchElements($container, $context));
     }
@@ -36,13 +37,13 @@ final readonly class AllOfMatcher implements MatcherInterface
      *
      * @throws AmbiguousElementException|NoMatchingElementException
      */
-    private function matchElements(MatchResult $container, MatchContext $context): array
+    private function matchElements(MatchResult $container, EspressoContext $context): array
     {
-        $childContext = new MatchContext(
+        $childContext = new EspressoContext(
             driver: $context->driver,
-            isNegated: $context->isNegated,
             // Since we are waiting ourselves, we don't want the child matchers to wait as well.
             options: $context->options->toInstantOptions(),
+            isNegated: $context->isNegated,
         );
 
         $resultsByMatcher = [];

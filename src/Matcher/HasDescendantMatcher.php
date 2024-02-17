@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace EspressoWebDriver\Matcher;
 
+use EspressoWebDriver\Core\EspressoContext;
 use EspressoWebDriver\Exception\AmbiguousElementException;
 use EspressoWebDriver\Exception\NoMatchingElementException;
 use EspressoWebDriver\Traits\HasAutomaticWait;
@@ -19,13 +20,13 @@ final readonly class HasDescendantMatcher implements MatcherInterface
         //
     }
 
-    public function match(MatchResult $container, MatchContext $context): MatchResult
+    public function match(MatchResult $container, EspressoContext $context): MatchResult
     {
-        $childContext = new MatchContext(
+        $childContext = new EspressoContext(
             driver: $context->driver,
-            isNegated: $context->isNegated,
             // Since we are waiting ourselves, we don't want the child matchers to wait as well.
             options: $context->options->toInstantOptions(),
+            isNegated: $context->isNegated,
         );
 
         return $this->waitForMatch($context, fn () => $context->isNegated
@@ -38,7 +39,7 @@ final readonly class HasDescendantMatcher implements MatcherInterface
      *
      * @throws AmbiguousElementException|NoMatchingElementException
      */
-    private function matchElementsWithDescendants(MatchResult $container, MatchContext $context): array
+    private function matchElementsWithDescendants(MatchResult $container, EspressoContext $context): array
     {
         $descendantMatch = $this->matcher->match($container, $context);
 
@@ -61,12 +62,11 @@ final readonly class HasDescendantMatcher implements MatcherInterface
      *
      * @throws AmbiguousElementException|NoMatchingElementException
      */
-    private function matchElementsWithoutDescendants(MatchResult $container, MatchContext $context): array
+    private function matchElementsWithoutDescendants(MatchResult $container, EspressoContext $context): array
     {
         // Find any elements that are the descendants we want to negate.
-        $descendantsAndAncestors = $this->matchElementsWithDescendants($container, new MatchContext(
+        $descendantsAndAncestors = $this->matchElementsWithDescendants($container, new EspressoContext(
             driver: $context->driver,
-            isNegated: false,
             options: $context->options,
         ));
 

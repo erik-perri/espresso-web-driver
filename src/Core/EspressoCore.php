@@ -8,7 +8,6 @@ use EspressoWebDriver\Exception\AmbiguousElementException;
 use EspressoWebDriver\Exception\NoMatchingElementException;
 use EspressoWebDriver\Interaction\ElementInteraction;
 use EspressoWebDriver\Interaction\InteractionInterface;
-use EspressoWebDriver\Matcher\MatchContext;
 use EspressoWebDriver\Matcher\MatcherInterface;
 use EspressoWebDriver\Matcher\MatchResult;
 use Facebook\WebDriver\Exception\NoSuchElementException;
@@ -37,11 +36,12 @@ final readonly class EspressoCore
      */
     public function inContainer(MatcherInterface $matcher): self
     {
-        $result = $matcher->match($this->container, new MatchContext(
+        $context = new EspressoContext(
             driver: $this->driver,
-            isNegated: false,
             options: $this->options,
-        ));
+        );
+
+        $result = $matcher->match($this->container, $context);
 
         return new self($this->driver, $this->options, $result);
     }
@@ -51,13 +51,12 @@ final readonly class EspressoCore
      */
     public function onElement(MatcherInterface $matcher): InteractionInterface
     {
-        $context = new EspressoContext($this->driver, $this->options);
-
-        $result = $matcher->match($this->container, new MatchContext(
+        $context = new EspressoContext(
             driver: $this->driver,
-            isNegated: false,
             options: $this->options,
-        ));
+        );
+
+        $result = $matcher->match($this->container, $context);
 
         return new ElementInteraction($result, $context);
     }

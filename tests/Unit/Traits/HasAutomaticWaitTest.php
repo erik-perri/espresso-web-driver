@@ -6,9 +6,9 @@ declare(strict_types=1);
 
 namespace EspressoWebDriver\Tests\Unit\Traits;
 
+use EspressoWebDriver\Core\EspressoContext;
 use EspressoWebDriver\Core\EspressoOptions;
 use EspressoWebDriver\Matcher\IsDisplayedMatcher;
-use EspressoWebDriver\Matcher\MatchContext;
 use EspressoWebDriver\Matcher\MatchResult;
 use EspressoWebDriver\Tests\Unit\BaseUnitTestCase;
 use EspressoWebDriver\Traits\HasAutomaticWait;
@@ -54,9 +54,8 @@ class HasAutomaticWaitTest extends BaseUnitTestCase
             result: [$mockContainer],
         );
 
-        $matchContext = new MatchContext(
+        $matchContext = new EspressoContext(
             driver: $mockDriver,
-            isNegated: false,
             options: new EspressoOptions(
                 waitTimeoutInSeconds: $configuredTimeInSeconds,
                 waitIntervalInMilliseconds: $configuredDelayInMilliseconds,
@@ -102,9 +101,8 @@ class HasAutomaticWaitTest extends BaseUnitTestCase
             result: [$mockContainer],
         );
 
-        $matchContext = new MatchContext(
+        $matchContext = new EspressoContext(
             driver: $mockDriver,
-            isNegated: false,
             options: new EspressoOptions(
                 waitTimeoutInSeconds: $configuredTimeInSeconds,
                 waitIntervalInMilliseconds: $configuredDelayInMilliseconds,

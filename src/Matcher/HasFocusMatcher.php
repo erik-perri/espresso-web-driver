@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace EspressoWebDriver\Matcher;
 
+use EspressoWebDriver\Core\EspressoContext;
 use EspressoWebDriver\Exception\AmbiguousElementException;
 use EspressoWebDriver\Exception\NoMatchingElementException;
 use EspressoWebDriver\Exception\NoParentException;
@@ -19,7 +20,7 @@ final readonly class HasFocusMatcher implements MatcherInterface
     /**
      * @throws AmbiguousElementException|NoMatchingElementException|NoParentException
      */
-    public function match(MatchResult $container, MatchContext $context): MatchResult
+    public function match(MatchResult $container, EspressoContext $context): MatchResult
     {
         return $this->waitForMatch(
             $context,

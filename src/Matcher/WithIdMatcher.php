@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace EspressoWebDriver\Matcher;
 
+use EspressoWebDriver\Core\EspressoContext;
 use EspressoWebDriver\Traits\HasAutomaticWait;
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverElement;
@@ -17,7 +18,7 @@ final readonly class WithIdMatcher implements MatcherInterface
         //
     }
 
-    public function match(MatchResult $container, MatchContext $context): MatchResult
+    public function match(MatchResult $container, EspressoContext $context): MatchResult
     {
         return $this->waitForMatch(
             $context,

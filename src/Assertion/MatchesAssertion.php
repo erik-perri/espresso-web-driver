@@ -7,7 +7,6 @@ namespace EspressoWebDriver\Assertion;
 use EspressoWebDriver\Core\EspressoContext;
 use EspressoWebDriver\Exception\AmbiguousElementException;
 use EspressoWebDriver\Exception\NoMatchingElementException;
-use EspressoWebDriver\Matcher\MatchContext;
 use EspressoWebDriver\Matcher\MatcherInterface;
 use EspressoWebDriver\Matcher\MatchResult;
 use Facebook\WebDriver\WebDriverElement;
@@ -24,9 +23,8 @@ final readonly class MatchesAssertion implements AssertionInterface
      */
     public function assert(MatchResult $container, EspressoContext $context): bool
     {
-        $matches = $this->matcher->match($container, new MatchContext(
+        $matches = $this->matcher->match($container, new EspressoContext(
             driver: $context->driver,
-            isNegated: false,
             options: $context->options,
         ));
 

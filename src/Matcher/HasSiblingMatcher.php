@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace EspressoWebDriver\Matcher;
 
+use EspressoWebDriver\Core\EspressoContext;
 use EspressoWebDriver\Exception\AmbiguousElementException;
 use EspressoWebDriver\Exception\NoMatchingElementException;
 use EspressoWebDriver\Traits\HasAutomaticWait;
@@ -22,13 +23,13 @@ final readonly class HasSiblingMatcher implements MatcherInterface
     /**
      * @throws AmbiguousElementException|NoMatchingElementException
      */
-    public function match(MatchResult $container, MatchContext $context): MatchResult
+    public function match(MatchResult $container, EspressoContext $context): MatchResult
     {
-        $childContext = new MatchContext(
+        $childContext = new EspressoContext(
             driver: $context->driver,
-            isNegated: $context->isNegated,
             // Since we are waiting ourselves, we don't want the child matchers to wait as well.
             options: $context->options->toInstantOptions(),
+            isNegated: $context->isNegated,
         );
 
         return $this->waitForMatch($context, fn () => $context->isNegated
@@ -41,7 +42,7 @@ final readonly class HasSiblingMatcher implements MatcherInterface
      *
      * @throws AmbiguousElementException|NoMatchingElementException
      */
-    private function matchElementsWithSiblings(MatchResult $container, MatchContext $context): array
+    private function matchElementsWithSiblings(MatchResult $container, EspressoContext $context): array
     {
         $siblingResult = $this->matcher->match($container, $context);
 
@@ -65,12 +66,11 @@ final readonly class HasSiblingMatcher implements MatcherInterface
      *
      * @throws AmbiguousElementException|NoMatchingElementException
      */
-    private function matchElementsWithoutSiblings(MatchResult $container, MatchContext $context): array
+    private function matchElementsWithoutSiblings(MatchResult $container, EspressoContext $context): array
     {
         // Find any elements that are the siblings we want to negate.
-        $elementsWithSiblings = $this->matchElementsWithSiblings($container, new MatchContext(
+        $elementsWithSiblings = $this->matchElementsWithSiblings($container, new EspressoContext(
             driver: $context->driver,
-            isNegated: false,
             options: $context->options,
         ));
 

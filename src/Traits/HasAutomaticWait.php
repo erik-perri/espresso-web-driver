@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace EspressoWebDriver\Traits;
 
 use Closure;
-use EspressoWebDriver\Matcher\MatchContext;
+use EspressoWebDriver\Core\EspressoContext;
 use EspressoWebDriver\Matcher\MatchResult;
 use Facebook\WebDriver\WebDriverElement;
 
@@ -17,7 +17,7 @@ trait HasAutomaticWait
      *
      * @param  Closure(): array<WebDriverElement>  $callback
      */
-    protected function waitForMatch(MatchContext $context, Closure $callback): MatchResult
+    protected function waitForMatch(EspressoContext $context, Closure $callback): MatchResult
     {
         if ($context->options->waitTimeoutInSeconds < 1) {
             return new MatchResult(matcher: $this, result: $callback());

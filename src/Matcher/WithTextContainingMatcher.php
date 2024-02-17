@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace EspressoWebDriver\Matcher;
 
+use EspressoWebDriver\Core\EspressoContext;
 use EspressoWebDriver\Traits\HasAutomaticWait;
 use EspressoWebDriver\Utilities\TextNormalizer;
 use Facebook\WebDriver\WebDriverBy;
@@ -20,7 +21,7 @@ final readonly class WithTextContainingMatcher implements MatcherInterface
         $this->normalizedText = (new TextNormalizer())->normalize($text);
     }
 
-    public function match(MatchResult $container, MatchContext $context): MatchResult
+    public function match(MatchResult $container, EspressoContext $context): MatchResult
     {
         return $this->waitForMatch(
             $context,

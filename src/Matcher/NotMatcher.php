@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace EspressoWebDriver\Matcher;
 
+use EspressoWebDriver\Core\EspressoContext;
+
 final readonly class NotMatcher implements MatcherInterface
 {
     public function __construct(private MatcherInterface $matcher)
@@ -11,12 +13,12 @@ final readonly class NotMatcher implements MatcherInterface
         //
     }
 
-    public function match(MatchResult $container, MatchContext $context): MatchResult
+    public function match(MatchResult $container, EspressoContext $context): MatchResult
     {
-        return $this->matcher->match($container, new MatchContext(
+        return $this->matcher->match($container, new EspressoContext(
             driver: $context->driver,
-            isNegated: true,
             options: $context->options,
+            isNegated: true,
         ));
     }
 
