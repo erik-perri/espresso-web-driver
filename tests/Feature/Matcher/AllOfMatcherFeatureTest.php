@@ -15,6 +15,7 @@ use PHPUnit\Framework\Attributes\CoversFunction;
 
 use function EspressoWebDriver\allOf;
 use function EspressoWebDriver\hasDescendant;
+use function EspressoWebDriver\isPresent;
 use function EspressoWebDriver\matches;
 use function EspressoWebDriver\not;
 use function EspressoWebDriver\usingDriver;
@@ -45,5 +46,23 @@ class AllOfMatcherFeatureTest extends BaseFeatureTestCase
                 hasDescendant(withText('Processed')),
             ))
             ->check(matches(withClass('a')));
+    }
+
+    public function testFindsNothingWhenNoMatchersAreProvided(): void
+    {
+        // Arrange
+        $driver = $this->driver()->get($this->mockStaticUrl('matchers/all-of.html'));
+
+        $options = new EspressoOptions(
+            waitTimeoutInSeconds: 0,
+            assertionReporter: new PhpunitReporter,
+        );
+
+        $espresso = usingDriver($driver, $options);
+
+        // Act and Assert
+        $espresso
+            ->onElement(allOf())
+            ->check(matches(not(isPresent())));
     }
 }
