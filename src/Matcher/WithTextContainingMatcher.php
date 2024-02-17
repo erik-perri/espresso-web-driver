@@ -37,8 +37,8 @@ final readonly class WithTextContainingMatcher implements MatcherInterface
         return $container->findElements(
             WebDriverBy::xpath(sprintf(
                 'descendant-or-self::*[contains(%1$s, "%2$s")]',
-                'translate(text(), "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "abcdefghijklmnopqrstuvwxyz")',
-                mb_strtolower($this->text),
+                'translate(normalize-space(text()), "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "abcdefghijklmnopqrstuvwxyz")',
+                mb_strtolower($this->normalizedText()),
             )),
         );
     }
@@ -53,10 +53,15 @@ final readonly class WithTextContainingMatcher implements MatcherInterface
         return $container->findElements(
             WebDriverBy::xpath(sprintf(
                 'descendant-or-self::*[not(contains(%1$s, "%2$s"))]',
-                'translate(text(), "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "abcdefghijklmnopqrstuvwxyz")',
-                mb_strtolower($this->text),
+                'translate(normalize-space(text()), "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "abcdefghijklmnopqrstuvwxyz")',
+                mb_strtolower($this->normalizedText()),
             )),
         );
+    }
+
+    private function normalizedText(): string
+    {
+        return trim(preg_replace('/\s+/', ' ', $this->text));
     }
 
     public function __toString(): string
