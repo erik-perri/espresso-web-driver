@@ -32,15 +32,8 @@ final readonly class WithTextMatcher implements MatcherInterface
      */
     private function matchElementsWithText(WebDriverElement $container): array
     {
-        $elements = [];
-
-        if ($container->getText() === $this->text) {
-            $elements[] = $container;
-        }
-
-        return array_merge(
-            $elements,
-            $container->findElements(WebDriverBy::xpath(sprintf('.//*[text()="%1$s"]', $this->text))),
+        return $container->findElements(
+            WebDriverBy::xpath(sprintf('descendant-or-self::*[normalize-space(text())="%1$s"]', $this->text)),
         );
     }
 
@@ -49,15 +42,8 @@ final readonly class WithTextMatcher implements MatcherInterface
      */
     private function matchElementsWithoutText(WebDriverElement $container): array
     {
-        $elements = [];
-
-        if ($container->getText() !== $this->text) {
-            $elements[] = $container;
-        }
-
-        return array_merge(
-            $elements,
-            $container->findElements(WebDriverBy::xpath(sprintf('.//*[not(text()="%1$s")]', $this->text))),
+        return $container->findElements(
+            WebDriverBy::xpath(sprintf('descendant-or-self::*[not(normalize-space(text())="%1$s")]', $this->text)),
         );
     }
 

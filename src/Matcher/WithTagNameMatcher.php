@@ -23,7 +23,7 @@ final readonly class WithTagNameMatcher implements MatcherInterface
             $context,
             fn () => $context->isNegated
                 ? $this->matchElementsWithoutTagName($container->single())
-                : $this->matchElementsWithTagName($container->single())
+                : $this->matchElementsWithTagName($container->single()),
         );
     }
 
@@ -32,15 +32,8 @@ final readonly class WithTagNameMatcher implements MatcherInterface
      */
     private function matchElementsWithTagName(WebDriverElement $container): array
     {
-        $elements = [];
-
-        if (strcasecmp($container->getTagName(), $this->tagName) === 0) {
-            $elements[] = $container;
-        }
-
-        return array_merge(
-            $elements,
-            $container->findElements(WebDriverBy::tagName($this->tagName)),
+        return $container->findElements(
+            WebDriverBy::xpath(sprintf('descendant-or-self::%1$s', $this->tagName)),
         );
     }
 
@@ -49,15 +42,8 @@ final readonly class WithTagNameMatcher implements MatcherInterface
      */
     private function matchElementsWithoutTagName(WebDriverElement $container): array
     {
-        $elements = [];
-
-        if (strcasecmp($container->getTagName(), $this->tagName) !== 0) {
-            $elements[] = $container;
-        }
-
-        return array_merge(
-            $elements,
-            $container->findElements(WebDriverBy::cssSelector(sprintf(':not(%1$s)', $this->tagName))),
+        return $container->findElements(
+            WebDriverBy::xpath(sprintf('descendant-or-self::*[not(self::%1$s)]', $this->tagName)),
         );
     }
 

@@ -23,7 +23,7 @@ final readonly class WithIdMatcher implements MatcherInterface
             $context,
             fn () => $context->isNegated
                 ? $this->matchElementsWithoutId($container->single())
-                : $this->matchElementsWithId($container->single())
+                : $this->matchElementsWithId($container->single()),
         );
     }
 
@@ -32,15 +32,8 @@ final readonly class WithIdMatcher implements MatcherInterface
      */
     private function matchElementsWithId(WebDriverElement $container): array
     {
-        $elements = [];
-
-        if ($container->getAttribute('id') === $this->id) {
-            $elements[] = $container;
-        }
-
-        return array_merge(
-            $elements,
-            $container->findElements(WebDriverBy::id($this->id)),
+        return $container->findElements(
+            WebDriverBy::xpath(sprintf('descendant-or-self::*[@id="%1$s"]', $this->id)),
         );
     }
 
@@ -49,15 +42,8 @@ final readonly class WithIdMatcher implements MatcherInterface
      */
     private function matchElementsWithoutId(WebDriverElement $container): array
     {
-        $elements = [];
-
-        if ($container->getAttribute('id') !== $this->id) {
-            $elements[] = $container;
-        }
-
-        return array_merge(
-            $elements,
-            $container->findElements(WebDriverBy::cssSelector(sprintf(':not([id="%1$s"])', $this->id))),
+        return $container->findElements(
+            WebDriverBy::xpath(sprintf('descendant-or-self::*[not(@id="%1$s")]', $this->id)),
         );
     }
 

@@ -124,27 +124,6 @@ class WithTextMatcherFeatureTest extends BaseFeatureTestCase
         // No assertions, only expectations.
     }
 
-    public function testDoesNotMatchWithLeadingSpaces(): void
-    {
-        // Expectations
-        $this->expectException(NoMatchingElementException::class);
-        $this->expectExceptionMessage('No element found for text="Text surrounding Mock C as a test"');
-
-        // Arrange
-        $driver = $this->driver()->get($this->mockStaticUrl('matchers/with-text.html'));
-
-        $options = new EspressoOptions(waitTimeoutInSeconds: 0);
-
-        $espresso = usingDriver($driver, $options);
-
-        // Act
-        $espresso->onElement(withText('Text surrounding Mock C as a test'))
-            ->perform(click());
-
-        // Assert
-        // No assertions, only expectations.
-    }
-
     public function testDoesNotMatchSubstrings(): void
     {
         // Expectations

@@ -32,15 +32,11 @@ final readonly class WithClassMatcher implements MatcherInterface
      */
     private function matchElementsWithClass(WebDriverElement $container): array
     {
-        $elements = [];
-
-        if ($this->hasClass($container)) {
-            $elements[] = $container;
-        }
-
-        return array_merge(
-            $elements,
-            $container->findElements(WebDriverBy::className($this->class)),
+        return $container->findElements(
+            WebDriverBy::xpath(sprintf(
+                'descendant-or-self::*[contains(concat(" ", normalize-space(@class), " "), " %1$s ")]',
+                $this->class,
+            )),
         );
     }
 
@@ -49,29 +45,12 @@ final readonly class WithClassMatcher implements MatcherInterface
      */
     private function matchElementsWithoutClass(WebDriverElement $container): array
     {
-        $elements = [];
-
-        if (!$this->hasClass($container)) {
-            $elements[] = $container;
-        }
-
-        return array_merge(
-            $elements,
-            $container->findElements(WebDriverBy::cssSelector(sprintf(':not(.%1$s)', $this->class))),
+        return $container->findElements(
+            WebDriverBy::xpath(sprintf(
+                'descendant-or-self::*[not(contains(concat(" ", normalize-space(@class), " "), " %1$s "))]',
+                $this->class,
+            )),
         );
-    }
-
-    private function hasClass(WebDriverElement $element): bool
-    {
-        $classes = $element->getAttribute('class');
-
-        if (!$classes) {
-            return false;
-        }
-
-        $classNames = array_map('trim', explode(' ', $classes));
-
-        return in_array($this->class, $classNames, true);
     }
 
     public function __toString(): string

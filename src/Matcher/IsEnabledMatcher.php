@@ -14,8 +14,6 @@ final readonly class IsEnabledMatcher implements MatcherInterface
 {
     use HasAutomaticWait;
 
-    private const FORM_ELEMENT_SELECTOR = 'button, fieldset, input, optgroup, option, select, textarea';
-
     /**
      * @throws AmbiguousElementException|NoMatchingElementException
      */
@@ -34,23 +32,9 @@ final readonly class IsEnabledMatcher implements MatcherInterface
      */
     private function matchDisabledElements(WebDriverElement $container): array
     {
-        $elements = [];
-
-        if (!$this->isEnabled($container)) {
-            $elements[] = $container;
-        }
-
-        $possibleElements = $container->findElements(
-            WebDriverBy::cssSelector(self::FORM_ELEMENT_SELECTOR),
+        return $container->findElements(
+            WebDriverBy::xpath('descendant-or-self::*[@disabled]'),
         );
-
-        foreach ($possibleElements as $element) {
-            if (!$this->isEnabled($element)) {
-                $elements[] = $element;
-            }
-        }
-
-        return $elements;
     }
 
     /**
@@ -58,29 +42,14 @@ final readonly class IsEnabledMatcher implements MatcherInterface
      */
     private function matchEnabledElements(WebDriverElement $container): array
     {
-        $elements = [];
-
-        if ($this->isEnabled($container)) {
-            $elements[] = $container;
-        }
-
-        $possibleElements = $container->findElements(
-            WebDriverBy::cssSelector(self::FORM_ELEMENT_SELECTOR),
+        return $container->findElements(
+            WebDriverBy::xpath(
+                'descendant-or-self::*['
+                .'not(@disabled) and '
+                .'(self::button or self::fieldset or self::input or self::optgroup or self::option or self::select or self::textarea)'
+                .']',
+            ),
         );
-
-        foreach ($possibleElements as $element) {
-            if ($this->isEnabled($element)) {
-                $elements[] = $element;
-            }
-        }
-
-        return $elements;
-    }
-
-    private function isEnabled(WebDriverElement $element): bool
-    {
-        return $element->isEnabled()
-            && !in_array($element->getAttribute('disabled'), ['true', 'disabled'], true);
     }
 
     public function __toString(): string

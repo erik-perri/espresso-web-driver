@@ -32,21 +32,14 @@ final readonly class WithTextContainingMatcher implements MatcherInterface
      */
     private function matchElementsContainingText(WebDriverElement $container): array
     {
-        $elements = [];
-
-        if (mb_stripos($container->getText(), $this->text) !== false) {
-            $elements[] = $container;
-        }
-
-        return array_merge(
-            $elements,
-            // TODO Figure out a better path that works for all languages
-            //      XPath's newer lower-case() or matches() are not supported
-            $container->findElements(WebDriverBy::xpath(sprintf(
-                './/*[contains(%1$s, "%2$s")]',
+        // TODO Figure out a better path that works for all languages
+        //      XPath's newer lower-case() or matches() are not supported
+        return $container->findElements(
+            WebDriverBy::xpath(sprintf(
+                'descendant-or-self::*[contains(%1$s, "%2$s")]',
                 'translate(text(), "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "abcdefghijklmnopqrstuvwxyz")',
                 mb_strtolower($this->text),
-            ))),
+            )),
         );
     }
 
@@ -55,21 +48,14 @@ final readonly class WithTextContainingMatcher implements MatcherInterface
      */
     private function matchElementsNotContainingText(WebDriverElement $container): array
     {
-        $elements = [];
-
-        if (mb_stripos($container->getText(), $this->text) === false) {
-            $elements[] = $container;
-        }
-
-        return array_merge(
-            $elements,
-            // TODO Figure out a better path that works for all languages
-            //      XPath's newer lower-case() or matches() are not supported
-            $container->findElements(WebDriverBy::xpath(sprintf(
-                './/*[not(contains(%1$s, "%2$s"))]',
+        // TODO Figure out a better path that works for all languages
+        //      XPath's newer lower-case() or matches() are not supported
+        return $container->findElements(
+            WebDriverBy::xpath(sprintf(
+                'descendant-or-self::*[not(contains(%1$s, "%2$s"))]',
                 'translate(text(), "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "abcdefghijklmnopqrstuvwxyz")',
                 mb_strtolower($this->text),
-            ))),
+            )),
         );
     }
 
