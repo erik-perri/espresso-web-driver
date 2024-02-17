@@ -8,7 +8,6 @@ use EspressoWebDriver\Exception\AmbiguousElementException;
 use EspressoWebDriver\Exception\NoMatchingElementException;
 use EspressoWebDriver\Exception\NoParentException;
 use EspressoWebDriver\Traits\HasAutomaticWait;
-use Facebook\WebDriver\Exception\NoSuchElementException;
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverElement;
 
@@ -50,19 +49,12 @@ final readonly class HasSiblingMatcher implements MatcherInterface
         $elements = [];
 
         foreach ($siblingResult->all() as $sibling) {
-            try {
-                $parent = $sibling->findElement(WebDriverBy::xpath('./parent::*'));
+            $adjacentChildren = $sibling->findElements(
+                WebDriverBy::xpath('following-sibling::* | preceding-sibling::*'),
+            );
 
-                $adjacentChildren = $parent->findElements(WebDriverBy::xpath('./*'));
-
-                foreach ($adjacentChildren as $child) {
-                    if ($child->getID() !== $sibling->getID()) {
-                        $elements[$child->getID()] = $child;
-                    }
-                }
-            } catch (NoSuchElementException) {
-                // If we couldn't find the parent, we can't find the siblings.
-                throw new NoParentException($this, $sibling);
+            foreach ($adjacentChildren as $child) {
+                $elements[$child->getID()] = $child;
             }
         }
 
