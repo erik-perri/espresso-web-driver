@@ -1,0 +1,35 @@
+<html id="html" lang="en">
+<body>
+
+<!-- Explicit label -->
+<label for="explicit">Explicit</label>
+<input id="explicit" type="text" value="" />
+
+<!-- Implicit label -->
+<label>Implicit <select id="implicit"></select></label>
+
+<!-- Invalid implicit label with multiple elements -->
+<label>
+    Invalid implicit
+    <input id="implicit_invalid_first" type="text" value="" />
+    <input id="implicit_invalid_second" type="text" value="Why" />
+</label>
+
+<!-- Valid implicit label with multiple elements -->
+<label>
+    Valid implicit
+    <input id="implicit_valid_first" type="hidden" value="" />
+    <input id="implicit_valid_second" type="text" value="" />
+</label>
+
+<!-- Invalid implicit label with no elements -->
+<label>Empty implicit</label>
+
+<!-- Label targeting element outside of available context -->
+<div class="label-container">
+    <label for="outside">Outside</label>
+</div>
+<input id="outside" type="text" value="" />
+
+</body>
+</html>

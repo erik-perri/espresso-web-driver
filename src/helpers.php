@@ -32,6 +32,7 @@ use EspressoWebDriver\Matcher\MatcherInterface;
 use EspressoWebDriver\Matcher\NotMatcher;
 use EspressoWebDriver\Matcher\WithClassMatcher;
 use EspressoWebDriver\Matcher\WithIdMatcher;
+use EspressoWebDriver\Matcher\WithLabelMatcher;
 use EspressoWebDriver\Matcher\WithTagNameMatcher;
 use EspressoWebDriver\Matcher\WithTextContainingMatcher;
 use EspressoWebDriver\Matcher\WithTextMatcher;
@@ -176,6 +177,11 @@ function withClass(string $class): MatcherInterface
 function withId(string $id): MatcherInterface
 {
     return new WithIdMatcher($id);
+}
+
+function withLabel(string $text): MatcherInterface
+{
+    return new WithLabelMatcher($text);
 }
 
 function withTagName(string $tagName): MatcherInterface
