@@ -9,6 +9,7 @@ namespace EspressoWebDriver\Tests\Unit\Utilities;
 use EspressoWebDriver\Tests\Helpers\MocksWebDriverElement;
 use EspressoWebDriver\Tests\Unit\BaseUnitTestCase;
 use EspressoWebDriver\Utilities\ElementPathLogger;
+use Facebook\WebDriver\Exception\NoSuchElementException;
 use Facebook\WebDriver\WebDriverBy;
 use PHPUnit\Framework\Attributes\CoversClass;
 
@@ -115,5 +116,61 @@ class ElementPathLoggerTest extends BaseUnitTestCase
 
         // Assert
         $this->assertSame('body/div[?]', $result);
+    }
+
+    public function testManyOnlyLogsTheExpectedNumberOfItems(): void
+    {
+        // Arrange
+        $elementOne = $this->createMockWebDriverElement('div', ['id' => 'test-1']);
+        $elementTwo = $this->createMockWebDriverElement('div', ['id' => 'test-2']);
+        $elementThree = $this->createMockWebDriverElement('div', ['id' => 'test-3']);
+        $elementFour = $this->createMockWebDriverElement('div', ['id' => 'test-4']);
+
+        $logger = new ElementPathLogger();
+
+        // Act
+        $result = $logger->describeMany([
+            $elementOne,
+            $elementTwo,
+            $elementThree,
+            $elementFour,
+        ]);
+
+        // Assert
+        $this->assertSame(
+            'div[@id="test-1"]'."\n".'div[@id="test-2"]'."\n".'div[@id="test-3"]'."\n".'...',
+            $result,
+        );
+    }
+
+    public function testManyLogsNothingWhileEmpty(): void
+    {
+        // Arrange
+        $logger = new ElementPathLogger();
+
+        // Act
+        $result = $logger->describeMany([]);
+
+        // Assert
+        $this->assertSame('', $result);
+    }
+
+    public function testDoesNotCareAboutInabilityToFindParents(): void
+    {
+        // Arrange
+        $element = $this->createMockWebDriverElement('div');
+
+        $element->expects($this->once())
+            ->method('findElement')
+            ->with(WebDriverBy::xpath('./parent::*'))
+            ->willThrowException(new NoSuchElementException(''));
+
+        $logger = new ElementPathLogger();
+
+        // Act
+        $result = $logger->describe($element);
+
+        // Assert
+        $this->assertSame('div', $result);
     }
 }
