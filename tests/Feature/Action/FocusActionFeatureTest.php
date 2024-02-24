@@ -47,9 +47,15 @@ class FocusActionFeatureTest extends BaseFeatureTestCase
             'tab indexes' => [
                 'id' => 'test-a',
             ],
-            'anchors' => ['test-b'],
-            'selects' => ['test-c'],
-            'inputs' => ['test-d'],
+            'anchors' => [
+                'id' => 'test-b',
+            ],
+            'selects' => [
+                'id' => 'test-c',
+            ],
+            'inputs' => [
+                'id' => 'test-d',
+            ],
         ];
     }
 }

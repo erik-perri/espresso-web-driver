@@ -30,19 +30,54 @@ class TextNormalizerTest extends BaseUnitTestCase
     public static function textProvider(): array
     {
         return [
-            'leading space' => ['  Hello', 'Hello'],
-            'trailing space' => ['Hello  ', 'Hello'],
-            'leading and trailing space' => ['  Hello  ', 'Hello'],
-            'multiple spaces' => ['Hello  World', 'Hello World'],
-            'tab characters' => ["Hello\tWorld", 'Hello World'],
-            'new line characters' => ["Hello\nWorld", 'Hello World'],
-            'mixed whitespace characters' => [" \t Hello \n World \t ", 'Hello World'],
-            'no extra spaces' => ['Hello', 'Hello'],
-            'empty string' => ['', ''],
-            'new line at the start' => ["\nHello", 'Hello'],
-            'new line at the end' => ["Hello\n", 'Hello'],
-            'new line in the middle' => ["Hello\nWorld", 'Hello World'],
-            'multiple new lines' => ["Hello\n\nWorld", 'Hello World'],
+            'leading space' => [
+                'input' => '  Hello',
+                'expected' => 'Hello',
+            ],
+            'trailing space' => [
+                'input' => 'Hello  ',
+                'expected' => 'Hello',
+            ],
+            'leading and trailing space' => [
+                'input' => '  Hello  ',
+                'expected' => 'Hello',
+            ],
+            'multiple spaces' => [
+                'input' => 'Hello  World',
+                'expected' => 'Hello World',
+            ],
+            'tab characters' => [
+                'input' => "Hello\tWorld",
+                'expected' => 'Hello World',
+            ],
+            'mixed whitespace characters' => [
+                'input' => " \t Hello \n World \t Hello \r World ",
+                'expected' => 'Hello World Hello World',
+            ],
+            'no extra spaces' => [
+                'input' => 'Hello',
+                'expected' => 'Hello',
+            ],
+            'empty string' => [
+                'input' => '',
+                'expected' => '',
+            ],
+            'new line at the start' => [
+                'input' => "\nHello",
+                'expected' => 'Hello',
+            ],
+            'new line at the end' => [
+                'input' => "Hello\n",
+                'expected' => 'Hello',
+            ],
+            'new line in the middle' => [
+                'input' => "Hello\nWorld",
+                'expected' => 'Hello World',
+            ],
+            'multiple new lines' => [
+                'input' => "Hello\n\nWorld",
+                'expected' => 'Hello World',
+            ],
         ];
     }
 }
