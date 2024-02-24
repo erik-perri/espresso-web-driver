@@ -12,6 +12,7 @@ use EspressoWebDriver\Exception\AssertionFailedException;
 use EspressoWebDriver\Exception\NoMatchingElementException;
 use EspressoWebDriver\Exception\PerformException;
 use EspressoWebDriver\Matcher\MatchResult;
+use EspressoWebDriver\Utilities\ElementPathLogger;
 
 final readonly class ElementInteraction implements InteractionInterface
 {
@@ -32,7 +33,12 @@ final readonly class ElementInteraction implements InteractionInterface
 
             $this->context->options->assertionReporter?->report(
                 $result,
-                sprintf('Failed asserting that %1$s is true for %2$s', $assertion, $this->result),
+                sprintf(
+                    'Failed asserting that %1$s is true for %2$s'."\n".'%3$s',
+                    $assertion,
+                    $this->result,
+                    (new ElementPathLogger())->describeMany($this->result->all()),
+                ),
             );
 
             if (!$result) {
@@ -53,9 +59,8 @@ final readonly class ElementInteraction implements InteractionInterface
             $this->context->options->assertionReporter?->report(
                 false,
                 sprintf(
-                    'Failed asserting that %1$s is true for %2$s, %3$s',
+                    'Failed asserting that %1$s is true, %2$s',
                     $assertion,
-                    $this->result,
                     $exception->getMessage(),
                 ),
             );

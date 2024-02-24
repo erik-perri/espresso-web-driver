@@ -63,4 +63,27 @@ final readonly class ElementPathLogger implements ElementLoggerInterface
 
         return -1;
     }
+
+    /**
+     * @param  WebDriverElement[]  $elements
+     */
+    public function describeMany(array $elements): string
+    {
+        $totalElements = count($elements);
+
+        if ($totalElements === 0) {
+            return 'No elements';
+        }
+
+        $renderedElements = array_map(
+            fn (WebDriverElement $element) => $this->describe($element),
+            array_slice($elements, 0, 3),
+        );
+
+        if ($totalElements > count($renderedElements)) {
+            $renderedElements[] = '...';
+        }
+
+        return implode("\n", $renderedElements);
+    }
 }

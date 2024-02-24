@@ -116,7 +116,7 @@ class HasFocusFeatureTest extends BaseFeatureTestCase
         // Arrange
         $driver = $this->driver()->get($this->mockStaticUrl('matchers/has-focus.html'));
 
-        $options = new EspressoOptions(assertionReporter: new PhpunitReporter);
+        $options = new EspressoOptions();
 
         $espresso = usingDriver($driver, $options);
 
@@ -137,7 +137,7 @@ class HasFocusFeatureTest extends BaseFeatureTestCase
         // Arrange
         $driver = $this->driver()->get($this->mockStaticUrl('matchers/has-focus.html'));
 
-        $options = new EspressoOptions(assertionReporter: new PhpunitReporter);
+        $options = new EspressoOptions();
 
         $espresso = usingDriver($driver, $options);
 

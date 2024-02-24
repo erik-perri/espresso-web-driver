@@ -142,7 +142,7 @@ class ElementInteractionTest extends BaseUnitTestCase
             ->method('report')
             ->with(
                 false,
-                sprintf('Failed asserting that matches(isDisplayed) is true for mock, %1$s', $elementLog),
+                sprintf('Failed asserting that matches(isDisplayed) is true, %1$s', $elementLog),
             );
 
         $mockOptions = new EspressoOptions(assertionReporter: $reporter);
