@@ -54,7 +54,7 @@ class MatchResultTest extends TestCase
         $matcher = $this->createMock(MatcherInterface::class);
         $matcher->expects($this->once())
             ->method('__toString')
-            ->willReturn('matcher');
+            ->willReturn('matcher()');
 
         $element = $this->createMockWebDriverElement('mock');
 
@@ -68,20 +68,40 @@ class MatchResultTest extends TestCase
         $resultAsString = $result->describe(new ElementPathLogger());
 
         // Assert
-        $this->assertSame("1 element found for matcher\nmock", $resultAsString);
+        $this->assertSame("1 element found for matcher()\nmock", $resultAsString);
+    }
+
+    public function testMatchResultDescribeWhileEmpty(): void
+    {
+        // Arrange
+        $matcher = $this->createMock(MatcherInterface::class);
+        $matcher->expects($this->once())
+            ->method('__toString')
+            ->willReturn('matcher()');
+
+        $result = new MatchResult(
+            $matcher,
+            [],
+        );
+
+        // Act
+        $resultAsString = $result->describe(new ElementPathLogger());
+
+        // Assert
+        $this->assertSame('no elements found for matcher()', $resultAsString);
     }
 
     public function testMatchResultThrowsAmbiguousElementMatcherException(): void
     {
         // Expectations
         $this->expectException(AmbiguousElementException::class);
-        $this->expectExceptionMessage('2 elements found for matcher');
+        $this->expectExceptionMessage('2 elements found for matcher()');
 
         // Arrange
         $matcher = $this->createMock(MatcherInterface::class);
         $matcher->expects($this->once())
             ->method('__toString')
-            ->willReturn('matcher');
+            ->willReturn('matcher()');
 
         $elementOne = $this->createMockWebDriverElement('mock');
         $elementTwo = $this->createMockWebDriverElement('mock');
@@ -106,13 +126,13 @@ class MatchResultTest extends TestCase
     {
         // Expectations
         $this->expectException(NoMatchingElementException::class);
-        $this->expectExceptionMessage('No element found for matcher');
+        $this->expectExceptionMessage('No element found for matcher()');
 
         // Arrange
         $matcher = $this->createMock(MatcherInterface::class);
         $matcher->expects($this->once())
             ->method('__toString')
-            ->willReturn('matcher');
+            ->willReturn('matcher()');
 
         $result = new MatchResult(
             $matcher,
