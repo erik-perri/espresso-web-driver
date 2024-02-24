@@ -24,7 +24,13 @@ class MatchResultTest extends TestCase
         // Arrange
         $matcher = $this->createMock(MatcherInterface::class);
         $elementOne = $this->createMock(WebDriverElement::class);
+        $elementOne->expects($this->once())
+            ->method('getID')
+            ->willReturn('mock-one');
         $elementTwo = $this->createMock(WebDriverElement::class);
+        $elementTwo->expects($this->once())
+            ->method('getID')
+            ->willReturn('mock-two');
 
         $result = new MatchResult(
             $matcher,
@@ -85,9 +91,15 @@ class MatchResultTest extends TestCase
         $elementOne->expects($this->once())
             ->method('getTagName')
             ->willReturn('mock-one');
+        $elementOne->expects($this->once())
+            ->method('getID')
+            ->willReturn('mock-one');
         $elementTwo = $this->createMock(WebDriverElement::class);
         $elementTwo->expects($this->once())
             ->method('getTagName')
+            ->willReturn('mock-two');
+        $elementTwo->expects($this->once())
+            ->method('getID')
             ->willReturn('mock-two');
 
         $result = new MatchResult(

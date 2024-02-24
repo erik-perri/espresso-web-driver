@@ -45,16 +45,9 @@ final readonly class AnyOfMatcher implements MatcherInterface
             $resultsByMatcher[] = $matcher->match($container, $context);
         }
 
-        $mergedElements = array_merge(
+        return array_merge(
             ...array_map(fn (MatchResult $result) => $result->all(), $resultsByMatcher),
         );
-        $elementsById = [];
-
-        foreach ($mergedElements as $element) {
-            $elementsById[$element->getID()] = $element;
-        }
-
-        return array_values($elementsById);
     }
 
     public function __toString(): string

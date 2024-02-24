@@ -38,13 +38,7 @@ final readonly class IsEnabledMatcher implements MatcherInterface
             WebDriverBy::xpath('descendant-or-self::fieldset[@disabled]//*'),
         );
 
-        $elements = [];
-
-        foreach (array_merge($disabledElements, $descendantsOfDisabledFieldSets) as $element) {
-            $elements[$element->getID()] = $element;
-        }
-
-        return $elements;
+        return array_merge($disabledElements, $descendantsOfDisabledFieldSets);
     }
 
     /**

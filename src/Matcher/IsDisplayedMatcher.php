@@ -26,7 +26,7 @@ final readonly class IsDisplayedMatcher implements MatcherInterface
     }
 
     /**
-     * @return array<string, WebDriverElement>
+     * @return WebDriverElement[]
      */
     private function matchElementsWithVisibility(WebDriverElement $container): array
     {
@@ -41,7 +41,7 @@ final readonly class IsDisplayedMatcher implements MatcherInterface
 
         foreach ($potentialElements as $element) {
             if ($element->isDisplayed()) {
-                $elements[$element->getID()] = $element;
+                $elements[] = $element;
             }
         }
 
@@ -49,7 +49,7 @@ final readonly class IsDisplayedMatcher implements MatcherInterface
     }
 
     /**
-     * @return array<string, WebDriverElement>
+     * @return WebDriverElement[]
      */
     private function matchElementsWithoutVisibility(WebDriverElement $container): array
     {
@@ -64,7 +64,7 @@ final readonly class IsDisplayedMatcher implements MatcherInterface
 
         foreach ($potentialElements as $element) {
             if (!$element->isDisplayed()) {
-                $elements[$element->getID()] = $element;
+                $elements[] = $element;
             }
         }
 

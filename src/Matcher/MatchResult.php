@@ -11,14 +11,19 @@ use Facebook\WebDriver\WebDriverElement;
 final readonly class MatchResult
 {
     /**
+     * @var array<int, WebDriverElement>
+     */
+    private array $result;
+
+    /**
      * @param  WebDriverElement[]  $result
      */
     public function __construct(
         private MatcherInterface $matcher,
-        private array $result,
+        array $result,
         public bool $isExpectingEmpty = false,
     ) {
-        //
+        $this->result = $this->removeDuplicates($result);
     }
 
     /**
@@ -49,11 +54,26 @@ final readonly class MatchResult
             throw new AmbiguousElementException($this->result, $this->matcher);
         }
 
-        return array_values($this->result)[0];
+        return $this->result[0];
     }
 
     public function __toString(): string
     {
         return (string) $this->matcher;
+    }
+
+    /**
+     * @param  WebDriverElement[]  $result
+     * @return array<int, WebDriverElement>
+     */
+    private function removeDuplicates(array $result): array
+    {
+        $uniqueResults = [];
+
+        foreach ($result as $element) {
+            $uniqueResults[$element->getID()] = $element;
+        }
+
+        return array_values($uniqueResults);
     }
 }

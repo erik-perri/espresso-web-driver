@@ -104,7 +104,7 @@ class EspressoCoreTest extends BaseUnitTestCase
             ->method('getTagName')
             ->willReturn('mock');
 
-        $mockElementOne->expects($this->exactly(4))
+        $mockElementOne->expects($this->exactly(5))
             ->method('getID')
             ->willReturn('mock-1');
 
@@ -117,7 +117,7 @@ class EspressoCoreTest extends BaseUnitTestCase
             ->method('getTagName')
             ->willReturn('mock');
 
-        $mockElementTwo->expects($this->exactly(4))
+        $mockElementTwo->expects($this->exactly(5))
             ->method('getID')
             ->willReturn('mock-2');
 
@@ -130,7 +130,7 @@ class EspressoCoreTest extends BaseUnitTestCase
             ->method('getTagName')
             ->willReturn('mock');
 
-        $mockElementThree->expects($this->exactly(4))
+        $mockElementThree->expects($this->exactly(5))
             ->method('getID')
             ->willReturn('mock-3');
 
@@ -188,7 +188,7 @@ class EspressoCoreTest extends BaseUnitTestCase
             ->method('getTagName')
             ->willReturn('mock');
 
-        $mockElementOne->expects($this->exactly(3))
+        $mockElementOne->expects($this->exactly(4))
             ->method('getID')
             ->willReturn('mock-id');
 
