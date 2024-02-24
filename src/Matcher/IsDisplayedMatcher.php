@@ -33,7 +33,7 @@ final readonly class IsDisplayedMatcher implements MatcherInterface
         $elements = [];
 
         if ($container->isDisplayed()) {
-            $elements[$container->getID()] = $container;
+            $elements[] = $container;
         }
 
         // TODO This is probably a bad idea on dom heavy pages
@@ -56,7 +56,7 @@ final readonly class IsDisplayedMatcher implements MatcherInterface
         $elements = [];
 
         if (!$container->isDisplayed()) {
-            $elements[$container->getID()] = $container;
+            $elements[] = $container;
         }
 
         // TODO This is probably a bad idea on dom heavy pages
