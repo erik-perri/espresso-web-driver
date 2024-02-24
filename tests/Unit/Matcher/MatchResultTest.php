@@ -72,8 +72,8 @@ class MatchResultTest extends TestCase
         $this->expectException(AmbiguousElementException::class);
         $this->expectExceptionMessage(
             "2 elements found for matcher\n"
-            ."mock-one <mock-one>\n"
-            .'mock-two <mock-two>',
+            ."mock-one\n"
+            .'mock-two',
         );
 
         // Arrange
@@ -82,11 +82,11 @@ class MatchResultTest extends TestCase
             ->method('__toString')
             ->willReturn('matcher');
         $elementOne = $this->createMock(WebDriverElement::class);
-        $elementOne->expects($this->exactly(2))
+        $elementOne->expects($this->once())
             ->method('getTagName')
             ->willReturn('mock-one');
         $elementTwo = $this->createMock(WebDriverElement::class);
-        $elementTwo->expects($this->exactly(2))
+        $elementTwo->expects($this->once())
             ->method('getTagName')
             ->willReturn('mock-two');
 

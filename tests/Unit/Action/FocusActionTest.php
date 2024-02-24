@@ -34,7 +34,7 @@ class FocusActionTest extends BaseUnitTestCase
     {
         // Expectations
         $this->expectException(PerformException::class);
-        $this->expectExceptionMessage('Failed to perform action focus on mock <mock>, driver does not have access to executeScript');
+        $this->expectExceptionMessage('Failed to perform action focus on mock, driver does not have access to executeScript');
 
         // Arrange
         $assertion = new FocusAction();

@@ -82,8 +82,8 @@ class EspressoCoreTest extends BaseUnitTestCase
         $this->expectException(AmbiguousElementException::class);
         $this->expectExceptionMessage(
             "2 elements found for withText(mock)\n"
-            ."html/mock[1] <mock>\n"
-            .'html/mock[2] <mock>',
+            ."html/mock[1]\n"
+            .'html/mock[2]',
         );
 
         // Arrange
@@ -97,7 +97,7 @@ class EspressoCoreTest extends BaseUnitTestCase
             ->method('findElement')
             ->willReturn($mockHtmlElement);
 
-        $mockElementOne->expects($this->exactly(3))
+        $mockElementOne->expects($this->exactly(2))
             ->method('getTagName')
             ->willReturn('mock');
 
@@ -110,7 +110,7 @@ class EspressoCoreTest extends BaseUnitTestCase
             ->method('findElement')
             ->willReturn($mockHtmlElement);
 
-        $mockElementTwo->expects($this->exactly(3))
+        $mockElementTwo->expects($this->exactly(2))
             ->method('getTagName')
             ->willReturn('mock');
 
@@ -145,8 +145,8 @@ class EspressoCoreTest extends BaseUnitTestCase
         $this->expectException(AmbiguousElementException::class);
         $this->expectExceptionMessage(
             "2 elements found for withText(mock)\n"
-            ."html/mock[1] <mock>\n"
-            .'html/mock[2] <mock>',
+            ."html/mock[1]\n"
+            .'html/mock[2]',
         );
 
         // Arrange
@@ -160,7 +160,7 @@ class EspressoCoreTest extends BaseUnitTestCase
             ->method('findElement')
             ->willReturn($mockHtmlElement);
 
-        $mockElementOne->expects($this->exactly(3))
+        $mockElementOne->expects($this->exactly(2))
             ->method('getTagName')
             ->willReturn('mock');
 
@@ -173,7 +173,7 @@ class EspressoCoreTest extends BaseUnitTestCase
             ->method('findElement')
             ->willReturn($mockHtmlElement);
 
-        $mockElementTwo->expects($this->exactly(3))
+        $mockElementTwo->expects($this->exactly(2))
             ->method('getTagName')
             ->willReturn('mock');
 

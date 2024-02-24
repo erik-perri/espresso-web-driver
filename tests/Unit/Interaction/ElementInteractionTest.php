@@ -131,8 +131,8 @@ class ElementInteractionTest extends BaseUnitTestCase
     {
         // Expectations
         $elementLog = "2 elements found for mock\n"
-            ."html/mock[1] <mock class=\"one\">\n"
-            .'html/mock[2] <mock>';
+            ."html/mock[1]\n"
+            .'html/mock[2]';
         $this->expectException(AssertionFailedException::class);
         $this->expectExceptionMessage(sprintf('Failed to assert matches(isDisplayed), %1$s', $elementLog));
 
@@ -170,12 +170,6 @@ class ElementInteractionTest extends BaseUnitTestCase
         $mockElementOne->expects($this->atLeastOnce())
             ->method('getTagName')
             ->willReturn('mock');
-
-        $mockElementOne->expects($this->atLeastOnce())
-            ->method('getAttribute')
-            ->willReturnMap([
-                ['class', 'one'],
-            ]);
 
         $mockElementOne->expects($this->once())
             ->method('findElement')
@@ -223,7 +217,7 @@ class ElementInteractionTest extends BaseUnitTestCase
     {
         // Expectations
         $this->expectException(PerformException::class);
-        $this->expectExceptionMessage('Failed to perform action mock on mock <mock>');
+        $this->expectExceptionMessage('Failed to perform action mock on mock');
 
         // Arrange
         $mockMatcher = $this->createMock(MatcherInterface::class);
