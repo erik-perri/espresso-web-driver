@@ -43,7 +43,7 @@ final readonly class ElementInteraction implements InteractionInterface
                 sprintf(
                     'Failed asserting that %1$s is true, %2$s',
                     $assertion,
-                    $this->result,
+                    $this->result->describe($this->context->options->elementLogger),
                 ),
             );
         }
@@ -60,7 +60,10 @@ final readonly class ElementInteraction implements InteractionInterface
 
         foreach ($actions as $action) {
             if (!$action->perform($element, $this->context)) {
-                throw new PerformException($action, $element);
+                throw new PerformException(
+                    action: $action,
+                    element: $this->context->options->elementLogger->describe($element),
+                );
             }
         }
 

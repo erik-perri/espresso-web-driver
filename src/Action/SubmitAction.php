@@ -22,7 +22,11 @@ final readonly class SubmitAction implements ActionInterface
             'select',
             'textarea',
         ])) {
-            throw new PerformException($this, $element, 'not a form related element');
+            throw new PerformException(
+                action: $this,
+                element: $context->options->elementLogger->describe($element),
+                reason: 'not a submittable element',
+            );
         }
 
         $element->submit();

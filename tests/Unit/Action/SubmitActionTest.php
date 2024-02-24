@@ -34,7 +34,7 @@ class SubmitActionTest extends BaseUnitTestCase
     {
         // Expectations
         $this->expectException(PerformException::class);
-        $this->expectExceptionMessage('Failed to perform action submit on mock, not a form related element');
+        $this->expectExceptionMessage('Failed to perform action submit on mock, not a submittable element');
 
         // Arrange
         $assertion = new SubmitAction();

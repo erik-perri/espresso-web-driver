@@ -22,8 +22,8 @@ final readonly class HasFocusMatcher implements MatcherInterface
         return new MatchResult(
             matcher: $this,
             result: $context->isNegated
-                ? $this->matchUnfocusedElements($container->single())
-                : $this->matchFocusedElements($container->single()),
+                ? $this->matchUnfocusedElements($container->single(), $context)
+                : $this->matchFocusedElements($container->single(), $context),
         );
     }
 
@@ -32,13 +32,13 @@ final readonly class HasFocusMatcher implements MatcherInterface
      *
      * @throws NoParentException
      */
-    private function matchFocusedElements(WebDriverElement $container): array
+    private function matchFocusedElements(WebDriverElement $container, EspressoContext $context): array
     {
         try {
             $parent = $container->findElement(WebDriverBy::xpath('./parent::*'));
         } catch (NoSuchElementException) {
             // If we cannot find the parent there is no way for us to find the focused element.
-            throw new NoParentException($this, $container);
+            throw new NoParentException($this, $context->options->elementLogger->describe($container));
         }
 
         return $parent->findElements(WebDriverBy::cssSelector(':focus'));
@@ -49,13 +49,13 @@ final readonly class HasFocusMatcher implements MatcherInterface
      *
      * @throws NoParentException
      */
-    private function matchUnfocusedElements(WebDriverElement $container): array
+    private function matchUnfocusedElements(WebDriverElement $container, EspressoContext $context): array
     {
         try {
             $parent = $container->findElement(WebDriverBy::xpath('./parent::*'));
         } catch (NoSuchElementException) {
             // If we cannot find the parent there is no way for us to find the focused element.
-            throw new NoParentException($this, $container);
+            throw new NoParentException($this, $context->options->elementLogger->describe($container));
         }
 
         return $parent->findElements(WebDriverBy::cssSelector(':not(:focus)'));

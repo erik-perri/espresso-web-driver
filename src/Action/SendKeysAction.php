@@ -36,7 +36,11 @@ final readonly class SendKeysAction implements ActionInterface
     public function perform(WebDriverElement $element, EspressoContext $context): bool
     {
         if (!($context->driver instanceof WebDriverHasInputDevices)) {
-            throw new PerformException($this, $element, 'driver does not have access to input devices');
+            throw new PerformException(
+                action: $this,
+                element: $context->options->elementLogger->describe($element),
+                reason: 'driver does not have access to input devices',
+            );
         }
 
         $context->driver->getKeyboard()->sendKeys(implode('', $this->keys));

@@ -10,6 +10,7 @@ use EspressoWebDriver\Exception\AmbiguousElementException;
 use EspressoWebDriver\Exception\NoMatchingElementException;
 use EspressoWebDriver\Matcher\MatcherInterface;
 use EspressoWebDriver\Matcher\MatchResult;
+use EspressoWebDriver\Utilities\ElementPathLogger;
 use Facebook\WebDriver\WebDriverElement;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
@@ -50,7 +51,7 @@ class MatchResultTest extends TestCase
         $this->assertSame(2, $count);
     }
 
-    public function testMatchResultToString(): void
+    public function testMatchResultDescribe(): void
     {
         // Arrange
         $matcher = $this->createMock(MatcherInterface::class);
@@ -69,7 +70,7 @@ class MatchResultTest extends TestCase
         );
 
         // Act
-        $resultAsString = (string) $result;
+        $resultAsString = $result->describe(new ElementPathLogger());
 
         // Assert
         $this->assertSame("1 element found for matcher\nmock", $resultAsString);
