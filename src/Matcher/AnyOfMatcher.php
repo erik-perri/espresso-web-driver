@@ -7,6 +7,7 @@ namespace EspressoWebDriver\Matcher;
 use EspressoWebDriver\Core\EspressoContext;
 use EspressoWebDriver\Exception\AmbiguousElementException;
 use EspressoWebDriver\Exception\NoMatchingElementException;
+use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverElement;
 
 final readonly class AnyOfMatcher implements MatcherInterface
@@ -28,26 +29,58 @@ final readonly class AnyOfMatcher implements MatcherInterface
     {
         return new MatchResult(
             matcher: $this,
-            result: $this->matchElements($container, $context),
+            result: $context->isNegated
+                ? $this->matchElementsNotMatching($container, $context)
+                : $this->matchElementsMatching($container, $context),
         );
     }
 
     /**
-     * @return WebDriverElement[]
+     * @return array<string, WebDriverElement>
      *
      * @throws AmbiguousElementException|NoMatchingElementException
      */
-    private function matchElements(MatchResult $container, EspressoContext $context): array
+    private function matchElementsMatching(MatchResult $container, EspressoContext $context): array
     {
-        $resultsByMatcher = [];
+        $elements = [];
 
         foreach ($this->matchers as $matcher) {
-            $resultsByMatcher[] = $matcher->match($container, $context);
+            $results = $matcher->match($container, $context);
+
+            foreach ($results->all() as $element) {
+                $elements[$element->getID()] = $element;
+            }
         }
 
-        return array_merge(
-            ...array_map(fn (MatchResult $result) => $result->all(), $resultsByMatcher),
-        );
+        return $elements;
+    }
+
+    /**
+     * @return array<string, WebDriverElement>
+     *
+     * @throws AmbiguousElementException|NoMatchingElementException
+     */
+    private function matchElementsNotMatching(MatchResult $container, EspressoContext $context): array
+    {
+        $elementsMatching = $this->matchElementsMatching($container, new EspressoContext(
+            driver: $context->driver,
+            options: $context->options,
+        ));
+
+        $elements = [];
+
+        foreach ($container->all() as $containerElement) {
+            // TODO This is probably a bad idea on dom heavy pages
+            $potentiallyNotMatching = $containerElement->findElements(WebDriverBy::cssSelector('*'));
+
+            foreach ($potentiallyNotMatching as $element) {
+                if (!isset($elementsMatching[$element->getID()])) {
+                    $elements[$element->getID()] = $element;
+                }
+            }
+        }
+
+        return $elements;
     }
 
     public function __toString(): string

@@ -17,6 +17,7 @@ use function EspressoWebDriver\allOf;
 use function EspressoWebDriver\anyOf;
 use function EspressoWebDriver\click;
 use function EspressoWebDriver\matches;
+use function EspressoWebDriver\not;
 use function EspressoWebDriver\usingDriver;
 use function EspressoWebDriver\withClass;
 use function EspressoWebDriver\withText;
@@ -43,5 +44,20 @@ class AnyOfMatcherFeatureTest extends BaseFeatureTestCase
         $espresso
             ->onElement(allOf(withClass('status'), anyOf(withText('Processing'), withText('Done'))))
             ->check(matches(withText('Done')));
+    }
+
+    public function testNegatesAsExpected(): void
+    {
+        // Arrange
+        $driver = $this->driver()->get($this->mockStaticUrl('matchers/any-of.html'));
+
+        $options = new EspressoOptions(assertionReporter: new PhpunitReporter);
+
+        $espresso = usingDriver($driver, $options);
+
+        // Act and Assert
+        $espresso
+            ->onElement(allOf(withClass('status'), not(anyOf(withText('Processing'), withText('Done')))))
+            ->check(matches(withText('Deleted')));
     }
 }

@@ -5,8 +5,15 @@
     <div class="status">Processing</div>
 </div>
 
+<div class="row">
+    <div class="status">Deleted</div>
+</div>
+
 <script>
     document.querySelector('.status').addEventListener('click', function () {
+        if (this.textContent === 'Deleted') {
+            return;
+        }
         this.textContent = this.textContent === 'Processing' ? 'Done' : 'Processing';
     });
 </script>
