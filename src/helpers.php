@@ -116,9 +116,9 @@ function allOf(MatcherInterface ...$matchers): MatcherInterface
     return new AllOfMatcher(...$matchers);
 }
 
-function anyOf(MatcherInterface ...$assertions): MatcherInterface
+function anyOf(MatcherInterface ...$matchers): MatcherInterface
 {
-    return new AnyOfMatcher(...$assertions);
+    return new AnyOfMatcher(...$matchers);
 }
 
 function hasDescendant(MatcherInterface $matcher): MatcherInterface
@@ -170,9 +170,9 @@ function isPresent(): MatcherInterface
     return new IsPresentMatcher();
 }
 
-function not(MatcherInterface $assertionOrMatcher): MatcherInterface
+function not(MatcherInterface $matcher): MatcherInterface
 {
-    return new NotMatcher($assertionOrMatcher);
+    return new NotMatcher($matcher);
 }
 
 function withClass(string $class): MatcherInterface
