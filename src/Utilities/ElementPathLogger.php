@@ -10,6 +10,11 @@ use Facebook\WebDriver\WebDriverElement;
 
 final readonly class ElementPathLogger implements ElementLoggerInterface
 {
+    public function __construct(private int $maxElements = 3)
+    {
+        //
+    }
+
     public function describe(WebDriverElement $element): string
     {
         $hasId = $element->getAttribute('id') !== null;
@@ -77,7 +82,7 @@ final readonly class ElementPathLogger implements ElementLoggerInterface
 
         $renderedElements = array_map(
             fn (WebDriverElement $element) => $this->describe($element),
-            array_slice($elements, 0, 3),
+            array_slice($elements, 0, $this->maxElements),
         );
 
         if ($totalElements > count($renderedElements)) {
