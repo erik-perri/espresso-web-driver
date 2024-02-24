@@ -53,9 +53,10 @@ final readonly class ElementInteraction implements InteractionInterface
             $this->context->options->assertionReporter?->report(
                 false,
                 sprintf(
-                    'Failed asserting that %1$s is true for %2$s, multiple matching elements were found.',
+                    'Failed asserting that %1$s is true for %2$s, %3$s',
                     $assertion,
                     $this->result,
+                    $exception->getMessage(),
                 ),
             );
 

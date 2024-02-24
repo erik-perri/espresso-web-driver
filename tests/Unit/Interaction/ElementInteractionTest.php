@@ -51,7 +51,7 @@ class ElementInteractionTest extends BaseUnitTestCase
             ->method('report')
             ->with(
                 false,
-                'Failed asserting that match(mock) is true for mock (1 element)',
+                'Failed asserting that match(mock) is true for mock',
             );
 
         $mockOptions = new EspressoOptions(
@@ -103,7 +103,7 @@ class ElementInteractionTest extends BaseUnitTestCase
             ->method('report')
             ->with(
                 false,
-                'Failed asserting that matches(isDisplayed) is true for mock (0 elements), no matching element was found.',
+                'Failed asserting that matches(isDisplayed) is true for mock, no matching element was found.',
             );
 
         $mockOptions = new EspressoOptions(
@@ -130,8 +130,11 @@ class ElementInteractionTest extends BaseUnitTestCase
     public function testCheckThrowsAssertionExceptionOnFailureDueToAmbiguousElement(): void
     {
         // Expectations
+        $elementLog = "2 elements found for mock\n"
+            ."html/mock[1] <mock class=\"one\">\n"
+            .'html/mock[2] <mock>';
         $this->expectException(AssertionFailedException::class);
-        $this->expectExceptionMessage('Failed to assert matches(isDisplayed), 2 elements found for mock');
+        $this->expectExceptionMessage(sprintf('Failed to assert matches(isDisplayed), %1$s', $elementLog));
 
         // Arrange
         $mockMatcher = $this->createMock(MatcherInterface::class);
@@ -145,7 +148,7 @@ class ElementInteractionTest extends BaseUnitTestCase
             ->method('report')
             ->with(
                 false,
-                'Failed asserting that matches(isDisplayed) is true for mock (2 elements), multiple matching elements were found.',
+                sprintf('Failed asserting that matches(isDisplayed) is true for mock, %1$s', $elementLog),
             );
 
         $mockOptions = new EspressoOptions(
@@ -158,9 +161,53 @@ class ElementInteractionTest extends BaseUnitTestCase
             options: $mockOptions,
         );
 
+        $htmlElement = $this->createMock(WebDriverElement::class);
+        $htmlElement
+            ->method('getTagName')
+            ->willReturn('html');
+
+        $mockElementOne = $this->createMock(WebDriverElement::class);
+        $mockElementOne->expects($this->atLeastOnce())
+            ->method('getTagName')
+            ->willReturn('mock');
+
+        $mockElementOne->expects($this->atLeastOnce())
+            ->method('getAttribute')
+            ->willReturnMap([
+                ['class', 'one'],
+            ]);
+
+        $mockElementOne->expects($this->once())
+            ->method('findElement')
+            ->willReturn($htmlElement);
+
+        $mockElementOne->expects($this->atLeastOnce())
+            ->method('getID')
+            ->willReturn('one');
+
+        $mockElementTwo = $this->createMock(WebDriverElement::class);
+        $mockElementTwo->expects($this->atLeastOnce())
+            ->method('getTagName')
+            ->willReturn('mock');
+
+        $mockElementTwo->expects($this->once())
+            ->method('findElement')
+            ->willReturn($htmlElement);
+
+        $mockElementTwo->expects($this->atLeastOnce())
+            ->method('getID')
+            ->willReturn('two');
+
+        $htmlElement->expects($this->atLeastOnce())
+            ->method('findElements')
+            ->willReturn([
+                $mockElementOne,
+                $mockElementTwo,
+            ]);
+
         $mockResult = new MatchResult($mockMatcher, [
-            $this->createMock(WebDriverElement::class),
-            $this->createMock(WebDriverElement::class),
+            $mockElementOne,
+            $mockElementTwo,
         ]);
 
         $interaction = new ElementInteraction($mockResult, $mockContext);
@@ -176,7 +223,7 @@ class ElementInteractionTest extends BaseUnitTestCase
     {
         // Expectations
         $this->expectException(PerformException::class);
-        $this->expectExceptionMessage('Failed to perform action mock on <mock>');
+        $this->expectExceptionMessage('Failed to perform action mock on mock <mock>');
 
         // Arrange
         $mockMatcher = $this->createMock(MatcherInterface::class);

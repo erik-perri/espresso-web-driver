@@ -46,7 +46,7 @@ final readonly class MatchResult
         }
 
         if ($elementCount > 1) {
-            throw new AmbiguousElementException($elementCount, $this->matcher);
+            throw new AmbiguousElementException($this->result, $this->matcher);
         }
 
         return array_values($this->result)[0];
@@ -54,13 +54,6 @@ final readonly class MatchResult
 
     public function __toString(): string
     {
-        $count = $this->count();
-
-        return sprintf(
-            '%1$s (%2$s %3$s)',
-            $this->matcher,
-            number_format($count),
-            $count === 1 ? 'element' : 'elements',
-        );
+        return (string) $this->matcher;
     }
 }

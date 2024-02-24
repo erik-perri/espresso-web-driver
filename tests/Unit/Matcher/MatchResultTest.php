@@ -63,14 +63,18 @@ class MatchResultTest extends TestCase
         $resultAsString = (string) $result;
 
         // Assert
-        $this->assertSame('matcher (1 element)', $resultAsString);
+        $this->assertSame('matcher', $resultAsString);
     }
 
     public function testMatchResultThrowsAmbiguousElementMatcherException(): void
     {
         // Expectations
         $this->expectException(AmbiguousElementException::class);
-        $this->expectExceptionMessage('2 elements found for matcher');
+        $this->expectExceptionMessage(
+            "2 elements found for matcher\n"
+            ."mock-one <mock-one>\n"
+            .'mock-two <mock-two>',
+        );
 
         // Arrange
         $matcher = $this->createMock(MatcherInterface::class);
@@ -78,7 +82,13 @@ class MatchResultTest extends TestCase
             ->method('__toString')
             ->willReturn('matcher');
         $elementOne = $this->createMock(WebDriverElement::class);
+        $elementOne->expects($this->exactly(2))
+            ->method('getTagName')
+            ->willReturn('mock-one');
         $elementTwo = $this->createMock(WebDriverElement::class);
+        $elementTwo->expects($this->exactly(2))
+            ->method('getTagName')
+            ->willReturn('mock-two');
 
         $result = new MatchResult(
             $matcher,
