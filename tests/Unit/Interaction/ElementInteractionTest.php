@@ -54,10 +54,7 @@ class ElementInteractionTest extends BaseUnitTestCase
                 'Failed asserting that match(mock) is true for mock',
             );
 
-        $mockOptions = new EspressoOptions(
-            waitTimeoutInSeconds: 0,
-            assertionReporter: $reporter,
-        );
+        $mockOptions = new EspressoOptions(assertionReporter: $reporter);
 
         $mockContext = new EspressoContext(
             driver: $this->createMock(WebDriver::class),
@@ -106,10 +103,7 @@ class ElementInteractionTest extends BaseUnitTestCase
                 'Failed asserting that matches(isDisplayed) is true for mock, no matching element was found.',
             );
 
-        $mockOptions = new EspressoOptions(
-            waitTimeoutInSeconds: 0,
-            assertionReporter: $reporter,
-        );
+        $mockOptions = new EspressoOptions(assertionReporter: $reporter);
 
         $mockContext = new EspressoContext(
             driver: $this->createMock(WebDriver::class),
@@ -151,10 +145,7 @@ class ElementInteractionTest extends BaseUnitTestCase
                 sprintf('Failed asserting that matches(isDisplayed) is true for mock, %1$s', $elementLog),
             );
 
-        $mockOptions = new EspressoOptions(
-            waitTimeoutInSeconds: 0,
-            assertionReporter: $reporter,
-        );
+        $mockOptions = new EspressoOptions(assertionReporter: $reporter);
 
         $mockContext = new EspressoContext(
             driver: $this->createMock(WebDriver::class),
@@ -234,7 +225,7 @@ class ElementInteractionTest extends BaseUnitTestCase
             ->method('perform')
             ->willReturn(false);
 
-        $mockOptions = new EspressoOptions(waitTimeoutInSeconds: 0);
+        $mockOptions = new EspressoOptions();
 
         $mockContext = new EspressoContext(
             driver: $this->createMock(WebDriver::class),
@@ -279,7 +270,7 @@ class ElementInteractionTest extends BaseUnitTestCase
                 $this->createMock(WebDriverElement::class),
             ]);
 
-        $mockOptions = new EspressoOptions(waitTimeoutInSeconds: 0);
+        $mockOptions = new EspressoOptions();
 
         $mockContext = new EspressoContext(
             driver: $mockDriver,
@@ -312,7 +303,7 @@ class ElementInteractionTest extends BaseUnitTestCase
             ->method('click')
             ->willReturn(true);
 
-        $mockOptions = new EspressoOptions(waitTimeoutInSeconds: 0);
+        $mockOptions = new EspressoOptions();
 
         $mockContext = new EspressoContext(
             driver: $mockDriver,

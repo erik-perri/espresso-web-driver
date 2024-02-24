@@ -44,7 +44,7 @@ class FocusActionTest extends BaseUnitTestCase
 
         $mockContext = new EspressoContext(
             driver: $this->createMock(WebDriver::class),
-            options: new EspressoOptions(waitTimeoutInSeconds: 0),
+            options: new EspressoOptions(),
         );
 
         // Act

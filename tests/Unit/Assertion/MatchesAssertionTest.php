@@ -36,7 +36,7 @@ class MatchesAssertionTest extends BaseUnitTestCase
                 $this->createMock(WebDriverElement::class),
             ]));
 
-        $mockOptions = new EspressoOptions(waitTimeoutInSeconds: 0);
+        $mockOptions = new EspressoOptions();
 
         $mockContext = new EspressoContext(
             driver: $this->createMock(WebDriver::class),
@@ -69,7 +69,7 @@ class MatchesAssertionTest extends BaseUnitTestCase
                 $this->createMock(WebDriverElement::class),
             ]));
 
-        $mockOptions = new EspressoOptions(waitTimeoutInSeconds: 0);
+        $mockOptions = new EspressoOptions();
 
         $mockContext = new EspressoContext(
             driver: $this->createMock(WebDriver::class),
@@ -112,7 +112,7 @@ class MatchesAssertionTest extends BaseUnitTestCase
             ->method('match')
             ->willReturn(new MatchResult(matcher: $mockMatcher, result: [], isExpectingEmpty: true));
 
-        $mockOptions = new EspressoOptions(waitTimeoutInSeconds: 0);
+        $mockOptions = new EspressoOptions();
 
         $mockContext = new EspressoContext(
             driver: $this->createMock(WebDriver::class),

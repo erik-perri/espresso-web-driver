@@ -29,10 +29,7 @@ class WithTagNameMatcherFeatureTest extends BaseFeatureTestCase
         // Arrange
         $driver = $this->driver()->get($this->mockStaticUrl('matchers/with-tag-name.html'));
 
-        $options = new EspressoOptions(
-            waitTimeoutInSeconds: 0,
-            assertionReporter: new PhpunitReporter,
-        );
+        $options = new EspressoOptions(assertionReporter: new PhpunitReporter);
 
         $espresso = usingDriver($driver, $options);
 
@@ -49,10 +46,7 @@ class WithTagNameMatcherFeatureTest extends BaseFeatureTestCase
         // Arrange
         $driver = $this->driver()->get($this->mockStaticUrl('matchers/with-tag-name.html'));
 
-        $options = new EspressoOptions(
-            waitTimeoutInSeconds: 0,
-            assertionReporter: new PhpunitReporter,
-        );
+        $options = new EspressoOptions(assertionReporter: new PhpunitReporter);
 
         $espresso = usingDriver($driver, $options);
 
@@ -67,10 +61,7 @@ class WithTagNameMatcherFeatureTest extends BaseFeatureTestCase
         // Arrange
         $driver = $this->driver()->get($this->mockStaticUrl('matchers/with-tag-name.html'));
 
-        $options = new EspressoOptions(
-            waitTimeoutInSeconds: 0,
-            assertionReporter: new PhpunitReporter,
-        );
+        $options = new EspressoOptions(assertionReporter: new PhpunitReporter);
 
         $espresso = usingDriver($driver, $options);
 
@@ -84,10 +75,7 @@ class WithTagNameMatcherFeatureTest extends BaseFeatureTestCase
         // Arrange
         $driver = $this->driver()->get($this->mockStaticUrl('matchers/with-tag-name.html'));
 
-        $options = new EspressoOptions(
-            waitTimeoutInSeconds: 0,
-            assertionReporter: new PhpunitReporter,
-        );
+        $options = new EspressoOptions(assertionReporter: new PhpunitReporter);
 
         $espresso = usingDriver($driver, $options);
 

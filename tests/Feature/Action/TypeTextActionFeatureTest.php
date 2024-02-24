@@ -27,7 +27,7 @@ class TypeTextActionFeatureTest extends BaseFeatureTestCase
         // Arrange
         $driver = $this->driver()->get($this->mockStaticUrl('actions/type-text.html'));
 
-        $options = new EspressoOptions(waitTimeoutInSeconds: 0);
+        $options = new EspressoOptions();
 
         $espresso = usingDriver($driver, $options);
 
@@ -48,7 +48,7 @@ class TypeTextActionFeatureTest extends BaseFeatureTestCase
         // Arrange
         $driver = $this->driver()->get($this->mockStaticUrl('actions/type-text.html'));
 
-        $options = new EspressoOptions(waitTimeoutInSeconds: 0);
+        $options = new EspressoOptions();
 
         $espresso = usingDriver($driver, $options);
 
@@ -69,7 +69,7 @@ class TypeTextActionFeatureTest extends BaseFeatureTestCase
         // Arrange
         $driver = $this->driver()->get($this->mockStaticUrl('actions/type-text.html'));
 
-        $options = new EspressoOptions(waitTimeoutInSeconds: 0);
+        $options = new EspressoOptions();
 
         $espresso = usingDriver($driver, $options);
 

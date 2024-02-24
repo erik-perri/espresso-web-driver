@@ -38,7 +38,7 @@ class EspressoCoreTest extends BaseUnitTestCase
             ->method('findElement')
             ->willThrowException(new NoSuchElementException(''));
 
-        $mockOptions = new EspressoOptions(waitTimeoutInSeconds: 0);
+        $mockOptions = new EspressoOptions();
 
         // Act
         new EspressoCore($mockDriver, $mockOptions);
@@ -66,7 +66,7 @@ class EspressoCoreTest extends BaseUnitTestCase
             ->method('findElement')
             ->willReturn($mockHtmlElement);
 
-        $mockOptions = new EspressoOptions(waitTimeoutInSeconds: 0);
+        $mockOptions = new EspressoOptions();
 
         // Act
         $espresso = new EspressoCore($mockDriver, $mockOptions);
@@ -152,7 +152,7 @@ class EspressoCoreTest extends BaseUnitTestCase
             ->method('findElement')
             ->willReturn($mockHtmlElement);
 
-        $mockOptions = new EspressoOptions(waitTimeoutInSeconds: 0);
+        $mockOptions = new EspressoOptions();
 
         // Act
         $espresso = new EspressoCore($mockDriver, $mockOptions);
@@ -215,7 +215,7 @@ class EspressoCoreTest extends BaseUnitTestCase
             ->method('findElement')
             ->willReturn($mockHtmlElement);
 
-        $mockOptions = new EspressoOptions(waitTimeoutInSeconds: 0);
+        $mockOptions = new EspressoOptions();
 
         // Act
         $espresso = new EspressoCore($mockDriver, $mockOptions);
@@ -252,7 +252,7 @@ class EspressoCoreTest extends BaseUnitTestCase
             ->method('findElement')
             ->willReturn($mockHtmlElement);
 
-        $mockOptions = new EspressoOptions(waitTimeoutInSeconds: 0);
+        $mockOptions = new EspressoOptions();
 
         $espresso = new EspressoCore($mockDriver, $mockOptions);
         $containedEspresso = $espresso->inContainer(withText('mock'));

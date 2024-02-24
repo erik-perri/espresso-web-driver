@@ -30,10 +30,7 @@ class WithClassMatcherFeatureTest extends BaseFeatureTestCase
         // Arrange
         $driver = $this->driver()->get($this->mockStaticUrl('matchers/with-class.html'));
 
-        $options = new EspressoOptions(
-            waitTimeoutInSeconds: 0,
-            assertionReporter: new PhpunitReporter,
-        );
+        $options = new EspressoOptions(assertionReporter: new PhpunitReporter);
 
         $espresso = usingDriver($driver, $options);
 
@@ -47,10 +44,7 @@ class WithClassMatcherFeatureTest extends BaseFeatureTestCase
         // Arrange
         $driver = $this->driver()->get($this->mockStaticUrl('matchers/with-class.html'));
 
-        $options = new EspressoOptions(
-            waitTimeoutInSeconds: 0,
-            assertionReporter: new PhpunitReporter,
-        );
+        $options = new EspressoOptions(assertionReporter: new PhpunitReporter);
 
         $espresso = usingDriver($driver, $options)
             // This inContainer checks the "hasClass with no class check" on the positive path
@@ -66,10 +60,7 @@ class WithClassMatcherFeatureTest extends BaseFeatureTestCase
         // Arrange
         $driver = $this->driver()->get($this->mockStaticUrl('matchers/with-class.html'));
 
-        $options = new EspressoOptions(
-            waitTimeoutInSeconds: 0,
-            assertionReporter: new PhpunitReporter,
-        );
+        $options = new EspressoOptions(assertionReporter: new PhpunitReporter);
 
         $espresso = usingDriver($driver, $options);
 
@@ -83,10 +74,7 @@ class WithClassMatcherFeatureTest extends BaseFeatureTestCase
         // Arrange
         $driver = $this->driver()->get($this->mockStaticUrl('matchers/with-class.html'));
 
-        $options = new EspressoOptions(
-            waitTimeoutInSeconds: 0,
-            assertionReporter: new PhpunitReporter,
-        );
+        $options = new EspressoOptions(assertionReporter: new PhpunitReporter);
 
         $espresso = usingDriver($driver, $options);
 

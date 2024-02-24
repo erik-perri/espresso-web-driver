@@ -5,14 +5,11 @@ declare(strict_types=1);
 namespace EspressoWebDriver\Matcher;
 
 use EspressoWebDriver\Core\EspressoContext;
-use EspressoWebDriver\Traits\HasAutomaticWait;
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverElement;
 
 final readonly class WithIdMatcher implements MatcherInterface
 {
-    use HasAutomaticWait;
-
     public function __construct(private string $id)
     {
         //
@@ -20,9 +17,9 @@ final readonly class WithIdMatcher implements MatcherInterface
 
     public function match(MatchResult $container, EspressoContext $context): MatchResult
     {
-        return $this->waitForMatch(
-            $context,
-            fn () => $context->isNegated
+        return new MatchResult(
+            matcher: $this,
+            result: $context->isNegated
                 ? $this->matchElementsWithoutId($container->single())
                 : $this->matchElementsWithId($container->single()),
         );

@@ -30,10 +30,7 @@ class IsDisplayedMatcherFeatureTest extends BaseFeatureTestCase
         // Arrange
         $driver = $this->driver()->get($this->mockStaticUrl('matchers/is-displayed.html'));
 
-        $options = new EspressoOptions(
-            waitTimeoutInSeconds: 0,
-            assertionReporter: new PhpunitReporter,
-        );
+        $options = new EspressoOptions(assertionReporter: new PhpunitReporter);
 
         $espresso = usingDriver($driver, $options);
 

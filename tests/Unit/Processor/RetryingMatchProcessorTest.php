@@ -4,14 +4,15 @@
 
 declare(strict_types=1);
 
-namespace EspressoWebDriver\Tests\Unit\Traits;
+namespace EspressoWebDriver\Tests\Unit\Processor;
 
+use EspressoWebDriver\Assertion\MatchesAssertion;
 use EspressoWebDriver\Core\EspressoContext;
 use EspressoWebDriver\Core\EspressoOptions;
 use EspressoWebDriver\Matcher\IsDisplayedMatcher;
 use EspressoWebDriver\Matcher\MatchResult;
+use EspressoWebDriver\Processor\RetryingMatchProcessor;
 use EspressoWebDriver\Tests\Unit\BaseUnitTestCase;
-use EspressoWebDriver\Traits\HasAutomaticWait;
 use Facebook\WebDriver\WebDriver;
 use Facebook\WebDriver\WebDriverElement;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -19,12 +20,12 @@ use Symfony\Bridge\PhpUnit\ClockMock;
 
 use function EspressoWebDriver\withTagName;
 
-#[CoversClass(IsDisplayedMatcher::class)]
-class HasAutomaticWaitTest extends BaseUnitTestCase
+#[CoversClass(RetryingMatchProcessor::class)]
+class RetryingMatchProcessorTest extends BaseUnitTestCase
 {
     protected function setUp(): void
     {
-        ClockMock::register(HasAutomaticWait::class);
+        ClockMock::register(RetryingMatchProcessor::class);
 
         ClockMock::withClockMock(true);
     }
@@ -57,18 +58,22 @@ class HasAutomaticWaitTest extends BaseUnitTestCase
         $matchContext = new EspressoContext(
             driver: $mockDriver,
             options: new EspressoOptions(
-                waitTimeoutInSeconds: $configuredTimeInSeconds,
-                waitIntervalInMilliseconds: $configuredDelayInMilliseconds,
+                matchProcessor: new RetryingMatchProcessor(
+                    waitTimeoutInSeconds: $configuredTimeInSeconds,
+                    waitIntervalInMilliseconds: $configuredDelayInMilliseconds,
+                ),
             ),
         );
 
         $matcher = new IsDisplayedMatcher();
 
+        $assertion = new MatchesAssertion($matcher);
+
         // Act
-        $result = $matcher->match($matchResult, $matchContext);
+        $result = $assertion->assert($matchResult, $matchContext);
 
         // Assert
-        $this->assertEquals(0, $result->count());
+        $this->assertFalse($result);
     }
 
     public function testReturnsEarlyOnSuccess(): void
@@ -104,17 +109,21 @@ class HasAutomaticWaitTest extends BaseUnitTestCase
         $matchContext = new EspressoContext(
             driver: $mockDriver,
             options: new EspressoOptions(
-                waitTimeoutInSeconds: $configuredTimeInSeconds,
-                waitIntervalInMilliseconds: $configuredDelayInMilliseconds,
+                matchProcessor: new RetryingMatchProcessor(
+                    waitTimeoutInSeconds: $configuredTimeInSeconds,
+                    waitIntervalInMilliseconds: $configuredDelayInMilliseconds,
+                ),
             ),
         );
 
         $matcher = new IsDisplayedMatcher();
 
+        $assertion = new MatchesAssertion($matcher);
+
         // Act
-        $result = $matcher->match($matchResult, $matchContext);
+        $result = $assertion->assert($matchResult, $matchContext);
 
         // Assert
-        $this->assertEquals(1, $result->count());
+        $this->assertTrue($result);
     }
 }

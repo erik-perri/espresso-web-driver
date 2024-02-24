@@ -7,22 +7,19 @@ namespace EspressoWebDriver\Matcher;
 use EspressoWebDriver\Core\EspressoContext;
 use EspressoWebDriver\Exception\AmbiguousElementException;
 use EspressoWebDriver\Exception\NoMatchingElementException;
-use EspressoWebDriver\Traits\HasAutomaticWait;
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverElement;
 
 final readonly class IsEnabledMatcher implements MatcherInterface
 {
-    use HasAutomaticWait;
-
     /**
      * @throws AmbiguousElementException|NoMatchingElementException
      */
     public function match(MatchResult $container, EspressoContext $context): MatchResult
     {
-        return $this->waitForMatch(
-            $context,
-            fn () => $context->isNegated
+        return new MatchResult(
+            matcher: $this,
+            result: $context->isNegated
                 ? $this->matchDisabledElements($container->single())
                 : $this->matchEnabledElements($container->single()),
         );

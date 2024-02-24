@@ -7,13 +7,10 @@ namespace EspressoWebDriver\Matcher;
 use EspressoWebDriver\Core\EspressoContext;
 use EspressoWebDriver\Exception\AmbiguousElementException;
 use EspressoWebDriver\Exception\NoMatchingElementException;
-use EspressoWebDriver\Traits\HasAutomaticWait;
 use Facebook\WebDriver\WebDriverElement;
 
 final readonly class AllOfMatcher implements MatcherInterface
 {
-    use HasAutomaticWait;
-
     /**
      * @var MatcherInterface[]
      */
@@ -29,7 +26,10 @@ final readonly class AllOfMatcher implements MatcherInterface
      */
     public function match(MatchResult $container, EspressoContext $context): MatchResult
     {
-        return $this->waitForMatch($context, fn () => $this->matchElements($container, $context));
+        return new MatchResult(
+            matcher: $this,
+            result: $this->matchElements($container, $context),
+        );
     }
 
     /**
@@ -39,17 +39,10 @@ final readonly class AllOfMatcher implements MatcherInterface
      */
     private function matchElements(MatchResult $container, EspressoContext $context): array
     {
-        $childContext = new EspressoContext(
-            driver: $context->driver,
-            // Since we are waiting ourselves, we don't want the child matchers to wait as well.
-            options: $context->options->toInstantOptions(),
-            isNegated: $context->isNegated,
-        );
-
         $resultsByMatcher = [];
 
         foreach ($this->matchers as $matcher) {
-            $resultsByMatcher[] = $matcher->match($container, $childContext);
+            $resultsByMatcher[] = $matcher->match($container, $context);
         }
 
         $firstResult = array_shift($resultsByMatcher);

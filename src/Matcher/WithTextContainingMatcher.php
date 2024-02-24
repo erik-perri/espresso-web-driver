@@ -5,15 +5,12 @@ declare(strict_types=1);
 namespace EspressoWebDriver\Matcher;
 
 use EspressoWebDriver\Core\EspressoContext;
-use EspressoWebDriver\Traits\HasAutomaticWait;
 use EspressoWebDriver\Utilities\TextNormalizer;
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverElement;
 
 final readonly class WithTextContainingMatcher implements MatcherInterface
 {
-    use HasAutomaticWait;
-
     private string $normalizedText;
 
     public function __construct(string $text)
@@ -23,9 +20,9 @@ final readonly class WithTextContainingMatcher implements MatcherInterface
 
     public function match(MatchResult $container, EspressoContext $context): MatchResult
     {
-        return $this->waitForMatch(
-            $context,
-            fn () => $context->isNegated
+        return new MatchResult(
+            matcher: $this,
+            result: $context->isNegated
                 ? $this->matchElementsNotContainingText($container->single())
                 : $this->matchElementsContainingText($container->single()),
         );

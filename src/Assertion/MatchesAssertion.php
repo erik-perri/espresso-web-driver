@@ -23,7 +23,7 @@ final readonly class MatchesAssertion implements AssertionInterface
      */
     public function assert(MatchResult $container, EspressoContext $context): bool
     {
-        $matches = $this->matcher->match($container, new EspressoContext(
+        $matches = $context->options->matchProcessor->process($container, $this->matcher, new EspressoContext(
             driver: $context->driver,
             options: $context->options,
         ));

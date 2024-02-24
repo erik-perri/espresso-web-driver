@@ -8,23 +8,20 @@ use EspressoWebDriver\Core\EspressoContext;
 use EspressoWebDriver\Exception\AmbiguousElementException;
 use EspressoWebDriver\Exception\NoMatchingElementException;
 use EspressoWebDriver\Exception\NoParentException;
-use EspressoWebDriver\Traits\HasAutomaticWait;
 use Facebook\WebDriver\Exception\NoSuchElementException;
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverElement;
 
 final readonly class HasFocusMatcher implements MatcherInterface
 {
-    use HasAutomaticWait;
-
     /**
      * @throws AmbiguousElementException|NoMatchingElementException|NoParentException
      */
     public function match(MatchResult $container, EspressoContext $context): MatchResult
     {
-        return $this->waitForMatch(
-            $context,
-            fn () => $context->isNegated
+        return new MatchResult(
+            matcher: $this,
+            result: $context->isNegated
                 ? $this->matchUnfocusedElements($container->single())
                 : $this->matchFocusedElements($container->single()),
         );

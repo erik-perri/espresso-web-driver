@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace EspressoWebDriver\Matcher;
 
 use EspressoWebDriver\Core\EspressoContext;
-use EspressoWebDriver\Traits\HasAutomaticWait;
 use EspressoWebDriver\Utilities\TextNormalizer;
 use Facebook\WebDriver\Exception\NoSuchElementException;
 use Facebook\WebDriver\WebDriverBy;
@@ -13,8 +12,6 @@ use Facebook\WebDriver\WebDriverElement;
 
 final readonly class WithLabelMatcher implements MatcherInterface
 {
-    use HasAutomaticWait;
-
     private string $normalizedText;
 
     public function __construct(string $text)
@@ -24,9 +21,9 @@ final readonly class WithLabelMatcher implements MatcherInterface
 
     public function match(MatchResult $container, EspressoContext $context): MatchResult
     {
-        return $this->waitForMatch(
-            $context,
-            fn () => $context->isNegated
+        return new MatchResult(
+            matcher: $this,
+            result: $context->isNegated
                 ? $this->matchElementsWithoutLabel($container->single())
                 : $this->matchElementsWithLabel($container->single()),
         );

@@ -31,10 +31,7 @@ class WithTextContainingMatcherFeatureTest extends BaseFeatureTestCase
         // Arrange
         $driver = $this->driver()->get($this->mockStaticUrl('matchers/with-text.html'));
 
-        $options = new EspressoOptions(
-            waitTimeoutInSeconds: 0,
-            assertionReporter: new PhpunitReporter,
-        );
+        $options = new EspressoOptions(assertionReporter: new PhpunitReporter);
 
         $espresso = usingDriver($driver, $options);
 
@@ -48,10 +45,7 @@ class WithTextContainingMatcherFeatureTest extends BaseFeatureTestCase
         // Arrange
         $driver = $this->driver()->get($this->mockStaticUrl('matchers/with-text.html'));
 
-        $options = new EspressoOptions(
-            waitTimeoutInSeconds: 0,
-            assertionReporter: new PhpunitReporter,
-        );
+        $options = new EspressoOptions(assertionReporter: new PhpunitReporter);
 
         $espresso = usingDriver($driver, $options)
             ->inContainer(allOf(withTagName('li'), withTextContaining('Mock A')));
@@ -66,10 +60,7 @@ class WithTextContainingMatcherFeatureTest extends BaseFeatureTestCase
         // Arrange
         $driver = $this->driver()->get($this->mockStaticUrl('matchers/with-text.html'));
 
-        $options = new EspressoOptions(
-            waitTimeoutInSeconds: 0,
-            assertionReporter: new PhpunitReporter,
-        );
+        $options = new EspressoOptions(assertionReporter: new PhpunitReporter);
 
         $espresso = usingDriver($driver, $options)
             ->inContainer(allOf(withTagName('li'), withTextContaining('Another D')));
@@ -84,10 +75,7 @@ class WithTextContainingMatcherFeatureTest extends BaseFeatureTestCase
         // Arrange
         $driver = $this->driver()->get($this->mockStaticUrl('matchers/with-text.html'));
 
-        $options = new EspressoOptions(
-            waitTimeoutInSeconds: 0,
-            assertionReporter: new PhpunitReporter,
-        );
+        $options = new EspressoOptions(assertionReporter: new PhpunitReporter);
 
         $espresso = usingDriver($driver, $options);
 
@@ -101,10 +89,7 @@ class WithTextContainingMatcherFeatureTest extends BaseFeatureTestCase
         // Arrange
         $driver = $this->driver()->get($this->mockStaticUrl('matchers/with-text.html'));
 
-        $options = new EspressoOptions(
-            waitTimeoutInSeconds: 0,
-            assertionReporter: new PhpunitReporter,
-        );
+        $options = new EspressoOptions(assertionReporter: new PhpunitReporter);
 
         $espresso = usingDriver($driver, $options);
 
@@ -118,10 +103,7 @@ class WithTextContainingMatcherFeatureTest extends BaseFeatureTestCase
         // Arrange
         $driver = $this->driver()->get($this->mockStaticUrl('matchers/with-text.html'));
 
-        $options = new EspressoOptions(
-            waitTimeoutInSeconds: 0,
-            assertionReporter: new PhpunitReporter,
-        );
+        $options = new EspressoOptions(assertionReporter: new PhpunitReporter);
 
         $espresso = usingDriver($driver, $options);
 
@@ -135,10 +117,7 @@ class WithTextContainingMatcherFeatureTest extends BaseFeatureTestCase
         // Arrange
         $driver = $this->driver()->get($this->mockStaticUrl('matchers/with-text.html'));
 
-        $options = new EspressoOptions(
-            waitTimeoutInSeconds: 0,
-            assertionReporter: new PhpunitReporter,
-        );
+        $options = new EspressoOptions(assertionReporter: new PhpunitReporter);
 
         $espresso = usingDriver($driver, $options);
 

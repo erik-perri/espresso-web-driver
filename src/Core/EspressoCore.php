@@ -41,7 +41,7 @@ final readonly class EspressoCore
             options: $this->options,
         );
 
-        $result = $matcher->match($this->container, $context);
+        $result = $this->options->matchProcessor->process($this->container, $matcher, $context);
 
         return new self($this->driver, $this->options, $result);
     }
@@ -56,7 +56,7 @@ final readonly class EspressoCore
             options: $this->options,
         );
 
-        $result = $matcher->match($this->container, $context);
+        $result = $this->options->matchProcessor->process($this->container, $matcher, $context);
 
         return new ElementInteraction($result, $context);
     }

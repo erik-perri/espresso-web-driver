@@ -7,14 +7,11 @@ namespace EspressoWebDriver\Matcher;
 use EspressoWebDriver\Core\EspressoContext;
 use EspressoWebDriver\Exception\AmbiguousElementException;
 use EspressoWebDriver\Exception\NoMatchingElementException;
-use EspressoWebDriver\Traits\HasAutomaticWait;
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverElement;
 
 final readonly class HasDescendantMatcher implements MatcherInterface
 {
-    use HasAutomaticWait;
-
     public function __construct(private MatcherInterface $matcher)
     {
         //
@@ -22,16 +19,12 @@ final readonly class HasDescendantMatcher implements MatcherInterface
 
     public function match(MatchResult $container, EspressoContext $context): MatchResult
     {
-        $childContext = new EspressoContext(
-            driver: $context->driver,
-            // Since we are waiting ourselves, we don't want the child matchers to wait as well.
-            options: $context->options->toInstantOptions(),
-            isNegated: $context->isNegated,
+        return new MatchResult(
+            matcher: $this,
+            result: $context->isNegated
+                ? $this->matchElementsWithoutDescendants($container, $context)
+                : $this->matchElementsWithDescendants($container, $context),
         );
-
-        return $this->waitForMatch($context, fn () => $context->isNegated
-            ? $this->matchElementsWithoutDescendants($container, $childContext)
-            : $this->matchElementsWithDescendants($container, $childContext));
     }
 
     /**

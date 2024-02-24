@@ -8,23 +8,20 @@ use EspressoWebDriver\Core\EspressoContext;
 use EspressoWebDriver\Exception\AmbiguousElementException;
 use EspressoWebDriver\Exception\EspressoWebDriverException;
 use EspressoWebDriver\Exception\NoMatchingElementException;
-use EspressoWebDriver\Traits\HasAutomaticWait;
 use EspressoWebDriver\Utilities\ElementDisplayChecker;
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverElement;
 
 final readonly class IsDisplayedInViewportMatcher implements MatcherInterface
 {
-    use HasAutomaticWait;
-
     /**
      * @throws AmbiguousElementException|EspressoWebDriverException|NoMatchingElementException
      */
     public function match(MatchResult $container, EspressoContext $context): MatchResult
     {
-        return $this->waitForMatch(
-            $context,
-            fn () => $context->isNegated
+        return new MatchResult(
+            matcher: $this,
+            result: $context->isNegated
                 ? $this->matchOffScreenElements($container->single(), $context)
                 : $this->matchOnScreenElements($container->single(), $context),
         );

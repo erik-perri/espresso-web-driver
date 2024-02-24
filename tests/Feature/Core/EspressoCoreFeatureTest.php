@@ -9,6 +9,7 @@ namespace EspressoWebDriver\Tests\Feature\Core;
 use EspressoWebDriver\Core\EspressoContext;
 use EspressoWebDriver\Core\EspressoCore;
 use EspressoWebDriver\Core\EspressoOptions;
+use EspressoWebDriver\Processor\MatchProcessor;
 use EspressoWebDriver\Tests\Feature\BaseFeatureTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\CoversFunction;
@@ -25,6 +26,7 @@ use function EspressoWebDriver\withText;
 #[CoversClass(EspressoContext::class)]
 #[CoversClass(EspressoCore::class)]
 #[CoversClass(EspressoOptions::class)]
+#[CoversClass(MatchProcessor::class)]
 #[CoversFunction('EspressoWebDriver\matches')]
 #[CoversFunction('EspressoWebDriver\usingDriver')]
 class EspressoCoreFeatureTest extends BaseFeatureTestCase
@@ -34,7 +36,7 @@ class EspressoCoreFeatureTest extends BaseFeatureTestCase
         // Arrange
         $driver = $this->driver()->get($this->mockStaticUrl('core/in-container.html'));
 
-        $options = new EspressoOptions(waitTimeoutInSeconds: 0);
+        $options = new EspressoOptions();
 
         $espresso = usingDriver($driver, $options);
 
