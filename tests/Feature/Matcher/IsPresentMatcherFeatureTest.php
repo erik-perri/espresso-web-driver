@@ -7,6 +7,7 @@ declare(strict_types=1);
 namespace EspressoWebDriver\Tests\Feature\Matcher;
 
 use EspressoWebDriver\Core\EspressoOptions;
+use EspressoWebDriver\Exception\AssertionFailedException;
 use EspressoWebDriver\Matcher\IsPresentMatcher;
 use EspressoWebDriver\Tests\Feature\BaseFeatureTestCase;
 use EspressoWebDriver\Tests\Helpers\PhpunitReporter;
@@ -47,5 +48,28 @@ class IsPresentMatcherFeatureTest extends BaseFeatureTestCase
         $espresso
             ->onElement(withText('Mock element'))
             ->check(matches(isPresent()));
+    }
+
+    public function testNotWorksWithOnlyOneResult(): void
+    {
+        // Expectations
+        $this->expectException(AssertionFailedException::class);
+        $this->expectExceptionMessage('Failed to assert matches(not(isPresent))');
+
+        // Arrange
+        $driver = $this->driver()->get($this->mockStaticUrl('matchers/is-present.html'));
+
+        $options = new EspressoOptions();
+
+        $espresso = usingDriver($driver, $options);
+
+        // Act and Assert
+        $espresso
+            ->onElement(allOf(withTagName('button'), withText('Create element')))
+            ->perform(click());
+
+        $espresso
+            ->onElement(withText('Mock element'))
+            ->check(matches(not(isPresent())));
     }
 }
