@@ -72,7 +72,7 @@ final readonly class ElementPathLogger implements ElementLoggerInterface
         $totalElements = count($elements);
 
         if ($totalElements === 0) {
-            return 'No elements';
+            return '';
         }
 
         $renderedElements = array_map(

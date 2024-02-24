@@ -6,6 +6,7 @@ namespace EspressoWebDriver\Matcher;
 
 use EspressoWebDriver\Exception\AmbiguousElementException;
 use EspressoWebDriver\Exception\NoMatchingElementException;
+use EspressoWebDriver\Utilities\ElementPathLogger;
 use Facebook\WebDriver\WebDriverElement;
 
 final readonly class MatchResult
@@ -39,6 +40,24 @@ final readonly class MatchResult
         return count($this->result);
     }
 
+    public function describe(): string
+    {
+        $logger = new ElementPathLogger();
+        $totalElements = count($this->result);
+
+        if ($totalElements === 0) {
+            return sprintf('no elements found for %s', $this->matcher);
+        }
+
+        return sprintf(
+            '%1$s %2$s found for %3$s%4$s',
+            number_format($totalElements),
+            $totalElements === 1 ? 'element' : 'elements',
+            $this->matcher,
+            "\n".$logger->describeMany($this->result),
+        );
+    }
+
     /**
      * @throws AmbiguousElementException|NoMatchingElementException
      */
@@ -59,7 +78,7 @@ final readonly class MatchResult
 
     public function __toString(): string
     {
-        return (string) $this->matcher;
+        return $this->describe();
     }
 
     /**

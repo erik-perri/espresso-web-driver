@@ -81,63 +81,32 @@ class EspressoCoreTest extends BaseUnitTestCase
     {
         // Expectations
         $this->expectException(AmbiguousElementException::class);
-        $this->expectExceptionMessage(
-            "4 elements found for withText(mock)\n"
-            ."html/mock[1]\n"
-            ."html/mock[2]\n"
-            ."html/mock[3]\n"
-            .'...',
-        );
+        $this->expectExceptionMessage('4 elements found for withText(mock)');
 
         // Arrange
-        $mockHtmlElement = $this->createMock(WebDriverElement::class);
-        $mockHtmlElement->expects($this->exactly(3))
-            ->method('getTagName')
-            ->willReturn('html');
-
         $mockElementOne = $this->createMock(WebDriverElement::class);
         $mockElementOne->expects($this->once())
-            ->method('findElement')
-            ->willReturn($mockHtmlElement);
-
-        $mockElementOne->expects($this->exactly(2))
-            ->method('getTagName')
-            ->willReturn('mock');
-
-        $mockElementOne->expects($this->exactly(5))
             ->method('getID')
             ->willReturn('mock-1');
 
         $mockElementTwo = $this->createMock(WebDriverElement::class);
         $mockElementTwo->expects($this->once())
-            ->method('findElement')
-            ->willReturn($mockHtmlElement);
-
-        $mockElementTwo->expects($this->exactly(2))
-            ->method('getTagName')
-            ->willReturn('mock');
-
-        $mockElementTwo->expects($this->exactly(5))
             ->method('getID')
             ->willReturn('mock-2');
 
         $mockElementThree = $this->createMock(WebDriverElement::class);
         $mockElementThree->expects($this->once())
-            ->method('findElement')
-            ->willReturn($mockHtmlElement);
-
-        $mockElementThree->expects($this->exactly(2))
-            ->method('getTagName')
-            ->willReturn('mock');
-
-        $mockElementThree->expects($this->exactly(5))
             ->method('getID')
             ->willReturn('mock-3');
 
         $mockElementFour = $this->createMock(WebDriverElement::class);
+        $mockElementFour->expects($this->once())
+            ->method('getID')
+            ->willReturn('mock-4');
 
+        $mockHtmlElement = $this->createMock(WebDriverElement::class);
         $mockHtmlElement
-            ->expects($this->exactly(4))
+            ->expects($this->once())
             ->method('findElements')
             ->willReturn([
                 $mockElementOne,
@@ -167,42 +136,22 @@ class EspressoCoreTest extends BaseUnitTestCase
     {
         // Expectations
         $this->expectException(AmbiguousElementException::class);
-        $this->expectExceptionMessage(
-            "2 elements found for withText(mock)\n"
-            ."html/mock[1]\n"
-            .'html/mock[2]',
-        );
+        $this->expectExceptionMessage('2 elements found for withText(mock)');
 
         // Arrange
-        $mockHtmlElement = $this->createMock(WebDriverElement::class);
-        $mockHtmlElement->expects($this->exactly(2))
-            ->method('getTagName')
-            ->willReturn('html');
-
         $mockElementOne = $this->createMock(WebDriverElement::class);
         $mockElementOne->expects($this->once())
-            ->method('findElement')
-            ->willReturn($mockHtmlElement);
-
-        $mockElementOne->expects($this->exactly(2))
-            ->method('getTagName')
-            ->willReturn('mock');
-
-        $mockElementOne->expects($this->exactly(4))
             ->method('getID')
-            ->willReturn('mock-id');
+            ->willReturn('mock-1');
 
         $mockElementTwo = $this->createMock(WebDriverElement::class);
         $mockElementTwo->expects($this->once())
-            ->method('findElement')
-            ->willReturn($mockHtmlElement);
+            ->method('getID')
+            ->willReturn('mock-2');
 
-        $mockElementTwo->expects($this->exactly(2))
-            ->method('getTagName')
-            ->willReturn('mock');
-
+        $mockHtmlElement = $this->createMock(WebDriverElement::class);
         $mockHtmlElement
-            ->expects($this->exactly(3))
+            ->expects($this->once())
             ->method('findElements')
             ->willReturn([
                 $mockElementOne,

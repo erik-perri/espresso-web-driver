@@ -12,7 +12,6 @@ use EspressoWebDriver\Exception\AssertionFailedException;
 use EspressoWebDriver\Exception\NoMatchingElementException;
 use EspressoWebDriver\Exception\PerformException;
 use EspressoWebDriver\Matcher\MatchResult;
-use EspressoWebDriver\Utilities\ElementPathLogger;
 
 final readonly class ElementInteraction implements InteractionInterface
 {
@@ -28,44 +27,25 @@ final readonly class ElementInteraction implements InteractionInterface
      */
     public function check(AssertionInterface $assertion): InteractionInterface
     {
+        $success = false;
+
         try {
-            $result = $assertion->assert($this->result, $this->context);
+            $success = $assertion->assert($this->result, $this->context);
 
-            $this->context->options->assertionReporter?->report(
-                $result,
-                sprintf(
-                    'Failed asserting that %1$s is true for %2$s'."\n".'%3$s',
-                    $assertion,
-                    $this->result,
-                    (new ElementPathLogger())->describeMany($this->result->all()),
-                ),
-            );
-
-            if (!$result) {
+            if (!$success) {
                 throw new AssertionFailedException($assertion);
             }
-        } catch (NoMatchingElementException $exception) {
-            $this->context->options->assertionReporter?->report(
-                false,
-                sprintf(
-                    'Failed asserting that %1$s is true for %2$s, no matching element was found.',
-                    $assertion,
-                    $this->result,
-                ),
-            );
-
+        } catch (AmbiguousElementException|NoMatchingElementException $exception) {
             throw new AssertionFailedException($assertion, $exception);
-        } catch (AmbiguousElementException $exception) {
+        } finally {
             $this->context->options->assertionReporter?->report(
-                false,
+                $success,
                 sprintf(
                     'Failed asserting that %1$s is true, %2$s',
                     $assertion,
-                    $exception->getMessage(),
+                    $this->result,
                 ),
             );
-
-            throw new AssertionFailedException($assertion, $exception);
         }
 
         return $this;
