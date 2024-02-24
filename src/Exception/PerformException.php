@@ -5,14 +5,15 @@ declare(strict_types=1);
 namespace EspressoWebDriver\Exception;
 
 use EspressoWebDriver\Action\ActionInterface;
-use EspressoWebDriver\Utilities\ElementLogger;
+use EspressoWebDriver\Utilities\ElementAttributeLogger;
 use Facebook\WebDriver\WebDriverElement;
 
 class PerformException extends EspressoWebDriverException
 {
     public function __construct(ActionInterface $action, WebDriverElement $element, ?string $reason = null)
     {
-        $elementLog = new ElementLogger($element);
+        $logger = new ElementAttributeLogger();
+        $elementLog = $logger->describe($element);
 
         parent::__construct(
             $reason !== null

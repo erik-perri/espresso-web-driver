@@ -7,13 +7,13 @@ declare(strict_types=1);
 namespace EspressoWebDriver\Tests\Unit\Utilities;
 
 use EspressoWebDriver\Tests\Unit\BaseUnitTestCase;
-use EspressoWebDriver\Utilities\ElementLogger;
+use EspressoWebDriver\Utilities\ElementAttributeLogger;
 use Facebook\WebDriver\WebDriverElement;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 
-#[CoversClass(ElementLogger::class)]
-class ElementLoggerTest extends BaseUnitTestCase
+#[CoversClass(ElementAttributeLogger::class)]
+class ElementAttributeLoggerTest extends BaseUnitTestCase
 {
     public function testLogsTheTagWhenNoNotableAttributes(): void
     {
@@ -23,8 +23,10 @@ class ElementLoggerTest extends BaseUnitTestCase
             ->method('getTagName')
             ->willReturn('div');
 
+        $logger = new ElementAttributeLogger();
+
         // Act
-        $elementLog = new ElementLogger($element);
+        $elementLog = $logger->describe($element);
 
         // Assert
         $this->assertSame('<div>', (string) $elementLog);
@@ -43,8 +45,10 @@ class ElementLoggerTest extends BaseUnitTestCase
                 [$key, $value],
             ]);
 
+        $logger = new ElementAttributeLogger();
+
         // Act
-        $elementLog = new ElementLogger($element);
+        $elementLog = $logger->describe($element);
 
         // Assert
         $this->assertSame('<input '.$expected.'>', (string) $elementLog);

@@ -6,19 +6,9 @@ namespace EspressoWebDriver\Utilities;
 
 use Facebook\WebDriver\WebDriverElement;
 
-final readonly class ElementLogger
+final readonly class ElementAttributeLogger implements ElementLoggerInterface
 {
-    public function __construct(private WebDriverElement $element)
-    {
-        //
-    }
-
-    public function __toString(): string
-    {
-        return $this->describeElement($this->element);
-    }
-
-    private function describeElement(WebDriverElement $element): string
+    public function describe(WebDriverElement $element): string
     {
         $notableAttributeNames = [
             'alt',
