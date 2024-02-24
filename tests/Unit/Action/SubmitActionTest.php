@@ -10,14 +10,16 @@ use EspressoWebDriver\Action\SubmitAction;
 use EspressoWebDriver\Core\EspressoContext;
 use EspressoWebDriver\Core\EspressoOptions;
 use EspressoWebDriver\Exception\PerformException;
+use EspressoWebDriver\Tests\Helpers\MocksWebDriverElement;
 use EspressoWebDriver\Tests\Unit\BaseUnitTestCase;
 use Facebook\WebDriver\WebDriver;
-use Facebook\WebDriver\WebDriverElement;
 use PHPUnit\Framework\Attributes\CoversClass;
 
 #[CoversClass(SubmitAction::class)]
 class SubmitActionTest extends BaseUnitTestCase
 {
+    use MocksWebDriverElement;
+
     public function testSubmitToString(): void
     {
         // Arrange
@@ -39,8 +41,7 @@ class SubmitActionTest extends BaseUnitTestCase
         // Arrange
         $assertion = new SubmitAction();
 
-        $mockElement = $this->createMock(WebDriverElement::class);
-        $mockElement->method('getTagName')->willReturn('mock');
+        $mockElement = $this->createMockWebDriverElement('mock');
 
         $mockContext = new EspressoContext(
             driver: $this->createMock(WebDriver::class),

@@ -6,55 +6,34 @@ declare(strict_types=1);
 
 namespace EspressoWebDriver\Tests\Unit\Utilities;
 
+use EspressoWebDriver\Tests\Helpers\MocksWebDriverElement;
 use EspressoWebDriver\Tests\Unit\BaseUnitTestCase;
 use EspressoWebDriver\Utilities\ElementPathLogger;
-use Facebook\WebDriver\Exception\NoSuchElementException;
-use Facebook\WebDriver\WebDriverElement;
+use Facebook\WebDriver\WebDriverBy;
 use PHPUnit\Framework\Attributes\CoversClass;
 
 #[CoversClass(ElementPathLogger::class)]
 class ElementPathLoggerTest extends BaseUnitTestCase
 {
+    use MocksWebDriverElement;
+
     public function testLogsIndexRelativeToSiblingsOfSameType(): void
     {
         // Arrange
-        $htmlElement = $this->createMock(WebDriverElement::class);
-        $htmlElement->expects($this->once())
-            ->method('getTagName')
-            ->willReturn('html');
+        $element = $this->createMockWebDriverElement('div');
 
-        $bodyElement = $this->createMock(WebDriverElement::class);
-        $bodyElement->expects($this->exactly(3))
-            ->method('getTagName')
-            ->willReturn('body');
-
-        $bodyElement->expects($this->once())
-            ->method('findElement')
-            ->willReturn($htmlElement);
-
-        $element = $this->createMock(WebDriverElement::class);
-        $element->expects($this->exactly(2))
-            ->method('getTagName')
-            ->willReturn('div');
-
-        $element->expects($this->exactly(3))
-            ->method('getID')
-            ->willReturn('test');
-
-        $element->expects($this->once())
-            ->method('findElement')
-            ->willReturn($bodyElement);
-
-        $htmlElement->expects($this->once())
-            ->method('findElements')
-            ->willReturn([$bodyElement]);
-
-        $bodyElement->expects($this->once())
-            ->method('findElements')
-            ->willReturn([
-                $this->createMock(WebDriverElement::class),
-                $element,
-            ]);
+        $this->createMockWebDriverElement(
+            tagName: 'html',
+            children: [
+                $this->createMockWebDriverElement(
+                    tagName: 'body',
+                    children: [
+                        $this->createMockWebDriverElement('div'),
+                        $element,
+                    ],
+                ),
+            ],
+        );
 
         $pathLogger = new ElementPathLogger();
 
@@ -68,152 +47,73 @@ class ElementPathLoggerTest extends BaseUnitTestCase
     public function testReturnsBaseTagForHtmlElement(): void
     {
         // Arrange
-        $element = $this->createMock(WebDriverElement::class);
-        $element->expects($this->once())
-            ->method('getTagName')
-            ->willReturn('html');
+        $element = $this->createMockWebDriverElement('html');
 
-        $element->expects($this->once())
-            ->method('findElement')
-            ->willThrowException(new NoSuchElementException(''));
-
-        $pathLogger = new ElementPathLogger();
+        $logger = new ElementPathLogger();
 
         // Act
-        $elementPath = $pathLogger->describe($element);
+        $result = $logger->describe($element);
 
         // Assert
-        $this->assertSame('html', $elementPath);
+        $this->assertSame('html', $result);
     }
 
     public function testCanDisambiguateHtmlAndBodyElements(): void
     {
         // Arrange
-        $htmlElement = $this->createMock(WebDriverElement::class);
-        $htmlElement->expects($this->once())
-            ->method('getTagName')
-            ->willReturn('html');
+        $element = $this->createMockWebDriverElement('div');
 
-        $bodyElement = $this->createMock(WebDriverElement::class);
-        $bodyElement->expects($this->exactly(2))
-            ->method('getTagName')
-            ->willReturn('body');
+        $this->createMockWebDriverElement(
+            tagName: 'html',
+            children: [
+                $this->createMockWebDriverElement(tagName: 'body'),
+                $this->createMockWebDriverElement(tagName: 'body', children: [$element]),
+            ],
+        );
 
-        $bodyElement->expects($this->once())
-            ->method('findElement')
-            ->willReturn($htmlElement);
-
-        $bodyElement->expects($this->exactly(3))
-            ->method('getID')
-            ->willReturn('test-body');
-
-        $element = $this->createMock(WebDriverElement::class);
-        $element->expects($this->exactly(3))
-            ->method('getTagName')
-            ->willReturn('div');
-
-        $element->expects($this->exactly(2))
-            ->method('getID')
-            ->willReturn('test');
-
-        $element->expects($this->once())
-            ->method('findElement')
-            ->willReturn($bodyElement);
-
-        $htmlElement->expects($this->once())
-            ->method('findElements')
-            ->willReturn([
-                $this->createMock(WebDriverElement::class),
-                $bodyElement,
-            ]);
-
-        $bodyElement->expects($this->once())
-            ->method('findElements')
-            ->willReturn([$element]);
-
-        $pathLogger = new ElementPathLogger();
+        $logger = new ElementPathLogger();
 
         // Act
-        $elementPath = $pathLogger->describe($element);
+        $result = $logger->describe($element);
 
         // Assert
-        $this->assertSame('html/body[2]/div[1]', $elementPath);
+        $this->assertSame('html/body[2]/div[1]', $result);
     }
 
     public function testIncludesIdAttributeInPathIfFound(): void
     {
         // Arrange
-        $bodyElement = $this->createMock(WebDriverElement::class);
-        $bodyElement->expects($this->once())
-            ->method('getTagName')
-            ->willReturn('body');
+        $element = $this->createMockWebDriverElement('div', ['id' => 'mock-id']);
 
-        $bodyElement->expects($this->once())
-            ->method('findElement')
-            ->willThrowException(new NoSuchElementException(''));
+        $this->createMockWebDriverElement('body', children: [$element]);
 
-        $element = $this->createMock(WebDriverElement::class);
-        $element->expects($this->exactly(3))
-            ->method('getTagName')
-            ->willReturn('div');
-
-        $element->expects($this->exactly(2))
-            ->method('getAttribute')
-            ->with('id')
-            ->willReturn('mock-id');
-
-        $element->expects($this->once())
-            ->method('findElement')
-            ->willReturn($bodyElement);
-
-        $bodyElement->expects($this->once())
-            ->method('findElements')
-            ->willReturn([$element]);
-
-        $pathLogger = new ElementPathLogger();
+        $logger = new ElementPathLogger();
 
         // Act
-        $elementPath = $pathLogger->describe($element);
+        $result = $logger->describe($element);
 
         // Assert
-        $this->assertSame('body/div[@id="mock-id"][1]', $elementPath);
+        $this->assertSame('body/div[@id="mock-id"][1]', $result);
     }
 
     public function testDoesNotPretendToKnowTheIndexIfElementIsNotInSiblings(): void
     {
         // Arrange
-        $bodyElement = $this->createMock(WebDriverElement::class);
-        $bodyElement->expects($this->once())
-            ->method('getTagName')
-            ->willReturn('body');
+        $element = $this->createMockWebDriverElement('div');
 
-        $bodyElement->expects($this->once())
-            ->method('findElement')
-            ->willThrowException(new NoSuchElementException(''));
-
-        $element = $this->createMock(WebDriverElement::class);
-        $element->expects($this->exactly(3))
-            ->method('getTagName')
-            ->willReturn('div');
-
-        $element->expects($this->once())
-            ->method('getID')
-            ->willReturn('test');
+        $bodyElement = $this->createMockWebDriverElement('body', children: []);
 
         $element->expects($this->once())
             ->method('findElement')
+            ->with(WebDriverBy::xpath('./parent::*'))
             ->willReturn($bodyElement);
 
-        $bodyElement->expects($this->once())
-            ->method('findElements')
-            ->willReturn([$this->createMock(WebDriverElement::class)]);
-
-        $pathLogger = new ElementPathLogger();
+        $logger = new ElementPathLogger();
 
         // Act
-        $elementPath = $pathLogger->describe($element);
+        $result = $logger->describe($element);
 
         // Assert
-        $this->assertSame('body/div[?]', $elementPath);
+        $this->assertSame('body/div[?]', $result);
     }
 }

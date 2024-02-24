@@ -11,10 +11,10 @@ use EspressoWebDriver\Core\EspressoOptions;
 use EspressoWebDriver\Exception\AmbiguousElementException;
 use EspressoWebDriver\Exception\NoMatchingElementException;
 use EspressoWebDriver\Interaction\InteractionInterface;
+use EspressoWebDriver\Tests\Helpers\MocksWebDriverElement;
 use EspressoWebDriver\Tests\Unit\BaseUnitTestCase;
 use Facebook\WebDriver\Exception\NoSuchElementException;
 use Facebook\WebDriver\WebDriver;
-use Facebook\WebDriver\WebDriverElement;
 use PHPUnit\Framework\Attributes\CoversClass;
 
 use function EspressoWebDriver\click;
@@ -25,6 +25,8 @@ use function EspressoWebDriver\withText;
 #[CoversClass(EspressoCore::class)]
 class EspressoCoreTest extends BaseUnitTestCase
 {
+    use MocksWebDriverElement;
+
     public function testThrowsExceptionWhenUnableToLocateContainerElement(): void
     {
         // Expectations
@@ -54,11 +56,7 @@ class EspressoCoreTest extends BaseUnitTestCase
         $this->expectExceptionMessage('No element found for withText(mock)');
 
         // Arrange
-        $mockHtmlElement = $this->createMock(WebDriverElement::class);
-        $mockHtmlElement
-            ->expects($this->once())
-            ->method('findElements')
-            ->willReturn([]);
+        $mockHtmlElement = $this->createMockWebDriverElement('html', children: []);
 
         $mockDriver = $this->createMock(WebDriver::class);
         $mockDriver
@@ -84,36 +82,17 @@ class EspressoCoreTest extends BaseUnitTestCase
         $this->expectExceptionMessage('4 elements found for withText(mock)');
 
         // Arrange
-        $mockElementOne = $this->createMock(WebDriverElement::class);
-        $mockElementOne->expects($this->once())
-            ->method('getID')
-            ->willReturn('mock-1');
+        $mockElementOne = $this->createMockWebDriverElement('div');
+        $mockElementTwo = $this->createMockWebDriverElement('div');
+        $mockElementThree = $this->createMockWebDriverElement('div');
+        $mockElementFour = $this->createMockWebDriverElement('div');
 
-        $mockElementTwo = $this->createMock(WebDriverElement::class);
-        $mockElementTwo->expects($this->once())
-            ->method('getID')
-            ->willReturn('mock-2');
-
-        $mockElementThree = $this->createMock(WebDriverElement::class);
-        $mockElementThree->expects($this->once())
-            ->method('getID')
-            ->willReturn('mock-3');
-
-        $mockElementFour = $this->createMock(WebDriverElement::class);
-        $mockElementFour->expects($this->once())
-            ->method('getID')
-            ->willReturn('mock-4');
-
-        $mockHtmlElement = $this->createMock(WebDriverElement::class);
-        $mockHtmlElement
-            ->expects($this->once())
-            ->method('findElements')
-            ->willReturn([
-                $mockElementOne,
-                $mockElementTwo,
-                $mockElementThree,
-                $mockElementFour,
-            ]);
+        $mockHtmlElement = $this->createMockWebDriverElement('html', children: [
+            $mockElementOne,
+            $mockElementTwo,
+            $mockElementThree,
+            $mockElementFour,
+        ]);
 
         $mockDriver = $this->createMock(WebDriver::class);
         $mockDriver
@@ -139,24 +118,13 @@ class EspressoCoreTest extends BaseUnitTestCase
         $this->expectExceptionMessage('2 elements found for withText(mock)');
 
         // Arrange
-        $mockElementOne = $this->createMock(WebDriverElement::class);
-        $mockElementOne->expects($this->once())
-            ->method('getID')
-            ->willReturn('mock-1');
+        $mockElementOne = $this->createMockWebDriverElement('div');
+        $mockElementTwo = $this->createMockWebDriverElement('div');
 
-        $mockElementTwo = $this->createMock(WebDriverElement::class);
-        $mockElementTwo->expects($this->once())
-            ->method('getID')
-            ->willReturn('mock-2');
-
-        $mockHtmlElement = $this->createMock(WebDriverElement::class);
-        $mockHtmlElement
-            ->expects($this->once())
-            ->method('findElements')
-            ->willReturn([
-                $mockElementOne,
-                $mockElementTwo,
-            ]);
+        $mockHtmlElement = $this->createMockWebDriverElement('html', children: [
+            $mockElementOne,
+            $mockElementTwo,
+        ]);
 
         $mockDriver = $this->createMock(WebDriver::class);
         $mockDriver
@@ -178,22 +146,18 @@ class EspressoCoreTest extends BaseUnitTestCase
     public function testContainsResultsWhenExpected(): void
     {
         // Arrange
-        $mockContainerElement = $this->createMock(WebDriverElement::class);
+        $mockContainerElement = $this->createMockWebDriverElement('div', children: [
+            $this->createMockWebDriverElement('div'),
+        ]);
         $mockContainerElement
+            // If we were not re-contained, this would fail since the html element would get the findElements call.
             ->expects($this->once())
             ->method('findElements')
-            ->willReturn([
-                $this->createMock(WebDriverElement::class),
-            ]);
+            ->willReturn([]);
 
-        $mockHtmlElement = $this->createMock(WebDriverElement::class);
-        $mockHtmlElement
-            // If we were not re-contained, this would fail
-            ->expects($this->once())
-            ->method('findElements')
-            ->willReturn([
-                $mockContainerElement,
-            ]);
+        $mockHtmlElement = $this->createMockWebDriverElement('html', children: [
+            $mockContainerElement,
+        ]);
 
         $mockDriver = $this->createMock(WebDriver::class);
         $mockDriver

@@ -10,8 +10,8 @@ use EspressoWebDriver\Exception\AmbiguousElementException;
 use EspressoWebDriver\Exception\NoMatchingElementException;
 use EspressoWebDriver\Matcher\MatcherInterface;
 use EspressoWebDriver\Matcher\MatchResult;
+use EspressoWebDriver\Tests\Helpers\MocksWebDriverElement;
 use EspressoWebDriver\Utilities\ElementPathLogger;
-use Facebook\WebDriver\WebDriverElement;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
@@ -20,18 +20,15 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(NoMatchingElementException::class)]
 class MatchResultTest extends TestCase
 {
+    use MocksWebDriverElement;
+
     public function testMatchResultArrayWrappers(): void
     {
         // Arrange
         $matcher = $this->createMock(MatcherInterface::class);
-        $elementOne = $this->createMock(WebDriverElement::class);
-        $elementOne->expects($this->once())
-            ->method('getID')
-            ->willReturn('mock-one');
-        $elementTwo = $this->createMock(WebDriverElement::class);
-        $elementTwo->expects($this->once())
-            ->method('getID')
-            ->willReturn('mock-two');
+
+        $elementOne = $this->createMockWebDriverElement('div');
+        $elementTwo = $this->createMockWebDriverElement('div');
 
         $result = new MatchResult(
             $matcher,
@@ -58,10 +55,8 @@ class MatchResultTest extends TestCase
         $matcher->expects($this->once())
             ->method('__toString')
             ->willReturn('matcher');
-        $element = $this->createMock(WebDriverElement::class);
-        $element->expects($this->once())
-            ->method('getTagName')
-            ->willReturn('mock');
+
+        $element = $this->createMockWebDriverElement('mock');
 
         $result = new MatchResult(
             $matcher,
@@ -88,15 +83,8 @@ class MatchResultTest extends TestCase
             ->method('__toString')
             ->willReturn('matcher');
 
-        $elementOne = $this->createMock(WebDriverElement::class);
-        $elementOne->expects($this->once())
-            ->method('getID')
-            ->willReturn('mock-one');
-
-        $elementTwo = $this->createMock(WebDriverElement::class);
-        $elementTwo->expects($this->once())
-            ->method('getID')
-            ->willReturn('mock-two');
+        $elementOne = $this->createMockWebDriverElement('mock');
+        $elementTwo = $this->createMockWebDriverElement('mock');
 
         $result = new MatchResult(
             $matcher,
@@ -144,7 +132,7 @@ class MatchResultTest extends TestCase
         // Arrange
         $mockMatcher = $this->createMock(MatcherInterface::class);
 
-        $mockElement = $this->createMock(WebDriverElement::class);
+        $mockElement = $this->createMockWebDriverElement('mock');
 
         $result = new MatchResult(
             $mockMatcher,

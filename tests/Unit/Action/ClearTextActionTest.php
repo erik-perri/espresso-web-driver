@@ -9,18 +9,20 @@ namespace Action;
 use EspressoWebDriver\Action\ClearTextAction;
 use EspressoWebDriver\Core\EspressoContext;
 use EspressoWebDriver\Core\EspressoOptions;
+use EspressoWebDriver\Tests\Helpers\MocksWebDriverElement;
 use EspressoWebDriver\Tests\Unit\BaseUnitTestCase;
 use Facebook\WebDriver\WebDriver;
-use Facebook\WebDriver\WebDriverElement;
 use PHPUnit\Framework\Attributes\CoversClass;
 
 #[CoversClass(ClearTextAction::class)]
 class ClearTextActionTest extends BaseUnitTestCase
 {
+    use MocksWebDriverElement;
+
     public function testClearsProvidedElement(): void
     {
         // Arrange
-        $mockContainer = $this->createMock(WebDriverElement::class);
+        $mockContainer = $this->createMockWebDriverElement('input');
         $mockContainer
             ->expects($this->once())
             ->method('clear');

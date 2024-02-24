@@ -12,9 +12,9 @@ use EspressoWebDriver\Core\EspressoOptions;
 use EspressoWebDriver\Matcher\IsDisplayedMatcher;
 use EspressoWebDriver\Matcher\MatchResult;
 use EspressoWebDriver\Processor\RetryingMatchProcessor;
+use EspressoWebDriver\Tests\Helpers\MocksWebDriverElement;
 use EspressoWebDriver\Tests\Unit\BaseUnitTestCase;
 use Facebook\WebDriver\WebDriver;
-use Facebook\WebDriver\WebDriverElement;
 use PHPUnit\Framework\Attributes\CoversClass;
 use Symfony\Bridge\PhpUnit\ClockMock;
 
@@ -23,6 +23,8 @@ use function EspressoWebDriver\withTagName;
 #[CoversClass(RetryingMatchProcessor::class)]
 class RetryingMatchProcessorTest extends BaseUnitTestCase
 {
+    use MocksWebDriverElement;
+
     protected function setUp(): void
     {
         ClockMock::register(RetryingMatchProcessor::class);
@@ -44,7 +46,7 @@ class RetryingMatchProcessorTest extends BaseUnitTestCase
 
         $mockDriver = $this->createMock(WebDriver::class);
 
-        $mockContainer = $this->createMock(WebDriverElement::class);
+        $mockContainer = $this->createMockWebDriverElement('div');
         $mockContainer
             ->expects($this->exactly($expectedRetries))
             ->method('findElements')
@@ -85,25 +87,19 @@ class RetryingMatchProcessorTest extends BaseUnitTestCase
 
         $mockDriver = $this->createMock(WebDriver::class);
 
-        $mockElement = $this->createMock(WebDriverElement::class);
-        $mockElement
+        $mockElement = $this->createMockWebDriverElement('div', children: []);
+        $mockElement->expects($this->exactly($expectedRetries))
             ->method('isDisplayed')
-            ->willReturn(true);
-
-        $mockContainer = $this->createMock(WebDriverElement::class);
-        $mockContainer
-            ->expects($this->exactly($expectedRetries))
-            ->method('findElements')
             ->willReturnOnConsecutiveCalls(
-                [],
-                [],
-                [],
-                [$mockElement],
+                false,
+                false,
+                false,
+                true,
             );
 
         $matchResult = new MatchResult(
-            matcher: withTagName('html'),
-            result: [$mockContainer],
+            matcher: withTagName('div'),
+            result: [$mockElement],
         );
 
         $matchContext = new EspressoContext(

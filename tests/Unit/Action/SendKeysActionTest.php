@@ -10,9 +10,9 @@ use EspressoWebDriver\Action\SendKeysAction;
 use EspressoWebDriver\Core\EspressoContext;
 use EspressoWebDriver\Core\EspressoOptions;
 use EspressoWebDriver\Exception\PerformException;
+use EspressoWebDriver\Tests\Helpers\MocksWebDriverElement;
 use EspressoWebDriver\Tests\Unit\BaseUnitTestCase;
 use Facebook\WebDriver\WebDriver;
-use Facebook\WebDriver\WebDriverElement;
 use Facebook\WebDriver\WebDriverKeys;
 use PHPUnit\Framework\Attributes\CoversClass;
 
@@ -20,6 +20,8 @@ use PHPUnit\Framework\Attributes\CoversClass;
 #[CoversClass(SendKeysAction::class)]
 class SendKeysActionTest extends BaseUnitTestCase
 {
+    use MocksWebDriverElement;
+
     public function testClickToStringWithKeys(): void
     {
         // Arrange
@@ -55,8 +57,7 @@ class SendKeysActionTest extends BaseUnitTestCase
         // Arrange
         $assertion = new SendKeysAction();
 
-        $element = $this->createMock(WebDriverElement::class);
-        $element->expects($this->once())->method('getTagName')->willReturn('textarea');
+        $element = $this->createMockWebDriverElement('textarea');
 
         $context = new EspressoContext(
             driver: $this->createMock(WebDriver::class),

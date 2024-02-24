@@ -7,12 +7,12 @@ declare(strict_types=1);
 namespace EspressoWebDriver\Tests\Unit\Utilities;
 
 use EspressoWebDriver\Exception\EspressoWebDriverException;
+use EspressoWebDriver\Tests\Helpers\MocksWebDriverElement;
 use EspressoWebDriver\Tests\Unit\BaseUnitTestCase;
 use EspressoWebDriver\Utilities\ElementDisplayChecker;
 use Facebook\WebDriver\JavaScriptExecutor;
 use Facebook\WebDriver\WebDriver;
 use Facebook\WebDriver\WebDriverDimension;
-use Facebook\WebDriver\WebDriverElement;
 use Facebook\WebDriver\WebDriverPoint;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -22,6 +22,8 @@ use PHPUnit\Framework\MockObject\MockObject;
 #[CoversClass(EspressoWebDriverException::class)]
 class ElementDisplayCheckerTest extends BaseUnitTestCase
 {
+    use MocksWebDriverElement;
+
     public function testThrowsExceptionIfDriverDoesNotHaveAccessToExecuteScript(): void
     {
         // Expectations
@@ -31,10 +33,7 @@ class ElementDisplayCheckerTest extends BaseUnitTestCase
         // Arrange
         $mockDriver = $this->createMock(WebDriver::class);
 
-        $mockElement = $this->createMock(WebDriverElement::class);
-        $mockElement
-            ->method('getTagName')
-            ->willReturn('mock');
+        $mockElement = $this->createMockWebDriverElement('mock');
 
         $checker = new ElementDisplayChecker($mockDriver);
 
@@ -58,13 +57,10 @@ class ElementDisplayCheckerTest extends BaseUnitTestCase
                 ['return window.innerHeight || document.documentElement.clientHeight;', 100],
             ]);
 
-        $mockElement = $this->createMock(WebDriverElement::class);
+        $mockElement = $this->createMockWebDriverElement('mock');
         $mockElement
             ->method('isDisplayed')
             ->willReturn(false);
-        $mockElement
-            ->method('getTagName')
-            ->willReturn('mock');
         $mockElement
             ->method('getLocation')
             ->willReturn(new WebDriverPoint(0, 0));
@@ -103,7 +99,7 @@ class ElementDisplayCheckerTest extends BaseUnitTestCase
                 ['return window.innerHeight || document.documentElement.clientHeight;', $viewportSize->getHeight()],
             ]);
 
-        $mockElement = $this->createMock(WebDriverElement::class);
+        $mockElement = $this->createMockWebDriverElement('mock');
         $mockElement
             ->method('isDisplayed')
             ->willReturn(true);

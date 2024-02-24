@@ -16,10 +16,10 @@ use EspressoWebDriver\Interaction\ElementInteraction;
 use EspressoWebDriver\Matcher\MatcherInterface;
 use EspressoWebDriver\Matcher\MatchResult;
 use EspressoWebDriver\Reporter\AssertionReporterInterface;
+use EspressoWebDriver\Tests\Helpers\MocksWebDriverElement;
 use EspressoWebDriver\Tests\Unit\BaseUnitTestCase;
 use Facebook\WebDriver\JavaScriptExecutor;
 use Facebook\WebDriver\WebDriver;
-use Facebook\WebDriver\WebDriverElement;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 
@@ -33,6 +33,8 @@ use function EspressoWebDriver\withTagName;
 #[CoversClass(PerformException::class)]
 class ElementInteractionTest extends BaseUnitTestCase
 {
+    use MocksWebDriverElement;
+
     public function testCheckThrowsAssertionExceptionOnFailureDueToAssertReturningFalse(): void
     {
         // Expectations
@@ -61,10 +63,7 @@ class ElementInteractionTest extends BaseUnitTestCase
             options: $mockOptions,
         );
 
-        $mockElement = $this->createMock(WebDriverElement::class);
-        $mockElement
-            ->method('getTagName')
-            ->willReturn('mock');
+        $mockElement = $this->createMockWebDriverElement('mock');
 
         $mockResult = new MatchResult($mockMatcher, [
             $mockElement,
@@ -157,43 +156,13 @@ class ElementInteractionTest extends BaseUnitTestCase
             options: $mockOptions,
         );
 
-        $htmlElement = $this->createMock(WebDriverElement::class);
-        $htmlElement
-            ->method('getTagName')
-            ->willReturn('html');
+        $mockElementOne = $this->createMockWebDriverElement('mock');
+        $mockElementTwo = $this->createMockWebDriverElement('mock');
 
-        $mockElementOne = $this->createMock(WebDriverElement::class);
-        $mockElementOne->expects($this->atLeastOnce())
-            ->method('getTagName')
-            ->willReturn('mock');
-
-        $mockElementOne->expects($this->once())
-            ->method('findElement')
-            ->willReturn($htmlElement);
-
-        $mockElementOne->expects($this->atLeastOnce())
-            ->method('getID')
-            ->willReturn('one');
-
-        $mockElementTwo = $this->createMock(WebDriverElement::class);
-        $mockElementTwo->expects($this->atLeastOnce())
-            ->method('getTagName')
-            ->willReturn('mock');
-
-        $mockElementTwo->expects($this->once())
-            ->method('findElement')
-            ->willReturn($htmlElement);
-
-        $mockElementTwo->expects($this->atLeastOnce())
-            ->method('getID')
-            ->willReturn('two');
-
-        $htmlElement->expects($this->atLeastOnce())
-            ->method('findElements')
-            ->willReturn([
-                $mockElementOne,
-                $mockElementTwo,
-            ]);
+        $this->createMockWebDriverElement('html', children: [
+            $mockElementOne,
+            $mockElementTwo,
+        ]);
 
         $mockResult = new MatchResult($mockMatcher, [
             $mockElementOne,
@@ -237,10 +206,7 @@ class ElementInteractionTest extends BaseUnitTestCase
             options: $mockOptions,
         );
 
-        $mockElement = $this->createMock(WebDriverElement::class);
-        $mockElement
-            ->method('getTagName')
-            ->willReturn('mock');
+        $mockElement = $this->createMockWebDriverElement('mock');
 
         $mockResult = new MatchResult($mockMatcher, [
             $mockElement,
@@ -265,15 +231,10 @@ class ElementInteractionTest extends BaseUnitTestCase
 
         $mockMatcher = $this->createMock(MatcherInterface::class);
 
-        $mockElement = $this->createMock(WebDriverElement::class);
-        $mockElement
-            ->method('getTagName')
-            ->willReturn('mock');
-        $mockElement
+        $mockElement = $this->createMockWebDriverElement('mock');
+        $mockElement->expects($this->once())
             ->method('findElements')
-            ->willReturn([
-                $this->createMock(WebDriverElement::class),
-            ]);
+            ->willReturn([$mockElement]);
 
         $mockOptions = new EspressoOptions();
 
@@ -303,7 +264,7 @@ class ElementInteractionTest extends BaseUnitTestCase
 
         $mockMatcher = $this->createMock(MatcherInterface::class);
 
-        $mockElement = $this->createMock(WebDriverElement::class);
+        $mockElement = $this->createMockWebDriverElement('button');
         $mockElement
             ->method('click')
             ->willReturn(true);

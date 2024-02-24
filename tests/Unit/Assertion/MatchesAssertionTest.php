@@ -11,29 +11,28 @@ use EspressoWebDriver\Core\EspressoContext;
 use EspressoWebDriver\Core\EspressoOptions;
 use EspressoWebDriver\Matcher\MatcherInterface;
 use EspressoWebDriver\Matcher\MatchResult;
+use EspressoWebDriver\Tests\Helpers\MocksWebDriverElement;
 use EspressoWebDriver\Tests\Unit\BaseUnitTestCase;
 use Facebook\WebDriver\WebDriver;
-use Facebook\WebDriver\WebDriverElement;
 use PHPUnit\Framework\Attributes\CoversClass;
 
 #[CoversClass(MatchesAssertion::class)]
 class MatchesAssertionTest extends BaseUnitTestCase
 {
+    use MocksWebDriverElement;
+
     public function testReturnsTrueIfMatcherResultIncludesContainer(): void
     {
         // Arrange
-        $mockContainer = $this->createMock(WebDriverElement::class);
-        $mockContainer
-            ->method('getId')
-            ->willReturn('mock');
+        $mockContainer = $this->createMockWebDriverElement('div', ['id' => 'mock']);
 
         $mockMatcher = $this->createMock(MatcherInterface::class);
         $mockMatcher
             ->method('match')
             ->willReturn(new MatchResult($mockMatcher, [
-                $this->createMock(WebDriverElement::class),
+                $this->createMockWebDriverElement('div'),
                 $mockContainer,
-                $this->createMock(WebDriverElement::class),
+                $this->createMockWebDriverElement('div'),
             ]));
 
         $mockOptions = new EspressoOptions();
@@ -57,16 +56,13 @@ class MatchesAssertionTest extends BaseUnitTestCase
     public function testReturnsFalseIfMatcherResultDoesNotIncludeContainer(): void
     {
         // Arrange
-        $mockContainer = $this->createMock(WebDriverElement::class);
-        $mockContainer
-            ->method('getId')
-            ->willReturn('mock');
+        $mockContainer = $this->createMockWebDriverElement('div', ['id' => 'mock']);
 
         $mockMatcher = $this->createMock(MatcherInterface::class);
         $mockMatcher
             ->method('match')
             ->willReturn(new MatchResult($mockMatcher, [
-                $this->createMock(WebDriverElement::class),
+                $this->createMockWebDriverElement('div'),
             ]));
 
         $mockOptions = new EspressoOptions();

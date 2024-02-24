@@ -9,18 +9,20 @@ namespace EspressoWebDriver\Tests\Unit\Action;
 use EspressoWebDriver\Action\TypeTextAction;
 use EspressoWebDriver\Core\EspressoContext;
 use EspressoWebDriver\Core\EspressoOptions;
+use EspressoWebDriver\Tests\Helpers\MocksWebDriverElement;
 use EspressoWebDriver\Tests\Unit\BaseUnitTestCase;
 use Facebook\WebDriver\WebDriver;
-use Facebook\WebDriver\WebDriverElement;
 use PHPUnit\Framework\Attributes\CoversClass;
 
 #[CoversClass(TypeTextAction::class)]
 class TypeTextActionTest extends BaseUnitTestCase
 {
+    use MocksWebDriverElement;
+
     public function testTypesProvidedKeys(): void
     {
         // Arrange
-        $mockContainer = $this->createMock(WebDriverElement::class);
+        $mockContainer = $this->createMockWebDriverElement('input');
         $mockContainer
             ->expects($this->once())
             ->method('sendKeys')

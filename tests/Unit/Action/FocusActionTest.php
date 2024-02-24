@@ -10,14 +10,16 @@ use EspressoWebDriver\Action\FocusAction;
 use EspressoWebDriver\Core\EspressoContext;
 use EspressoWebDriver\Core\EspressoOptions;
 use EspressoWebDriver\Exception\PerformException;
+use EspressoWebDriver\Tests\Helpers\MocksWebDriverElement;
 use EspressoWebDriver\Tests\Unit\BaseUnitTestCase;
 use Facebook\WebDriver\WebDriver;
-use Facebook\WebDriver\WebDriverElement;
 use PHPUnit\Framework\Attributes\CoversClass;
 
 #[CoversClass(FocusAction::class)]
 class FocusActionTest extends BaseUnitTestCase
 {
+    use MocksWebDriverElement;
+
     public function testFocusToString(): void
     {
         // Arrange
@@ -39,8 +41,7 @@ class FocusActionTest extends BaseUnitTestCase
         // Arrange
         $assertion = new FocusAction();
 
-        $mockElement = $this->createMock(WebDriverElement::class);
-        $mockElement->method('getTagName')->willReturn('mock');
+        $mockElement = $this->createMockWebDriverElement('mock');
 
         $mockContext = new EspressoContext(
             driver: $this->createMock(WebDriver::class),
