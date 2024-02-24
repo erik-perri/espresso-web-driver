@@ -2,7 +2,12 @@ Testing how Espresso style matchers might work with WebDriver as an alternative 
 expressions.
 
 ```php
-$espresso = usingDriver($driver);
+$espresso = usingDriver($driver, new EspressoOptions(
+    matchProcessor: new RetryingMatchProcessor(
+        waitTimeoutInSeconds: 5,
+        waitIntervalInMilliseconds: 250,
+    ),
+));
 
 $espresso->onElement(withLabel('First name')),
     ->perform(typeText('John'));
