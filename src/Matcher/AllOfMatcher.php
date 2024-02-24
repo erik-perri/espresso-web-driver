@@ -7,6 +7,7 @@ namespace EspressoWebDriver\Matcher;
 use EspressoWebDriver\Core\EspressoContext;
 use EspressoWebDriver\Exception\AmbiguousElementException;
 use EspressoWebDriver\Exception\NoMatchingElementException;
+use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverElement;
 
 final readonly class AllOfMatcher implements MatcherInterface
@@ -28,16 +29,18 @@ final readonly class AllOfMatcher implements MatcherInterface
     {
         return new MatchResult(
             matcher: $this,
-            result: $this->matchElements($container, $context),
+            result: $context->isNegated
+                ? $this->matchElementsNotMatching($container, $context)
+                : $this->matchElementsMatching($container, $context),
         );
     }
 
     /**
-     * @return WebDriverElement[]
+     * @return array<string, WebDriverElement>
      *
      * @throws AmbiguousElementException|NoMatchingElementException
      */
-    private function matchElements(MatchResult $container, EspressoContext $context): array
+    private function matchElementsMatching(MatchResult $container, EspressoContext $context): array
     {
         $resultsByMatcher = [];
 
@@ -57,7 +60,41 @@ final readonly class AllOfMatcher implements MatcherInterface
             $commonResults = array_uintersect($commonResults, $result->all(), $this->compareElements(...));
         }
 
-        return $commonResults;
+        $commonResultsById = [];
+
+        foreach ($commonResults as $element) {
+            $commonResultsById[$element->getID()] = $element;
+        }
+
+        return $commonResultsById;
+    }
+
+    /**
+     * @return array<string, WebDriverElement>
+     *
+     * @throws AmbiguousElementException|NoMatchingElementException
+     */
+    private function matchElementsNotMatching(MatchResult $container, EspressoContext $context): array
+    {
+        $elementsMatching = $this->matchElementsMatching($container, new EspressoContext(
+            driver: $context->driver,
+            options: $context->options,
+        ));
+
+        $elements = [];
+
+        foreach ($container->all() as $containerElement) {
+            // TODO This is probably a bad idea on dom heavy pages
+            $potentiallyNotMatching = $containerElement->findElements(WebDriverBy::cssSelector('*'));
+
+            foreach ($potentiallyNotMatching as $element) {
+                if (!isset($elementsMatching[$element->getID()])) {
+                    $elements[$element->getID()] = $element;
+                }
+            }
+        }
+
+        return $elements;
     }
 
     private function compareElements(WebDriverElement $a, WebDriverElement $b): int

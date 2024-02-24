@@ -42,7 +42,7 @@ class AllOfMatcherFeatureTest extends BaseFeatureTestCase
                 not(withClass('deleted')),
                 hasDescendant(withText('Processed')),
             ))
-            ->check(matches(withClass('a')));
+            ->check(matches(withClass('b')));
     }
 
     public function testFindsNothingWhenNoMatchersAreProvided(): void
@@ -58,5 +58,27 @@ class AllOfMatcherFeatureTest extends BaseFeatureTestCase
         $espresso
             ->onElement(allOf())
             ->check(matches(not(isPresent())));
+    }
+
+    public function testNegatesAsExpected(): void
+    {
+        // Arrange
+        $driver = $this->driver()->get($this->mockStaticUrl('matchers/all-of.html'));
+
+        $options = new EspressoOptions(assertionReporter: new PhpunitReporter);
+
+        $espresso = usingDriver($driver, $options);
+
+        // Act and Assert
+        $espresso
+            ->onElement(allOf(
+                withClass('row'),
+                not(withClass('a')),
+                not(allOf(
+                    hasDescendant(withText('Processed')),
+                    withClass('deleted'),
+                )),
+            ))
+            ->check(matches(withClass('b')));
     }
 }
