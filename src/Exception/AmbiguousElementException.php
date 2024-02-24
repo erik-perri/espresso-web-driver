@@ -17,11 +17,22 @@ class AmbiguousElementException extends EspressoWebDriverException
     {
         $logger = new ElementPathLogger();
 
+        $totalElements = count($elements);
+
+        $renderedElements = array_map(
+            fn (WebDriverElement $element) => $logger->describe($element),
+            array_slice($elements, 0, 3),
+        );
+
+        if ($totalElements > count($renderedElements)) {
+            $renderedElements[] = '...';
+        }
+
         parent::__construct(sprintf(
             '%1$s elements found for %2$s%3$s',
-            number_format(count($elements)),
+            number_format($totalElements),
             $matcher,
-            "\n".implode("\n", array_map(fn (WebDriverElement $element) => $logger->describe($element), $elements)),
+            "\n".implode("\n", $renderedElements),
         ));
     }
 }
