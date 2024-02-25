@@ -16,9 +16,17 @@ final class FeatureTestState
 
     private ?WebDriver $driver = null;
 
-    public function __construct(private readonly string $outputPath = __DIR__.'/../output')
+    private function __construct(private readonly string $outputPath = __DIR__.'/../output')
     {
         $this->clearOutput();
+    }
+
+    public function __destruct()
+    {
+        // This should normally happen automatically via PHPUnit's `tearDownAfterClass`, but if a test calls exit
+        // instead on completing that will not run. That sometimes leaves selenium unable to be interacted with until a
+        // restart. This ensures we always quit, even if the tests do not complete normally.
+        $this->quit();
     }
 
     public static function instance(): self
@@ -38,7 +46,7 @@ final class FeatureTestState
 
         return $this->driver = RemoteWebDriver::create(
             $serverUrl,
-            $options->toCapabilities()
+            $options->toCapabilities(),
         );
     }
 
@@ -59,7 +67,7 @@ final class FeatureTestState
         file_put_contents($filePrefix.'-source.txt', $this->driver->getPageSource());
     }
 
-    public function cleanup(): void
+    public function quit(): void
     {
         $this->driver?->quit();
         $this->driver = null;

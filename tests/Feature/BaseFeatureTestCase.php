@@ -15,7 +15,7 @@ class BaseFeatureTestCase extends TestCase
     {
         parent::tearDownAfterClass();
 
-        FeatureTestState::instance()->cleanup();
+        FeatureTestState::instance()->quit();
     }
 
     protected function onNotSuccessfulTest(Throwable $t): never
