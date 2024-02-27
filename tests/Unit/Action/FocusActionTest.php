@@ -23,10 +23,10 @@ class FocusActionTest extends BaseUnitTestCase
     public function testFocusToString(): void
     {
         // Arrange
-        $assertion = new FocusAction();
+        $action = new FocusAction();
 
         // Act
-        $result = (string) $assertion;
+        $result = (string) $action;
 
         // Assert
         $this->assertSame('focus', $result);
@@ -39,7 +39,7 @@ class FocusActionTest extends BaseUnitTestCase
         $this->expectExceptionMessage('Failed to perform action focus on mock, driver does not have access to executeScript');
 
         // Arrange
-        $assertion = new FocusAction();
+        $action = new FocusAction();
 
         $mockElement = $this->createMockWebDriverElement('mock');
 
@@ -49,7 +49,7 @@ class FocusActionTest extends BaseUnitTestCase
         );
 
         // Act
-        $assertion->perform($mockElement, $mockContext);
+        $action->perform($mockElement, $mockContext);
 
         // Assert
         // No assertions, only expectations.

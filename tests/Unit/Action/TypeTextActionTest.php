@@ -45,10 +45,10 @@ class TypeTextActionTest extends BaseUnitTestCase
     public function testTypeTextToString(): void
     {
         // Arrange
-        $assertion = new TypeTextAction('Mock Keys');
+        $action = new TypeTextAction('Mock Keys');
 
         // Act
-        $result = (string) $assertion;
+        $result = (string) $action;
 
         // Assert
         $this->assertSame('typeText(Mock Keys)', $result);

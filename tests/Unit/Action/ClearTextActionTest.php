@@ -44,10 +44,10 @@ class ClearTextActionTest extends BaseUnitTestCase
     public function testTypeTextToString(): void
     {
         // Arrange
-        $assertion = new ClearTextAction();
+        $action = new ClearTextAction();
 
         // Act
-        $result = (string) $assertion;
+        $result = (string) $action;
 
         // Assert
         $this->assertSame('clearText', $result);

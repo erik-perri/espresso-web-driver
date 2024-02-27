@@ -25,10 +25,10 @@ class SendKeysActionTest extends BaseUnitTestCase
     public function testClickToStringWithKeys(): void
     {
         // Arrange
-        $assertion = new SendKeysAction(WebDriverKeys::DELETE, WebDriverKeys::END);
+        $action = new SendKeysAction(WebDriverKeys::DELETE, WebDriverKeys::END);
 
         // Act
-        $result = (string) $assertion;
+        $result = (string) $action;
 
         // Assert
         $this->assertSame('sendKeys(DELETE, END)', $result);
@@ -37,10 +37,10 @@ class SendKeysActionTest extends BaseUnitTestCase
     public function testClickToStringWithStrings(): void
     {
         // Arrange
-        $assertion = new SendKeysAction('use', 'type', 'text');
+        $action = new SendKeysAction('use', 'type', 'text');
 
         // Act
-        $result = (string) $assertion;
+        $result = (string) $action;
 
         // Assert
         $this->assertSame('sendKeys(use, type, text)', $result);
@@ -55,7 +55,7 @@ class SendKeysActionTest extends BaseUnitTestCase
         );
 
         // Arrange
-        $assertion = new SendKeysAction();
+        $action = new SendKeysAction();
 
         $element = $this->createMockWebDriverElement('textarea');
 
@@ -65,7 +65,7 @@ class SendKeysActionTest extends BaseUnitTestCase
         );
 
         // Act
-        $assertion->perform($element, $context);
+        $action->perform($element, $context);
 
         // Assert
         // No assertions, only expectations.

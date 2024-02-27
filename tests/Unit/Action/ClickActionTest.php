@@ -16,10 +16,10 @@ class ClickActionTest extends BaseUnitTestCase
     public function testClickToString(): void
     {
         // Arrange
-        $assertion = new ClickAction();
+        $action = new ClickAction();
 
         // Act
-        $result = (string) $assertion;
+        $result = (string) $action;
 
         // Assert
         $this->assertSame('click', $result);

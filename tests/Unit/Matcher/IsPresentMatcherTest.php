@@ -16,10 +16,10 @@ class IsPresentMatcherTest extends BaseUnitTestCase
     public function testPresentMatcherToString(): void
     {
         // Arrange
-        $assertion = new IsPresentMatcher();
+        $matcher = new IsPresentMatcher();
 
         // Act
-        $result = (string) $assertion;
+        $result = (string) $matcher;
 
         // Assert
         $this->assertSame('isPresent', $result);

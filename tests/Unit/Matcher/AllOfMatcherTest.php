@@ -27,10 +27,10 @@ class AllOfMatcherTest extends BaseUnitTestCase
             ->method('__toString')
             ->willReturn('mock2');
 
-        $assertion = new AllOfMatcher($mockMatcherOne, $mockMatcherTwo);
+        $matcher = new AllOfMatcher($mockMatcherOne, $mockMatcherTwo);
 
         // Act
-        $result = (string) $assertion;
+        $result = (string) $matcher;
 
         // Assert
         $this->assertSame('allOf(mock1; mock2)', $result);

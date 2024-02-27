@@ -23,10 +23,10 @@ class SubmitActionTest extends BaseUnitTestCase
     public function testSubmitToString(): void
     {
         // Arrange
-        $assertion = new SubmitAction();
+        $action = new SubmitAction();
 
         // Act
-        $result = (string) $assertion;
+        $result = (string) $action;
 
         // Assert
         $this->assertSame('submit', $result);
@@ -39,7 +39,7 @@ class SubmitActionTest extends BaseUnitTestCase
         $this->expectExceptionMessage('Failed to perform action submit on mock, not a submittable element');
 
         // Arrange
-        $assertion = new SubmitAction();
+        $action = new SubmitAction();
 
         $mockElement = $this->createMockWebDriverElement('mock');
 
@@ -49,7 +49,7 @@ class SubmitActionTest extends BaseUnitTestCase
         );
 
         // Act
-        $assertion->perform($mockElement, $mockContext);
+        $action->perform($mockElement, $mockContext);
 
         // Assert
         // No assertions, only expectations.

@@ -23,10 +23,10 @@ class ScrollToActionTest extends BaseUnitTestCase
     public function testScrollToToString(): void
     {
         // Arrange
-        $assertion = new ScrollToAction();
+        $action = new ScrollToAction();
 
         // Act
-        $result = (string) $assertion;
+        $result = (string) $action;
 
         // Assert
         $this->assertSame('scrollTo', $result);
@@ -39,7 +39,7 @@ class ScrollToActionTest extends BaseUnitTestCase
         $this->expectExceptionMessage('Failed to perform action scrollTo on mock, driver does not have access to executeScript');
 
         // Arrange
-        $assertion = new ScrollToAction();
+        $action = new ScrollToAction();
 
         $mockElement = $this->createMockWebDriverElement('mock');
 
@@ -49,7 +49,7 @@ class ScrollToActionTest extends BaseUnitTestCase
         );
 
         // Act
-        $assertion->perform($mockElement, $mockContext);
+        $action->perform($mockElement, $mockContext);
 
         // Assert
         // No assertions, only expectations.

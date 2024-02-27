@@ -102,9 +102,9 @@ function typeText(string $text): ActionInterface
 
 // region Assertions
 
-function matches(MatcherInterface $assertion): AssertionInterface
+function matches(MatcherInterface $matcher): AssertionInterface
 {
-    return new MatchesAssertion($assertion);
+    return new MatchesAssertion($matcher);
 }
 
 // endregion
