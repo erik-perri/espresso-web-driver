@@ -6,7 +6,7 @@ declare(strict_types=1);
 
 namespace EspressoWebDriver\Tests\Unit\Utilities;
 
-use EspressoWebDriver\Tests\Helpers\MocksWebDriverElement;
+use EspressoWebDriver\Tests\Traits\MocksWebDriverElement;
 use EspressoWebDriver\Tests\Unit\BaseUnitTestCase;
 use EspressoWebDriver\Utilities\ElementPathLogger;
 use Facebook\WebDriver\Exception\NoSuchElementException;

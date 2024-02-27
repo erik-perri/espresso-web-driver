@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace EspressoWebDriver\Tests\Helpers;
+namespace EspressoWebDriver\Tests\Utilities;
 
 use EspressoWebDriver\Reporter\AssertionReporterInterface;
 use PHPUnit\Framework\Assert;

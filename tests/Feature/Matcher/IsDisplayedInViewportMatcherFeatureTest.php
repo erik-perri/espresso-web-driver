@@ -9,7 +9,7 @@ namespace EspressoWebDriver\Tests\Feature\Matcher;
 use EspressoWebDriver\Core\EspressoOptions;
 use EspressoWebDriver\Matcher\IsDisplayedInViewportMatcher;
 use EspressoWebDriver\Tests\Feature\BaseFeatureTestCase;
-use EspressoWebDriver\Tests\Helpers\PhpunitReporter;
+use EspressoWebDriver\Tests\Utilities\PhpunitReporter;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\CoversFunction;
 

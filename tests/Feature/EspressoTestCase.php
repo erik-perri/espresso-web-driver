@@ -7,7 +7,7 @@ namespace EspressoWebDriver\Tests\Feature;
 use EspressoWebDriver\Core\EspressoCore;
 use EspressoWebDriver\Core\EspressoOptions;
 use EspressoWebDriver\Processor\RetryingMatchProcessor;
-use EspressoWebDriver\Tests\Helpers\PhpunitReporter;
+use EspressoWebDriver\Tests\Utilities\PhpunitReporter;
 use Facebook\WebDriver\Chrome\ChromeOptions;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
 use Facebook\WebDriver\WebDriver;

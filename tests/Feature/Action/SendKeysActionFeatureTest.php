@@ -9,7 +9,7 @@ namespace Action;
 use EspressoWebDriver\Action\SendKeysAction;
 use EspressoWebDriver\Core\EspressoOptions;
 use EspressoWebDriver\Tests\Feature\BaseFeatureTestCase;
-use EspressoWebDriver\Tests\Helpers\PhpunitReporter;
+use EspressoWebDriver\Tests\Utilities\PhpunitReporter;
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverKeys;
 use PHPUnit\Framework\Attributes\CoversClass;

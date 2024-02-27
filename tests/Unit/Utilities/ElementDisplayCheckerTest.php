@@ -7,7 +7,7 @@ declare(strict_types=1);
 namespace EspressoWebDriver\Tests\Unit\Utilities;
 
 use EspressoWebDriver\Exception\EspressoWebDriverException;
-use EspressoWebDriver\Tests\Helpers\MocksWebDriverElement;
+use EspressoWebDriver\Tests\Traits\MocksWebDriverElement;
 use EspressoWebDriver\Tests\Unit\BaseUnitTestCase;
 use EspressoWebDriver\Utilities\ElementDisplayChecker;
 use Facebook\WebDriver\JavaScriptExecutor;

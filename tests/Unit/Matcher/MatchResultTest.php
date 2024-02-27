@@ -10,7 +10,7 @@ use EspressoWebDriver\Exception\AmbiguousElementException;
 use EspressoWebDriver\Exception\NoMatchingElementException;
 use EspressoWebDriver\Matcher\MatcherInterface;
 use EspressoWebDriver\Matcher\MatchResult;
-use EspressoWebDriver\Tests\Helpers\MocksWebDriverElement;
+use EspressoWebDriver\Tests\Traits\MocksWebDriverElement;
 use EspressoWebDriver\Utilities\ElementPathLogger;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace EspressoWebDriver\Tests\Helpers;
+namespace EspressoWebDriver\Tests\Traits;
 
 use Facebook\WebDriver\WebDriverElement;
 use PHPUnit\Framework\MockObject\Exception;

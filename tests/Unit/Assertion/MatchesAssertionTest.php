@@ -11,7 +11,7 @@ use EspressoWebDriver\Core\EspressoContext;
 use EspressoWebDriver\Core\EspressoOptions;
 use EspressoWebDriver\Matcher\MatcherInterface;
 use EspressoWebDriver\Matcher\MatchResult;
-use EspressoWebDriver\Tests\Helpers\MocksWebDriverElement;
+use EspressoWebDriver\Tests\Traits\MocksWebDriverElement;
 use EspressoWebDriver\Tests\Unit\BaseUnitTestCase;
 use Facebook\WebDriver\WebDriver;
 use PHPUnit\Framework\Attributes\CoversClass;

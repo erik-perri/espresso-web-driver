@@ -9,7 +9,7 @@ namespace EspressoWebDriver\Tests\Unit\Action;
 use EspressoWebDriver\Action\TypeTextAction;
 use EspressoWebDriver\Core\EspressoContext;
 use EspressoWebDriver\Core\EspressoOptions;
-use EspressoWebDriver\Tests\Helpers\MocksWebDriverElement;
+use EspressoWebDriver\Tests\Traits\MocksWebDriverElement;
 use EspressoWebDriver\Tests\Unit\BaseUnitTestCase;
 use Facebook\WebDriver\WebDriver;
 use PHPUnit\Framework\Attributes\CoversClass;

@@ -11,7 +11,7 @@ use EspressoWebDriver\Core\EspressoOptions;
 use EspressoWebDriver\Exception\AmbiguousElementException;
 use EspressoWebDriver\Exception\NoMatchingElementException;
 use EspressoWebDriver\Interaction\InteractionInterface;
-use EspressoWebDriver\Tests\Helpers\MocksWebDriverElement;
+use EspressoWebDriver\Tests\Traits\MocksWebDriverElement;
 use EspressoWebDriver\Tests\Unit\BaseUnitTestCase;
 use Facebook\WebDriver\Exception\NoSuchElementException;
 use Facebook\WebDriver\WebDriver;

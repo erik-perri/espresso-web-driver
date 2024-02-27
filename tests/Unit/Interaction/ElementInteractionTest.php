@@ -16,7 +16,7 @@ use EspressoWebDriver\Interaction\ElementInteraction;
 use EspressoWebDriver\Matcher\MatcherInterface;
 use EspressoWebDriver\Matcher\MatchResult;
 use EspressoWebDriver\Reporter\AssertionReporterInterface;
-use EspressoWebDriver\Tests\Helpers\MocksWebDriverElement;
+use EspressoWebDriver\Tests\Traits\MocksWebDriverElement;
 use EspressoWebDriver\Tests\Unit\BaseUnitTestCase;
 use Facebook\WebDriver\JavaScriptExecutor;
 use Facebook\WebDriver\WebDriver;
