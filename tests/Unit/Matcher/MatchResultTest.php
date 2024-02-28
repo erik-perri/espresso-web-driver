@@ -126,7 +126,7 @@ class MatchResultTest extends TestCase
     {
         // Expectations
         $this->expectException(NoMatchingElementException::class);
-        $this->expectExceptionMessage('No element found for matcher()');
+        $this->expectExceptionMessage('no element found for matcher()');
 
         // Arrange
         $matcher = $this->createMock(MatcherInterface::class);

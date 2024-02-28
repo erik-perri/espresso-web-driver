@@ -7,7 +7,7 @@ declare(strict_types=1);
 namespace EspressoWebDriver\Tests\Feature\Matcher;
 
 use EspressoWebDriver\Core\EspressoOptions;
-use EspressoWebDriver\Exception\NoMatchingElementException;
+use EspressoWebDriver\Exception\PerformException;
 use EspressoWebDriver\Matcher\WithTextMatcher;
 use EspressoWebDriver\Tests\Feature\BaseFeatureTestCase;
 use EspressoWebDriver\Tests\Utilities\PhpunitReporter;
@@ -94,8 +94,8 @@ class WithTextMatcherFeatureTest extends BaseFeatureTestCase
     public function testDoesNotMatchWhenCaseIsWrong(): void
     {
         // Expectations
-        $this->expectException(NoMatchingElementException::class);
-        $this->expectExceptionMessage('No element found for withText(MOCK A)');
+        $this->expectException(PerformException::class);
+        $this->expectExceptionMessage('Failed to perform action click, no element found for withText(MOCK A)');
 
         // Arrange
         $driver = $this->driver()->get($this->mockStaticUrl('matchers/with-text.html'));
@@ -115,8 +115,8 @@ class WithTextMatcherFeatureTest extends BaseFeatureTestCase
     public function testDoesNotMatchSubstrings(): void
     {
         // Expectations
-        $this->expectException(NoMatchingElementException::class);
-        $this->expectExceptionMessage('No element found for withText(Mock C)');
+        $this->expectException(PerformException::class);
+        $this->expectExceptionMessage('Failed to perform action click, no element found for withText(Mock C)');
 
         // Arrange
         $driver = $this->driver()->get($this->mockStaticUrl('matchers/with-text.html'));

@@ -92,7 +92,7 @@ class ElementInteractionTest extends BaseUnitTestCase
     {
         // Expectations
         $this->expectException(AssertionFailedException::class);
-        $this->expectExceptionMessage('Failed to assert matches(isDisplayed), No element found for mock');
+        $this->expectExceptionMessage('Failed to assert matches(isDisplayed), no element found for mock');
 
         // Arrange
         $reporter = $this->createMock(AssertionReporterInterface::class);

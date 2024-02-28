@@ -30,7 +30,7 @@ final readonly class ElementInteraction implements InteractionInterface
     }
 
     /**
-     * @throws AmbiguousElementException|AssertionFailedException|NoMatchingElementException
+     * @throws AssertionFailedException
      */
     public function check(AssertionInterface $assertion): InteractionInterface
     {
@@ -38,7 +38,7 @@ final readonly class ElementInteraction implements InteractionInterface
 
         try {
             $result = $this->result();
-        } catch (NoRootElementException $e) {
+        } catch (AmbiguousElementException|NoMatchingElementException|NoRootElementException $e) {
             $this->context->options->assertionReporter?->report(
                 false,
                 sprintf(
@@ -74,11 +74,18 @@ final readonly class ElementInteraction implements InteractionInterface
     }
 
     /**
-     * @throws AmbiguousElementException|NoMatchingElementException|NoRootElementException|PerformException
+     * @throws PerformException
      */
     public function perform(ActionInterface ...$actions): InteractionInterface
     {
-        $element = $this->result()->single();
+        try {
+            $element = $this->result()->single();
+        } catch (AmbiguousElementException|NoMatchingElementException|NoRootElementException $e) {
+            throw new PerformException(
+                action: $actions,
+                reason: $e->getMessage(),
+            );
+        }
 
         foreach ($actions as $action) {
             if (!$action->perform($element, $this->context)) {

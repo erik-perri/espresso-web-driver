@@ -10,6 +10,6 @@ class NoMatchingElementException extends EspressoWebDriverException
 {
     public function __construct(MatcherInterface $matcher)
     {
-        parent::__construct(sprintf('No element found for %1$s', $matcher));
+        parent::__construct(sprintf('no element found for %1$s', $matcher));
     }
 }
