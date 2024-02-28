@@ -1,37 +1,38 @@
 {
-    "name": "erik-perri/espresso-web-driver",
-    "type": "library",
-    "autoload": {
-        "psr-4": {
-            "EspressoWebDriver\\": "src/"
-        },
-        "files": [
-            "src/helpers.php"
-        ]
+  "name": "erik-perri/espresso-web-driver",
+  "type": "library",
+  "autoload": {
+    "psr-4": {
+      "EspressoWebDriver\\": "src/"
     },
-    "autoload-dev": {
-        "psr-4": {
-            "EspressoWebDriver\\Tests\\": "tests/"
-        }
-    },
-    "require": {
-        "php": ">=8.2",
-        "php-webdriver/webdriver": "^1.15.1"
-    },
-    "require-dev": {
-        "laravel/pint": "^1.13",
-        "phpstan/phpstan": "^1.10",
-        "phpunit/phpunit": "^10.5",
-        "symfony/phpunit-bridge": "^7.0"
-    },
-    "scripts": {
-        "check-code": [
-            "@lint",
-            "@phpstan"
-        ],
-        "lint": "@php vendor/bin/pint --test",
-        "lint:fix": "@php vendor/bin/pint",
-        "phpstan": "@php vendor/bin/phpstan analyse",
-        "test": "@php vendor/bin/phpunit"
+    "files": [
+      "src/helpers.php"
+    ]
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "EspressoWebDriver\\Tests\\": "tests/"
     }
+  },
+  "minimum-stability": "stable",
+  "require": {
+    "php": ">=8.2",
+    "php-webdriver/webdriver": "^1.15"
+  },
+  "require-dev": {
+    "laravel/pint": "^1.14",
+    "phpstan/phpstan": "^1.10",
+    "phpunit/phpunit": "^10.5",
+    "symfony/phpunit-bridge": "^7.0"
+  },
+  "scripts": {
+    "check-code": [
+      "@lint",
+      "@phpstan"
+    ],
+    "lint": "@php vendor/bin/pint --test",
+    "lint:fix": "@php vendor/bin/pint",
+    "phpstan": "@php vendor/bin/phpstan analyse",
+    "test": "@php vendor/bin/phpunit"
+  }
 }
