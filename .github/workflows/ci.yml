@@ -17,6 +17,10 @@ jobs:
           - 4444:4444
     steps:
       - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.3
+          coverage: xdebug
       - run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
         id: composer-cache
       - uses: actions/cache@v4
@@ -25,10 +29,6 @@ jobs:
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
           restore-keys: |
             ${{ runner.os }}-composer-
-      - uses: shivammathur/setup-php@v2
-        with:
-          php-version: 8.3
-          coverage: xdebug
       - run: composer install --prefer-dist --no-interaction --optimize-autoloader
       - run: composer check-code
       - run: php -S 0.0.0.0:8000 -t ./tests/static &
