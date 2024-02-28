@@ -124,7 +124,13 @@ abstract class EspressoTestCase extends TestCase
 
     private function removeFailureOutput(string $filePrefix): void
     {
-        foreach (glob(sprintf('%1$s/*', $filePrefix)) as $file) {
+        $files = glob(sprintf('%1$s/*', $filePrefix));
+
+        if ($files === false) {
+            return;
+        }
+
+        foreach ($files as $file) {
             unlink($file);
         }
     }
