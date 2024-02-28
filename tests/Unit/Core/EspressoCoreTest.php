@@ -22,6 +22,26 @@ class EspressoCoreTest extends BaseUnitTestCase
 {
     use MocksWebDriverElement;
 
+    public function testGoToPassesThroughToDriver(): void
+    {
+        // Arrange
+        $mockDriver = $this->createMock(WebDriver::class);
+        $mockDriver
+            ->expects($this->once())
+            ->method('get')
+            ->with('https://example.com');
+
+        $mockOptions = new EspressoOptions;
+
+        $core = new EspressoCore($mockDriver, $mockOptions);
+
+        // Act
+        $core->goTo('https://example.com');
+
+        // Assert
+        // No assertions, only expectations.
+    }
+
     public function testInContainerPassesThroughMatchToNextCall(): void
     {
         // Arrange
