@@ -42,8 +42,10 @@ class EspressoCoreTest extends BaseUnitTestCase
 
         $mockOptions = new EspressoOptions();
 
+        $core = new EspressoCore($mockDriver, $mockOptions);
+
         // Act
-        new EspressoCore($mockDriver, $mockOptions);
+        $core->inContainer(withId('mock'));
 
         // Assert
         // No assertions, only expectations.

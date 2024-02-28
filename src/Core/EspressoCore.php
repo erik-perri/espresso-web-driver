@@ -18,17 +18,19 @@ use function EspressoWebDriver\withTagName;
 
 final readonly class EspressoCore
 {
-    private MatchResult $container;
-
-    /**
-     * @throws NoMatchingElementException
-     */
     public function __construct(
         private WebDriver $driver,
         private EspressoOptions $options,
-        ?MatchResult $container = null,
+        private ?MatchResult $container = null,
     ) {
-        $this->container = $container ?? $this->findHtmlElement();
+        //
+    }
+
+    public function goTo(string $url): self
+    {
+        $this->driver->get($url);
+
+        return new self($this->driver, $this->options);
     }
 
     /**
@@ -41,7 +43,9 @@ final readonly class EspressoCore
             options: $this->options,
         );
 
-        $result = $this->options->matchProcessor->process($this->container, $matcher, $context);
+        $container = $this->container ?? $this->findHtmlElement();
+
+        $result = $this->options->matchProcessor->process($container, $matcher, $context);
 
         return new self($this->driver, $this->options, $result);
     }
@@ -56,7 +60,9 @@ final readonly class EspressoCore
             options: $this->options,
         );
 
-        $result = $this->options->matchProcessor->process($this->container, $matcher, $context);
+        $container = $this->container ?? $this->findHtmlElement();
+
+        $result = $this->options->matchProcessor->process($container, $matcher, $context);
 
         return new ElementInteraction($result, $context);
     }
