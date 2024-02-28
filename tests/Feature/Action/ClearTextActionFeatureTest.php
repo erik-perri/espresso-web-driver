@@ -30,7 +30,7 @@ class ClearTextActionFeatureTest extends BaseFeatureTestCase
 
         // Act and Assert
         $espresso
-            ->goTo($this->mockStaticUrl('actions/clear-text.html'))
+            ->navigateTo($this->mockStaticUrl('actions/clear-text.html'))
             ->onElement(withId('test-a'))
             ->perform(typeText('Value A'))
             ->check(matches(withValue('Value A')))
@@ -45,7 +45,7 @@ class ClearTextActionFeatureTest extends BaseFeatureTestCase
 
         // Act and Assert
         $espresso
-            ->goTo($this->mockStaticUrl('actions/clear-text.html'))
+            ->navigateTo($this->mockStaticUrl('actions/clear-text.html'))
             ->onElement(withId('test-b'))
             ->perform(clearText())
             ->check(matches(withValue('')))

@@ -19,16 +19,16 @@ final readonly class EspressoCore
         //
     }
 
-    public function goTo(string $url): self
+    public function inContainer(MatcherInterface $matcher): self
+    {
+        return new self($this->driver, $this->options, $matcher);
+    }
+
+    public function navigateTo(string $url): self
     {
         $this->driver->get($url);
 
         return $this;
-    }
-
-    public function inContainer(MatcherInterface $matcher): self
-    {
-        return new self($this->driver, $this->options, $matcher);
     }
 
     public function onElement(MatcherInterface $matcher): InteractionInterface

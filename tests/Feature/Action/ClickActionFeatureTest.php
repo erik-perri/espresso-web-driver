@@ -35,7 +35,7 @@ class ClickActionFeatureTest extends BaseFeatureTestCase
 
         // Act and Assert
         $espresso
-            ->goTo($this->mockStaticUrl('actions/click.html'))
+            ->navigateTo($this->mockStaticUrl('actions/click.html'))
             ->onElement(withId('test-a'))
             ->perform(click(), sendKeys(WebDriverKeys::HOME, WebDriverKeys::DELETE))
             ->check(matches(withValue('alue A')));
@@ -50,7 +50,7 @@ class ClickActionFeatureTest extends BaseFeatureTestCase
         $button = $espresso->onElement(withTagName('button'));
 
         // Act and Assert
-        $espresso->goTo($this->mockStaticUrl('actions/click.html'));
+        $espresso->navigateTo($this->mockStaticUrl('actions/click.html'));
 
         $modal->check(matches(not(isDisplayedInViewport())));
 

@@ -22,7 +22,7 @@ class EspressoCoreTest extends BaseUnitTestCase
 {
     use MocksWebDriverElement;
 
-    public function testGoToPassesThroughToDriver(): void
+    public function testNavigateToPassesThroughToDriver(): void
     {
         // Arrange
         $mockDriver = $this->createMock(WebDriver::class);
@@ -36,7 +36,7 @@ class EspressoCoreTest extends BaseUnitTestCase
         $core = new EspressoCore($mockDriver, $mockOptions);
 
         // Act
-        $core->goTo('https://example.com');
+        $core->navigateTo('https://example.com');
 
         // Assert
         // No assertions, only expectations.

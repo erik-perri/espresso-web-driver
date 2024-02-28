@@ -70,6 +70,7 @@ $containedEspresso->onElement(withText('Edit'))
     * [typeText(`string`)](#typetextstring)
 * [Interfaces](#interfaces)
   * [EspressoCore](#espressocore)
+    * [navigateTo(`string`): `EspressoCore`](#navigatetostring-espressocore)
     * [inContainer(`MatcherInterface`): `EspressoCore`](#incontainermatcherinterface-espressocore)
     * [onElement(`MatcherInterface`): `InteractionInterface`](#onelementmatcherinterface-interactioninterface)
   * [InteractionInterface](#interactioninterface)
@@ -220,6 +221,10 @@ Selects, then types text into an element.
 
 
 ## EspressoCore
+
+### navigateTo(`string`): `EspressoCore`
+
+Navigates to the given URL.
 
 ### inContainer(`MatcherInterface`): `EspressoCore`
 
