@@ -6,8 +6,6 @@ namespace EspressoWebDriver\Tests\Feature;
 
 use EspressoWebDriver\Core\EspressoCore;
 use EspressoWebDriver\Core\EspressoOptions;
-use EspressoWebDriver\Processor\RetryingMatchProcessor;
-use EspressoWebDriver\Tests\Utilities\PhpunitReporter;
 use Facebook\WebDriver\Chrome\ChromeOptions;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
 use Facebook\WebDriver\WebDriver;
@@ -43,11 +41,11 @@ abstract class EspressoTestCase extends TestCase
         $this->removeFailureOutput($this->getFailureFilePrefix());
     }
 
-    protected function espresso(): EspressoCore
+    protected function espresso(EspressoOptions $options = new EspressoOptions): EspressoCore
     {
         return usingDriver(
             $this->driver(),
-            $this->getEspressoOptions(),
+            $options,
         );
     }
 
@@ -76,17 +74,6 @@ abstract class EspressoTestCase extends TestCase
         return self::$driver = RemoteWebDriver::create(
             $this->getSeleniumUrl(),
             $this->getSeleniumOptions()->toCapabilities(),
-        );
-    }
-
-    protected function getEspressoOptions(): EspressoOptions
-    {
-        return new EspressoOptions(
-            matchProcessor: new RetryingMatchProcessor(
-                waitTimeoutInSeconds: 3,
-                waitIntervalInMilliseconds: 250,
-            ),
-            assertionReporter: new PhpunitReporter,
         );
     }
 
