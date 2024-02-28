@@ -9,10 +9,10 @@ $espresso = usingDriver($driver, new EspressoOptions(
     ),
 ));
 
-$espresso->onElement(withLabel('First name')),
+$espresso->onElement(withLabel('First name'))
     ->perform(typeText('John'));
 
-$espresso->onElement(withLabel('Last name')),
+$espresso->onElement(withLabel('Last name'))
     ->perform(
         typeText('Doe'),
         submit(),
@@ -33,6 +33,7 @@ $containedEspresso->onElement(withText('Edit'))
     ->perform(click());
 ```
 
+---
 
 <!-- TOC -->
 * [Helper functions](#helper-functions)
