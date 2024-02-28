@@ -10,14 +10,12 @@ use EspressoWebDriver\Action\ClearTextAction;
 use EspressoWebDriver\Core\EspressoOptions;
 use EspressoWebDriver\Tests\Feature\BaseFeatureTestCase;
 use EspressoWebDriver\Tests\Utilities\PhpunitReporter;
-use Facebook\WebDriver\WebDriverBy;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\CoversFunction;
 
 use function EspressoWebDriver\clearText;
 use function EspressoWebDriver\matches;
 use function EspressoWebDriver\typeText;
-use function EspressoWebDriver\usingDriver;
 use function EspressoWebDriver\withId;
 use function EspressoWebDriver\withValue;
 
@@ -28,48 +26,32 @@ class ClearTextActionFeatureTest extends BaseFeatureTestCase
     public function testClearsTextInTextInputs(): void
     {
         // Arrange
-        $driver = $this->driver()->get($this->mockStaticUrl('actions/clear-text.html'));
+        $espresso = $this->espresso(new EspressoOptions(assertionReporter: new PhpunitReporter));
 
-        $options = new EspressoOptions();
-
-        $espresso = usingDriver($driver, $options);
-
-        // Act
+        // Act and Assert
         $espresso
+            ->goTo($this->mockStaticUrl('actions/clear-text.html'))
             ->onElement(withId('test-a'))
             ->perform(typeText('Value A'))
             ->check(matches(withValue('Value A')))
-            ->perform(clearText());
-
-        // Assert
-        $this->assertSame(
-            '',
-            $driver->findElement(WebDriverBy::id('test-a'))->getAttribute('value'),
-        );
+            ->perform(clearText())
+            ->check(matches(withValue('')));
     }
 
     public function testClearsTextInTextareaInputs(): void
     {
         // Arrange
-        $driver = $this->driver()->get($this->mockStaticUrl('actions/clear-text.html'));
+        $espresso = $this->espresso(new EspressoOptions(assertionReporter: new PhpunitReporter));
 
-        $options = new EspressoOptions(assertionReporter: new PhpunitReporter);
-
-        $espresso = usingDriver($driver, $options);
-
-        // Act
+        // Act and Assert
         $espresso
+            ->goTo($this->mockStaticUrl('actions/clear-text.html'))
             ->onElement(withId('test-b'))
             ->perform(clearText())
             ->check(matches(withValue('')))
             ->perform(typeText('Value B\nWith new line'))
             ->check(matches(withValue('Value B\nWith new line')))
-            ->perform(clearText());
-
-        // Assert
-        $this->assertSame(
-            '',
-            $driver->findElement(WebDriverBy::id('test-b'))->getAttribute('value'),
-        );
+            ->perform(clearText())
+            ->check(matches(withValue('')));
     }
 }
