@@ -59,6 +59,7 @@ $containedEspresso->onElement(withText('Edit'))
     * [withTextContaining(`string`)](#withtextcontainingstring)
     * [withValue(`string`)](#withvaluestring)
   * [Assertions](#assertions)
+    * [doesNotExist()](#doesnotexist)
     * [matches(`MatcherInterface`)](#matchesmatcherinterface)
   * [Actions](#actions)
     * [clearText()](#cleartext)
@@ -136,7 +137,7 @@ Matches elements that are enabled.
 
 ### isPresent()
 
-Matches elements that are present in the DOM. This is more useful for negative checks.
+Matches elements that are present in the DOM.
 
 ### not(`MatcherInterface`)
 
@@ -175,6 +176,10 @@ Matches form elements that have the given value.
 
 Assertions return `AssertionInterface` instances. They are used with the `check` method of
 [InteractionInterface](#interactioninterface).
+
+### doesNotExist()
+
+Asserts that the element does not exist.
 
 ### matches(`MatcherInterface`)
 

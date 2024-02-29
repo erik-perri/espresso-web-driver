@@ -15,6 +15,7 @@ use EspressoWebDriver\Action\SendKeysAction;
 use EspressoWebDriver\Action\SubmitAction;
 use EspressoWebDriver\Action\TypeTextAction;
 use EspressoWebDriver\Assertion\AssertionInterface;
+use EspressoWebDriver\Assertion\DoesNotExistAssertion;
 use EspressoWebDriver\Assertion\MatchesAssertion;
 use EspressoWebDriver\Core\EspressoCore;
 use EspressoWebDriver\Core\EspressoOptions;
@@ -101,6 +102,11 @@ function typeText(string $text): ActionInterface
 // endregion
 
 // region Assertions
+
+function doesNotExist(): AssertionInterface
+{
+    return new DoesNotExistAssertion();
+}
 
 function matches(MatcherInterface $matcher): AssertionInterface
 {

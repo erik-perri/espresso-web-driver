@@ -14,7 +14,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\CoversFunction;
 
 use function EspressoWebDriver\allOf;
-use function EspressoWebDriver\isPresent;
+use function EspressoWebDriver\doesNotExist;
 use function EspressoWebDriver\matches;
 use function EspressoWebDriver\not;
 use function EspressoWebDriver\usingDriver;
@@ -94,7 +94,7 @@ class WithLabelMatcherFeatureTest extends BaseFeatureTestCase
 
         // Act and Assert
         $espresso->onElement(withLabel('Empty implicit'))
-            ->check(matches(not(isPresent())));
+            ->check(doesNotExist());
     }
 
     public function testReturnsResultsFromOutsideTheLabelsParent(): void
@@ -123,7 +123,7 @@ class WithLabelMatcherFeatureTest extends BaseFeatureTestCase
 
         // Act and Assert
         $espresso->onElement(withLabel('Outside'))
-            ->check(matches(not(isPresent())));
+            ->check(doesNotExist());
     }
 
     public function testMatchesNegativeResults(): void
