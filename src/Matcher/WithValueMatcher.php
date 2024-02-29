@@ -36,9 +36,11 @@ final readonly class WithValueMatcher implements MatcherInterface
             $elements[] = $container;
         }
 
+        $value = $this->cleanValueForCssSelector($this->value);
+
         return array_merge(
             $elements,
-            $container->findElements(WebDriverBy::cssSelector(sprintf('[value="%1$s"]', $this->value))),
+            $container->findElements(WebDriverBy::cssSelector(sprintf('[value="%1$s"]', $value))),
         );
     }
 
@@ -53,14 +55,23 @@ final readonly class WithValueMatcher implements MatcherInterface
             $elements[] = $container;
         }
 
+        $value = $this->cleanValueForCssSelector($this->value);
+
         return array_merge(
             $elements,
-            $container->findElements(WebDriverBy::cssSelector(sprintf(':not([value="%1$s"])', $this->value))),
+            $container->findElements(WebDriverBy::cssSelector(sprintf(':not([value="%1$s"])', $value))),
         );
+    }
+
+    private function cleanValueForCssSelector(string $value): string
+    {
+        return str_replace("\n", '\n', $value);
     }
 
     public function __toString(): string
     {
-        return sprintf('withValue(%1$s)', $this->value);
+        $value = $this->cleanValueForCssSelector($this->value);
+
+        return sprintf('withValue(%1$s)', $value);
     }
 }

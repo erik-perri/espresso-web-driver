@@ -49,8 +49,8 @@ class ClearTextActionFeatureTest extends BaseFeatureTestCase
             ->onElement(withId('test-b'))
             ->perform(clearText())
             ->check(matches(withValue('')))
-            ->perform(typeText('Value B\nWith new line'))
-            ->check(matches(withValue('Value B\nWith new line')))
+            ->perform(typeText("Value B\nWith new line"))
+            ->check(matches(withValue("Value B\nWith new line")))
             ->perform(clearText())
             ->check(matches(withValue('')));
     }
