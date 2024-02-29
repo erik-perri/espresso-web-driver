@@ -127,5 +127,10 @@ abstract class EspressoTestCase extends TestCase
         $driver->takeScreenshot($filePrefix.'.png');
 
         file_put_contents($filePrefix.'-source.txt', $driver->getPageSource());
+
+        $console = $driver->manage()->getLog('browser');
+        if (count($console)) {
+            file_put_contents($filePrefix.'-console.txt', json_encode($console, JSON_PRETTY_PRINT));
+        }
     }
 }
