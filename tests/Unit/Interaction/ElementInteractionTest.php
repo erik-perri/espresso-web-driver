@@ -314,6 +314,45 @@ class ElementInteractionTest extends BaseUnitTestCase
         // No assertions, only expectations.
     }
 
+    public function testPerformThrowsExceptionOnFailureToMatch(): void
+    {
+        // Expectations
+        $this->expectException(PerformException::class);
+        $this->expectExceptionMessage('Failed to perform action mock, no element found for mock');
+
+        // Arrange
+        $mockMatcher = $this->createMock(MatcherInterface::class);
+        $mockMatcher->expects($this->once())
+            ->method('__toString')
+            ->willReturn('mock');
+        $mockMatcher->expects($this->once())
+            ->method('match')
+            ->willReturn(new MatchResult($mockMatcher, []));
+
+        $mockAction = $this->createMock(ActionInterface::class);
+        $mockAction->expects($this->once())
+            ->method('__toString')
+            ->willReturn('mock');
+
+        $mockDriver = $this->createMock(WebDriver::class);
+        $mockDriver->expects($this->once())
+            ->method('findElement')
+            ->willReturn($this->createMockWebDriverElement('html'));
+
+        $mockContext = new EspressoContext(
+            driver: $mockDriver,
+            options: new EspressoOptions,
+        );
+
+        $interaction = new ElementInteraction($mockMatcher, $mockContext, null);
+
+        // Act
+        $interaction->perform($mockAction);
+
+        // Assert
+        // No assertions, only expectations.
+    }
+
     public function testPerformProvidesFluentInterface(): void
     {
         // Arrange
