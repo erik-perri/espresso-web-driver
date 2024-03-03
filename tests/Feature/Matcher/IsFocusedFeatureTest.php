@@ -8,7 +8,7 @@ namespace EspressoWebDriver\Tests\Feature\Matcher;
 
 use EspressoWebDriver\Core\EspressoOptions;
 use EspressoWebDriver\Exception\NoParentException;
-use EspressoWebDriver\Matcher\HasFocusMatcher;
+use EspressoWebDriver\Matcher\IsFocusedMatcher;
 use EspressoWebDriver\Tests\Feature\BaseFeatureTestCase;
 use EspressoWebDriver\Tests\Utilities\PhpunitReporter;
 use Facebook\WebDriver\WebDriverKeys;
@@ -16,7 +16,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\CoversFunction;
 
 use function EspressoWebDriver\click;
-use function EspressoWebDriver\hasFocus;
+use function EspressoWebDriver\isFocused;
 use function EspressoWebDriver\matches;
 use function EspressoWebDriver\not;
 use function EspressoWebDriver\sendKeys;
@@ -25,10 +25,10 @@ use function EspressoWebDriver\withClass;
 use function EspressoWebDriver\withId;
 use function EspressoWebDriver\withTagName;
 
-#[CoversClass(HasFocusMatcher::class)]
+#[CoversClass(IsFocusedMatcher::class)]
 #[CoversClass(NoParentException::class)]
-#[CoversFunction('EspressoWebDriver\hasFocus')]
-class HasFocusFeatureTest extends BaseFeatureTestCase
+#[CoversFunction('EspressoWebDriver\isFocused')]
+class IsFocusedFeatureTest extends BaseFeatureTestCase
 {
     public function testFocusWorksOnElementsWithTabIndex(): void
     {
@@ -41,13 +41,13 @@ class HasFocusFeatureTest extends BaseFeatureTestCase
         $div = $espresso->onElement(withId('test-a'));
 
         // Act and Assert
-        $div->check(matches(not(hasFocus())));
+        $div->check(matches(not(isFocused())));
 
         $espresso
             ->onElement(withTagName('body'))
             ->perform(sendKeys(WebDriverKeys::TAB));
 
-        $div->check(matches(hasFocus()));
+        $div->check(matches(isFocused()));
     }
 
     public function testFocusWorksOnLinks(): void
@@ -61,13 +61,13 @@ class HasFocusFeatureTest extends BaseFeatureTestCase
         $link = $espresso->onElement(withId('test-b'));
 
         // Act and Assert
-        $link->check(matches(not(hasFocus())));
+        $link->check(matches(not(isFocused())));
 
         $espresso
             ->onElement(withTagName('body'))
             ->perform(sendKeys(WebDriverKeys::TAB, WebDriverKeys::TAB));
 
-        $link->check(matches(hasFocus()));
+        $link->check(matches(isFocused()));
     }
 
     public function testFocusWorksOnSelects(): void
@@ -82,9 +82,9 @@ class HasFocusFeatureTest extends BaseFeatureTestCase
         // Act and Assert
         $espresso
             ->onElement(withId('test-c'))
-            ->check(matches(not(hasFocus())))
+            ->check(matches(not(isFocused())))
             ->perform(click())
-            ->check(matches(hasFocus()));
+            ->check(matches(isFocused()));
     }
 
     public function testFocusWorksOnInputs(): void
@@ -100,18 +100,18 @@ class HasFocusFeatureTest extends BaseFeatureTestCase
         $label = $espresso->onElement(withClass('label-d'));
 
         // Act and Assert
-        $input->check(matches(not(hasFocus())));
+        $input->check(matches(not(isFocused())));
 
         $label->perform(click());
 
-        $input->check(matches(hasFocus()));
+        $input->check(matches(isFocused()));
     }
 
     public function testThrowsExceptionWhenCallingOnTheTopLevelElement(): void
     {
         // Expectations
         $this->expectException(NoParentException::class);
-        $this->expectExceptionMessage('Unable to locate a parent while checking html for hasFocus');
+        $this->expectExceptionMessage('Unable to locate a parent while checking html for isFocused');
 
         // Arrange
         $driver = $this->driver()->get($this->mockStaticUrl('matchers/has-focus.html'));
@@ -122,7 +122,7 @@ class HasFocusFeatureTest extends BaseFeatureTestCase
 
         // Act
         $espresso->onElement(withTagName('html'))
-            ->check(matches(hasFocus()));
+            ->check(matches(isFocused()));
 
         // Assert
         // No assertions, only expectations.
@@ -132,7 +132,7 @@ class HasFocusFeatureTest extends BaseFeatureTestCase
     {
         // Expectations
         $this->expectException(NoParentException::class);
-        $this->expectExceptionMessage('Unable to locate a parent while checking html for hasFocus');
+        $this->expectExceptionMessage('Unable to locate a parent while checking html for isFocused');
 
         // Arrange
         $driver = $this->driver()->get($this->mockStaticUrl('matchers/has-focus.html'));
@@ -143,7 +143,7 @@ class HasFocusFeatureTest extends BaseFeatureTestCase
 
         // Act
         $espresso->onElement(withTagName('html'))
-            ->check(matches(not(hasFocus())));
+            ->check(matches(not(isFocused())));
 
         // Assert
         // No assertions, only expectations.

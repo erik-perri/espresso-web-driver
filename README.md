@@ -43,12 +43,12 @@ $containedEspresso->onElement(withText('Edit'))
     * [allOf(`MatcherInterface ...`)](#allofmatcherinterface-)
     * [anyOf(`MatcherInterface ...`)](#anyofmatcherinterface-)
     * [hasDescendant(`MatcherInterface`)](#hasdescendantmatcherinterface)
-    * [hasFocus()](#hasfocus)
     * [hasSibling(`MatcherInterface`)](#hassiblingmatcherinterface)
     * [isChecked()](#ischecked)
     * [isDisplayed()](#isdisplayed)
     * [isDisplayedInViewport()](#isdisplayedinviewport)
     * [isEnabled()](#isenabled)
+    * [isFocused()](#isfocused)
     * [isPresent()](#ispresent)
     * [not(`MatcherInterface`)](#notmatcherinterface)
     * [withClass(`string`)](#withclassstring)
@@ -111,10 +111,6 @@ Matches elements that match any of the given matchers.
 
 Matches elements that have a descendant that matches the given matcher.
 
-### hasFocus()
-
-Matches elements that have focus.
-
 ### hasSibling(`MatcherInterface`)
 
 Matches elements that have a sibling that matches the given matcher.
@@ -134,6 +130,10 @@ Matches elements that are visible and within the viewport.
 ### isEnabled()
 
 Matches elements that are enabled.
+
+### isFocused()
+
+Matches elements that have focus.
 
 ### isPresent()
 

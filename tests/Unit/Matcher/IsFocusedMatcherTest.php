@@ -6,22 +6,22 @@ declare(strict_types=1);
 
 namespace EspressoWebDriver\Tests\Unit\Matcher;
 
-use EspressoWebDriver\Matcher\HasFocusMatcher;
+use EspressoWebDriver\Matcher\IsFocusedMatcher;
 use EspressoWebDriver\Tests\Unit\BaseUnitTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversClass(HasFocusMatcher::class)]
-class HasFocusMatcherTest extends BaseUnitTestCase
+#[CoversClass(IsFocusedMatcher::class)]
+class IsFocusedMatcherTest extends BaseUnitTestCase
 {
-    public function testHasFocusToString(): void
+    public function testIsFocusedToString(): void
     {
         // Arrange
-        $matcher = new HasFocusMatcher();
+        $matcher = new IsFocusedMatcher();
 
         // Act
         $result = (string) $matcher;
 
         // Assert
-        $this->assertSame('hasFocus', $result);
+        $this->assertSame('isFocused', $result);
     }
 }

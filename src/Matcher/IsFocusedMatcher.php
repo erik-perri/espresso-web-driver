@@ -12,7 +12,7 @@ use Facebook\WebDriver\Exception\NoSuchElementException;
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverElement;
 
-final readonly class HasFocusMatcher implements MatcherInterface
+final readonly class IsFocusedMatcher implements MatcherInterface
 {
     /**
      * @throws AmbiguousElementException|NoMatchingElementException|NoParentException
@@ -63,6 +63,6 @@ final readonly class HasFocusMatcher implements MatcherInterface
 
     public function __toString(): string
     {
-        return 'hasFocus';
+        return 'isFocused';
     }
 }

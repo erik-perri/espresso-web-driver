@@ -15,7 +15,7 @@ use PHPUnit\Framework\Attributes\CoversFunction;
 use PHPUnit\Framework\Attributes\DataProvider;
 
 use function EspressoWebDriver\focus;
-use function EspressoWebDriver\hasFocus;
+use function EspressoWebDriver\isFocused;
 use function EspressoWebDriver\matches;
 use function EspressoWebDriver\usingDriver;
 use function EspressoWebDriver\withId;
@@ -38,7 +38,7 @@ class FocusActionFeatureTest extends BaseFeatureTestCase
         $espresso
             ->onElement(withId($id))
             ->perform(focus())
-            ->check(matches(hasFocus()));
+            ->check(matches(isFocused()));
     }
 
     public static function elementIdProvider(): array

@@ -23,12 +23,12 @@ use EspressoWebDriver\Exception\NoMatchingElementException;
 use EspressoWebDriver\Matcher\AllOfMatcher;
 use EspressoWebDriver\Matcher\AnyOfMatcher;
 use EspressoWebDriver\Matcher\HasDescendantMatcher;
-use EspressoWebDriver\Matcher\HasFocusMatcher;
 use EspressoWebDriver\Matcher\HasSiblingMatcher;
 use EspressoWebDriver\Matcher\IsCheckedMatcher;
 use EspressoWebDriver\Matcher\IsDisplayedInViewportMatcher;
 use EspressoWebDriver\Matcher\IsDisplayedMatcher;
 use EspressoWebDriver\Matcher\IsEnabledMatcher;
+use EspressoWebDriver\Matcher\IsFocusedMatcher;
 use EspressoWebDriver\Matcher\IsPresentMatcher;
 use EspressoWebDriver\Matcher\MatcherInterface;
 use EspressoWebDriver\Matcher\NotMatcher;
@@ -132,9 +132,9 @@ function hasDescendant(MatcherInterface $matcher): MatcherInterface
     return new HasDescendantMatcher($matcher);
 }
 
-function hasFocus(): MatcherInterface
+function isFocused(): MatcherInterface
 {
-    return new HasFocusMatcher();
+    return new IsFocusedMatcher();
 }
 
 function hasSibling(MatcherInterface $matcher): MatcherInterface
