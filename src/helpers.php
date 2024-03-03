@@ -19,7 +19,6 @@ use EspressoWebDriver\Assertion\DoesNotExistAssertion;
 use EspressoWebDriver\Assertion\MatchesAssertion;
 use EspressoWebDriver\Core\EspressoCore;
 use EspressoWebDriver\Core\EspressoOptions;
-use EspressoWebDriver\Exception\NoMatchingElementException;
 use EspressoWebDriver\Matcher\AllOfMatcher;
 use EspressoWebDriver\Matcher\AnyOfMatcher;
 use EspressoWebDriver\Matcher\HasDescendantMatcher;
@@ -44,9 +43,6 @@ use Facebook\WebDriver\WebDriverKeys;
 
 // region Core
 
-/**
- * @throws NoMatchingElementException
- */
 function usingDriver(WebDriver $driver, EspressoOptions $options = new EspressoOptions): EspressoCore
 {
     return new EspressoCore($driver, $options);
