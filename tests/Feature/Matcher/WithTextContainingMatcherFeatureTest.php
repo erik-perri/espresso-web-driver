@@ -14,7 +14,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\CoversFunction;
 
 use function EspressoWebDriver\allOf;
-use function EspressoWebDriver\isPresent;
+use function EspressoWebDriver\exists;
 use function EspressoWebDriver\matches;
 use function EspressoWebDriver\not;
 use function EspressoWebDriver\usingDriver;
@@ -37,7 +37,7 @@ class WithTextContainingMatcherFeatureTest extends BaseFeatureTestCase
 
         // Act and Assert
         $espresso->onElement(allOf(withTagName('li'), withTextContaining('Mock A')))
-            ->check(matches(isPresent()));
+            ->check(exists());
     }
 
     public function testMatchesContainer(): void
@@ -52,7 +52,7 @@ class WithTextContainingMatcherFeatureTest extends BaseFeatureTestCase
 
         // Act and Assert
         $espresso->onElement(withTextContaining('Mock A'))
-            ->check(matches(isPresent()));
+            ->check(exists());
     }
 
     public function testMatchesNegativeContainer(): void
@@ -67,7 +67,7 @@ class WithTextContainingMatcherFeatureTest extends BaseFeatureTestCase
 
         // Act and Assert
         $espresso->onElement(not(withTextContaining('Mock')))
-            ->check(matches(isPresent()));
+            ->check(exists());
     }
 
     public function testMatchesWhenCaseIsWrong(): void
@@ -81,7 +81,7 @@ class WithTextContainingMatcherFeatureTest extends BaseFeatureTestCase
 
         // Act and Assert
         $espresso->onElement(allOf(withTagName('li'), withTextContaining('MOCK A')))
-            ->check(matches(isPresent()));
+            ->check(exists());
     }
 
     public function testDoesMatchesWithLeadingSpaces(): void
@@ -95,7 +95,7 @@ class WithTextContainingMatcherFeatureTest extends BaseFeatureTestCase
 
         // Act and Assert
         $espresso->onElement(allOf(withTagName('li'), withTextContaining('Mock B')))
-            ->check(matches(isPresent()));
+            ->check(exists());
     }
 
     public function testMatchesSubstrings(): void
@@ -109,7 +109,7 @@ class WithTextContainingMatcherFeatureTest extends BaseFeatureTestCase
 
         // Act and Assert
         $espresso->onElement(allOf(withTagName('li'), withTextContaining('Mock C')))
-            ->check(matches(isPresent()));
+            ->check(exists());
     }
 
     public function testMatchesNegativeSubstrings(): void

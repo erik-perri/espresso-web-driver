@@ -4,11 +4,12 @@
 
 declare(strict_types=1);
 
-namespace EspressoWebDriver\Tests\Feature\Matcher;
+namespace Assertion;
 
+use EspressoWebDriver\Assertion\DoesNotExistAssertion;
+use EspressoWebDriver\Assertion\ExistsAssertion;
 use EspressoWebDriver\Core\EspressoOptions;
 use EspressoWebDriver\Exception\AssertionFailedException;
-use EspressoWebDriver\Matcher\IsPresentMatcher;
 use EspressoWebDriver\Tests\Feature\BaseFeatureTestCase;
 use EspressoWebDriver\Tests\Utilities\PhpunitReporter;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -16,21 +17,22 @@ use PHPUnit\Framework\Attributes\CoversFunction;
 
 use function EspressoWebDriver\allOf;
 use function EspressoWebDriver\click;
-use function EspressoWebDriver\isPresent;
-use function EspressoWebDriver\matches;
-use function EspressoWebDriver\not;
+use function EspressoWebDriver\doesNotExist;
+use function EspressoWebDriver\exists;
 use function EspressoWebDriver\usingDriver;
 use function EspressoWebDriver\withTagName;
 use function EspressoWebDriver\withText;
 
-#[CoversClass(IsPresentMatcher::class)]
-#[CoversFunction('EspressoWebDriver\isPresent')]
-class IsPresentMatcherFeatureTest extends BaseFeatureTestCase
+#[CoversClass(DoesNotExistAssertion::class)]
+#[CoversClass(ExistsAssertion::class)]
+#[CoversFunction('EspressoWebDriver\doesNotExist')]
+#[CoversFunction('EspressoWebDriver\exists')]
+class ExistsAssertionFeatureTest extends BaseFeatureTestCase
 {
-    public function testChecksElementExistence(): void
+    public function testChecksExistence(): void
     {
         // Arrange
-        $driver = $this->driver()->get($this->mockStaticUrl('matchers/is-present.html'));
+        $driver = $this->driver()->get($this->mockStaticUrl('assertions/exists.html'));
 
         $options = new EspressoOptions(assertionReporter: new PhpunitReporter);
 
@@ -39,7 +41,7 @@ class IsPresentMatcherFeatureTest extends BaseFeatureTestCase
         // Act and Assert
         $espresso
             ->onElement(withText('Mock element'))
-            ->check(matches(not(isPresent())));
+            ->check(doesNotExist());
 
         $espresso
             ->onElement(allOf(withTagName('button'), withText('Create element')))
@@ -47,17 +49,17 @@ class IsPresentMatcherFeatureTest extends BaseFeatureTestCase
 
         $espresso
             ->onElement(withText('Mock element'))
-            ->check(matches(isPresent()));
+            ->check(exists());
     }
 
     public function testNotWorksWithOnlyOneResult(): void
     {
         // Expectations
         $this->expectException(AssertionFailedException::class);
-        $this->expectExceptionMessage('Failed to assert matches(not(isPresent))');
+        $this->expectExceptionMessage('Failed to assert doesNotExist');
 
         // Arrange
-        $driver = $this->driver()->get($this->mockStaticUrl('matchers/is-present.html'));
+        $driver = $this->driver()->get($this->mockStaticUrl('assertions/exists.html'));
 
         $options = new EspressoOptions();
 
@@ -70,6 +72,6 @@ class IsPresentMatcherFeatureTest extends BaseFeatureTestCase
 
         $espresso
             ->onElement(withText('Mock element'))
-            ->check(matches(not(isPresent())));
+            ->check(doesNotExist());
     }
 }

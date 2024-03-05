@@ -17,9 +17,6 @@ $espresso->onElement(withLabel('Last name'))
         typeText('Doe'),
         submit(),
     );
-
-$espresso->onElement(withClass('status-message'))
-    ->check(matches(withTextContaining('User created.')));
 ```
 
 ```php
@@ -49,7 +46,6 @@ $containedEspresso->onElement(withText('Edit'))
     * [isDisplayedInViewport()](#isdisplayedinviewport)
     * [isEnabled()](#isenabled)
     * [isFocused()](#isfocused)
-    * [isPresent()](#ispresent)
     * [not(`MatcherInterface`)](#notmatcherinterface)
     * [withClass(`string`)](#withclassstring)
     * [withId(`string`)](#withidstring)
@@ -60,6 +56,7 @@ $containedEspresso->onElement(withText('Edit'))
     * [withValue(`string`)](#withvaluestring)
   * [Assertions](#assertions)
     * [doesNotExist()](#doesnotexist)
+    * [exists()](#exists)
     * [matches(`MatcherInterface`)](#matchesmatcherinterface)
   * [Actions](#actions)
     * [clearText()](#cleartext)
@@ -135,10 +132,6 @@ Matches elements that are enabled.
 
 Matches elements that have focus.
 
-### isPresent()
-
-Matches elements that are present in the DOM.
-
 ### not(`MatcherInterface`)
 
 Matches elements that do not match the given matcher.
@@ -180,6 +173,10 @@ Assertions return `AssertionInterface` instances. They are used with the `check`
 ### doesNotExist()
 
 Asserts that the element does not exist.
+
+### exists()
+
+Asserts that the element exists.
 
 ### matches(`MatcherInterface`)
 

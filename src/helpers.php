@@ -16,6 +16,7 @@ use EspressoWebDriver\Action\SubmitAction;
 use EspressoWebDriver\Action\TypeTextAction;
 use EspressoWebDriver\Assertion\AssertionInterface;
 use EspressoWebDriver\Assertion\DoesNotExistAssertion;
+use EspressoWebDriver\Assertion\ExistsAssertion;
 use EspressoWebDriver\Assertion\MatchesAssertion;
 use EspressoWebDriver\Core\EspressoCore;
 use EspressoWebDriver\Core\EspressoOptions;
@@ -28,7 +29,6 @@ use EspressoWebDriver\Matcher\IsDisplayedInViewportMatcher;
 use EspressoWebDriver\Matcher\IsDisplayedMatcher;
 use EspressoWebDriver\Matcher\IsEnabledMatcher;
 use EspressoWebDriver\Matcher\IsFocusedMatcher;
-use EspressoWebDriver\Matcher\IsPresentMatcher;
 use EspressoWebDriver\Matcher\MatcherInterface;
 use EspressoWebDriver\Matcher\NotMatcher;
 use EspressoWebDriver\Matcher\WithClassMatcher;
@@ -104,6 +104,11 @@ function doesNotExist(): AssertionInterface
     return new DoesNotExistAssertion();
 }
 
+function exists(): AssertionInterface
+{
+    return new ExistsAssertion();
+}
+
 function matches(MatcherInterface $matcher): AssertionInterface
 {
     return new MatchesAssertion($matcher);
@@ -162,14 +167,6 @@ function isDisplayedInViewport(): MatcherInterface
 function isEnabled(): MatcherInterface
 {
     return new IsEnabledMatcher();
-}
-
-/**
- * Matches elements that exist in the DOM, regardless of visibility.
- */
-function isPresent(): MatcherInterface
-{
-    return new IsPresentMatcher();
 }
 
 function not(MatcherInterface $matcher): MatcherInterface
