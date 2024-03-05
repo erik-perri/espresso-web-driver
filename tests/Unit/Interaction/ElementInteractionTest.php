@@ -23,7 +23,6 @@ use Facebook\WebDriver\Exception\NoSuchElementException;
 use Facebook\WebDriver\JavaScriptExecutor;
 use Facebook\WebDriver\WebDriver;
 use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\MockObject\MockObject;
 
 use function EspressoWebDriver\isDisplayed;
 use function EspressoWebDriver\matches;
@@ -232,15 +231,15 @@ class ElementInteractionTest extends BaseUnitTestCase
     public function testCheckProvidesFluentInterface(): void
     {
         // Arrange
-        /**
-         * @var MockObject|WebDriver|JavaScriptExecutor $mockDriver
-         */
         $mockDriver = $this->createMockForIntersectionOfInterfaces([WebDriver::class, JavaScriptExecutor::class]);
         $mockDriver
             ->expects($this->once())
             ->method('findElement')
             ->willReturn($this->createMockWebDriverElement('html'));
 
+        /**
+         * @var WebDriver $mockDriver
+         */
         $mockContext = new EspressoContext(
             driver: $mockDriver,
             options: new EspressoOptions,
@@ -356,15 +355,15 @@ class ElementInteractionTest extends BaseUnitTestCase
     public function testPerformProvidesFluentInterface(): void
     {
         // Arrange
-        /**
-         * @var MockObject|WebDriver|JavaScriptExecutor $mockDriver
-         */
         $mockDriver = $this->createMockForIntersectionOfInterfaces([WebDriver::class, JavaScriptExecutor::class]);
         $mockDriver
             ->expects($this->once())
             ->method('findElement')
             ->willReturn($this->createMockWebDriverElement('html'));
 
+        /**
+         * @var WebDriver $mockDriver
+         */
         $mockContext = new EspressoContext(
             driver: $mockDriver,
             options: new EspressoOptions,
@@ -393,15 +392,15 @@ class ElementInteractionTest extends BaseUnitTestCase
     public function testUsesContainerMatcherIfProvided(): void
     {
         // Arrange
-        /**
-         * @var MockObject|WebDriver|JavaScriptExecutor $mockDriver
-         */
         $mockDriver = $this->createMockForIntersectionOfInterfaces([WebDriver::class, JavaScriptExecutor::class]);
         $mockDriver
             ->expects($this->once())
             ->method('findElement')
             ->willReturn($this->createMockWebDriverElement('html'));
 
+        /**
+         * @var WebDriver $mockDriver
+         */
         $mockContext = new EspressoContext(
             driver: $mockDriver,
             options: new EspressoOptions,

@@ -41,6 +41,9 @@ class FocusActionFeatureTest extends BaseFeatureTestCase
             ->check(matches(isFocused()));
     }
 
+    /**
+     * @return array<string, array{id: string}>
+     */
     public static function elementIdProvider(): array
     {
         return [

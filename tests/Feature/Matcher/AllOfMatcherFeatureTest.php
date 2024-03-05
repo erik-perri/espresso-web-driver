@@ -8,6 +8,7 @@ namespace EspressoWebDriver\Tests\Feature\Matcher;
 
 use EspressoWebDriver\Core\EspressoOptions;
 use EspressoWebDriver\Matcher\AllOfMatcher;
+use EspressoWebDriver\Matcher\MatcherInterface;
 use EspressoWebDriver\Tests\Feature\BaseFeatureTestCase;
 use EspressoWebDriver\Tests\Utilities\PhpunitReporter;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -54,9 +55,14 @@ class AllOfMatcherFeatureTest extends BaseFeatureTestCase
 
         $espresso = usingDriver($driver, $options);
 
+        /**
+         * @var MatcherInterface[] $mockMatchers
+         */
+        $mockMatchers = [];
+
         // Act and Assert
         $espresso
-            ->onElement(allOf())
+            ->onElement(allOf(...$mockMatchers))
             ->check(doesNotExist());
     }
 

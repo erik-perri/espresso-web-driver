@@ -15,7 +15,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 class TextNormalizerTest extends BaseUnitTestCase
 {
     #[DataProvider('textProvider')]
-    public function testNormalizeSpace(string $input, string $expected)
+    public function testNormalizeSpace(string $input, string $expected): void
     {
         // Arrange
         $normalizer = new TextNormalizer;
@@ -27,6 +27,9 @@ class TextNormalizerTest extends BaseUnitTestCase
         $this->assertSame($expected, $result);
     }
 
+    /**
+     * @return array<string, array{input: string, expected: string}>
+     */
     public static function textProvider(): array
     {
         return [

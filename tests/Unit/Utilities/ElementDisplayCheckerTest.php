@@ -16,7 +16,6 @@ use Facebook\WebDriver\WebDriverDimension;
 use Facebook\WebDriver\WebDriverPoint;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\MockObject\MockObject;
 
 #[CoversClass(ElementDisplayChecker::class)]
 #[CoversClass(EspressoWebDriverException::class)]
@@ -44,9 +43,6 @@ class ElementDisplayCheckerTest extends BaseUnitTestCase
     public function testReturnsFalseWhenElementClaimsHidden(): void
     {
         // Arrange
-        /**
-         * @var MockObject|WebDriver|JavaScriptExecutor $mockDriver
-         */
         $mockDriver = $this->createMockForIntersectionOfInterfaces([WebDriver::class, JavaScriptExecutor::class]);
         $mockDriver
             ->method('executeScript')
@@ -68,6 +64,9 @@ class ElementDisplayCheckerTest extends BaseUnitTestCase
             ->method('getSize')
             ->willReturn(new WebDriverDimension(10, 10));
 
+        /**
+         * @var WebDriver $mockDriver
+         */
         $checker = new ElementDisplayChecker($mockDriver);
 
         // Act
@@ -86,9 +85,6 @@ class ElementDisplayCheckerTest extends BaseUnitTestCase
         bool $expected,
     ): void {
         // Arrange
-        /**
-         * @var MockObject|WebDriver|JavaScriptExecutor $mockDriver
-         */
         $mockDriver = $this->createMockForIntersectionOfInterfaces([WebDriver::class, JavaScriptExecutor::class]);
         $mockDriver
             ->method('executeScript')
@@ -110,6 +106,9 @@ class ElementDisplayCheckerTest extends BaseUnitTestCase
             ->method('getSize')
             ->willReturn($elementSize);
 
+        /**
+         * @var WebDriver $mockDriver
+         */
         $checker = new ElementDisplayChecker($mockDriver);
 
         // Act
@@ -125,6 +124,15 @@ class ElementDisplayCheckerTest extends BaseUnitTestCase
         );
     }
 
+    /**
+     * @return array<string, array{
+     *     scrollPosition: WebDriverPoint,
+     *     viewportSize: WebDriverDimension,
+     *     elementLocation: WebDriverPoint,
+     *     elementSize: WebDriverDimension,
+     *     expected: bool,
+     * }>
+     */
     public static function boundsProvider(): array
     {
         return [

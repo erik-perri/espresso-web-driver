@@ -14,6 +14,7 @@ trait MocksWebDriverElement
 
     /**
      * @param  array<int, WebDriverElement&MockObject>  ...$children
+     * @param  array<string, mixed>  $attributes
      *
      * @throws Exception
      */

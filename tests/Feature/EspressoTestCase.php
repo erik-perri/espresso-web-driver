@@ -66,6 +66,12 @@ abstract class EspressoTestCase extends TestCase
 
         touch($lockFileName);
         $lockFile = fopen($lockFileName, 'r');
+        if (!$lockFile) {
+            throw new \RuntimeException(sprintf(
+                'Could not create lock file "%1$s" to prevent multiple test instances from running at once.',
+                $lockFileName,
+            ));
+        }
 
         if (!flock($lockFile, LOCK_EX | LOCK_NB)) {
             flock($lockFile, LOCK_SH);

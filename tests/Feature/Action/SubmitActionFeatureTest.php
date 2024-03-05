@@ -45,6 +45,9 @@ class SubmitActionFeatureTest extends BaseFeatureTestCase
             ->check(matches(withText('Submitted')));
     }
 
+    /**
+     * @return array<string, array{id: string}>
+     */
     public static function elementIdProvider(): array
     {
         return [
