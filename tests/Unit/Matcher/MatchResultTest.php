@@ -31,12 +31,11 @@ class MatchResultTest extends TestCase
         $elementTwo = $this->createMockWebDriverElement('div');
 
         $result = new MatchResult(
-            $matcher,
-            [
+            matcher: $matcher,
+            result: [
                 $elementOne,
                 $elementTwo,
             ],
-            false,
         );
 
         // Act
@@ -59,9 +58,8 @@ class MatchResultTest extends TestCase
         $element = $this->createMockWebDriverElement('mock');
 
         $result = new MatchResult(
-            $matcher,
-            [$element],
-            false,
+            matcher: $matcher,
+            result: [$element],
         );
 
         // Act
@@ -80,8 +78,8 @@ class MatchResultTest extends TestCase
             ->willReturn('matcher()');
 
         $result = new MatchResult(
-            $matcher,
-            [],
+            matcher: $matcher,
+            result: [],
         );
 
         // Act
@@ -107,12 +105,11 @@ class MatchResultTest extends TestCase
         $elementTwo = $this->createMockWebDriverElement('mock');
 
         $result = new MatchResult(
-            $matcher,
-            [
+            matcher: $matcher,
+            result: [
                 $elementOne,
                 $elementTwo,
             ],
-            false,
         );
 
         // Act
@@ -135,9 +132,8 @@ class MatchResultTest extends TestCase
             ->willReturn('matcher()');
 
         $result = new MatchResult(
-            $matcher,
-            [],
-            false,
+            matcher: $matcher,
+            result: [],
         );
 
         // Act
@@ -155,9 +151,8 @@ class MatchResultTest extends TestCase
         $mockElement = $this->createMockWebDriverElement('mock');
 
         $result = new MatchResult(
-            $mockMatcher,
-            [$mockElement],
-            false,
+            matcher: $mockMatcher,
+            result: [$mockElement],
         );
 
         // Act

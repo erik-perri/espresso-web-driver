@@ -27,7 +27,7 @@ class RetryingMatchProcessor implements MatchProcessorInterface
         while (microtime(true) < $endTime) {
             $lastResult = $matcher->match($previous, $context);
 
-            if ($lastResult->count() || $lastResult->isExpectingEmpty) {
+            if ($lastResult->count()) {
                 break;
             }
 

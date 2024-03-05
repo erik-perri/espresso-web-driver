@@ -36,13 +36,7 @@ final readonly class MatchesAssertion implements AssertionInterface
             )),
         );
 
-        $hasMatch = count($filteredToResult) > 0;
-
-        if ($matches->isExpectingEmpty) {
-            return !$hasMatch;
-        }
-
-        return $hasMatch;
+        return count($filteredToResult) > 0;
     }
 
     public function __toString(): string

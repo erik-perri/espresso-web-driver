@@ -99,30 +99,4 @@ class MatchesAssertionTest extends BaseUnitTestCase
         // Assert
         $this->assertSame('matches(mock="test")', $result);
     }
-
-    public function testReturnsTrueInsteadOfThrowingIfThereAreNoElementsButItIsExpected(): void
-    {
-        // Arrange
-        $mockMatcher = $this->createMock(MatcherInterface::class);
-        $mockMatcher
-            ->method('match')
-            ->willReturn(new MatchResult(matcher: $mockMatcher, result: [], isExpectingEmpty: true));
-
-        $mockOptions = new EspressoOptions();
-
-        $mockContext = new EspressoContext(
-            driver: $this->createMock(WebDriver::class),
-            options: $mockOptions,
-        );
-
-        $assertion = new MatchesAssertion($mockMatcher);
-
-        $mockResult = new MatchResult(matcher: $mockMatcher, result: []);
-
-        // Act
-        $result = $assertion->assert($mockResult, $mockContext);
-
-        // Assert
-        $this->assertTrue($result);
-    }
 }
