@@ -22,18 +22,21 @@ class RetryingMatchProcessor implements MatchProcessorInterface
         $startTime = (float) microtime(true);
         $endTime = $startTime + $this->waitTimeoutInSeconds;
         $waitIntervalInMicroseconds = $this->waitIntervalInMilliseconds * 1000;
-        $lastResult = new MatchResult(matcher: $matcher, result: []);
+        $lastResult = [];
 
         while (microtime(true) < $endTime) {
             $lastResult = $matcher->match($previous, $context);
 
-            if ($lastResult->count()) {
+            if (!empty($lastResult)) {
                 break;
             }
 
             usleep($waitIntervalInMicroseconds);
         }
 
-        return $lastResult;
+        return new MatchResult(
+            matcher: $matcher,
+            result: $lastResult,
+        );
     }
 }

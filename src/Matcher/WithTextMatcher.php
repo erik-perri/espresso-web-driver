@@ -15,14 +15,11 @@ final readonly class WithTextMatcher implements MatcherInterface
         //
     }
 
-    public function match(MatchResult $container, EspressoContext $context): MatchResult
+    public function match(MatchResult $container, EspressoContext $context): array
     {
-        return new MatchResult(
-            matcher: $this,
-            result: $context->isNegated
-                ? $this->matchElementsWithoutText($container->single())
-                : $this->matchElementsWithText($container->single()),
-        );
+        return $context->isNegated
+            ? $this->matchElementsWithoutText($container->single())
+            : $this->matchElementsWithText($container->single());
     }
 
     /**

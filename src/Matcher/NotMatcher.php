@@ -13,7 +13,7 @@ final readonly class NotMatcher implements MatcherInterface
         //
     }
 
-    public function match(MatchResult $container, EspressoContext $context): MatchResult
+    public function match(MatchResult $container, EspressoContext $context): array
     {
         return $this->matcher->match($container, new EspressoContext(
             driver: $context->driver,

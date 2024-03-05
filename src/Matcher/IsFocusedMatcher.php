@@ -17,14 +17,11 @@ final readonly class IsFocusedMatcher implements MatcherInterface
     /**
      * @throws AmbiguousElementException|NoMatchingElementException|NoParentException
      */
-    public function match(MatchResult $container, EspressoContext $context): MatchResult
+    public function match(MatchResult $container, EspressoContext $context): array
     {
-        return new MatchResult(
-            matcher: $this,
-            result: $context->isNegated
-                ? $this->matchUnfocusedElements($container->single(), $context)
-                : $this->matchFocusedElements($container->single(), $context),
-        );
+        return $context->isNegated
+            ? $this->matchUnfocusedElements($container->single(), $context)
+            : $this->matchFocusedElements($container->single(), $context);
     }
 
     /**

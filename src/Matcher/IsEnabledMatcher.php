@@ -5,24 +5,16 @@ declare(strict_types=1);
 namespace EspressoWebDriver\Matcher;
 
 use EspressoWebDriver\Core\EspressoContext;
-use EspressoWebDriver\Exception\AmbiguousElementException;
-use EspressoWebDriver\Exception\NoMatchingElementException;
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverElement;
 
 final readonly class IsEnabledMatcher implements MatcherInterface
 {
-    /**
-     * @throws AmbiguousElementException|NoMatchingElementException
-     */
-    public function match(MatchResult $container, EspressoContext $context): MatchResult
+    public function match(MatchResult $container, EspressoContext $context): array
     {
-        return new MatchResult(
-            matcher: $this,
-            result: $context->isNegated
-                ? $this->matchDisabledElements($container->single())
-                : $this->matchEnabledElements($container->single()),
-        );
+        return $context->isNegated
+            ? $this->matchDisabledElements($container->single())
+            : $this->matchEnabledElements($container->single());
     }
 
     /**

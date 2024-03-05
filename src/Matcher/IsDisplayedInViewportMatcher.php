@@ -17,14 +17,11 @@ final readonly class IsDisplayedInViewportMatcher implements MatcherInterface
     /**
      * @throws AmbiguousElementException|EspressoWebDriverException|NoMatchingElementException
      */
-    public function match(MatchResult $container, EspressoContext $context): MatchResult
+    public function match(MatchResult $container, EspressoContext $context): array
     {
-        return new MatchResult(
-            matcher: $this,
-            result: $context->isNegated
-                ? $this->matchOffScreenElements($container->single(), $context)
-                : $this->matchOnScreenElements($container->single(), $context),
-        );
+        return $context->isNegated
+            ? $this->matchOffScreenElements($container->single(), $context)
+            : $this->matchOnScreenElements($container->single(), $context);
     }
 
     /**

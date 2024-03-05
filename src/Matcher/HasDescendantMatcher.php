@@ -20,14 +20,11 @@ final readonly class HasDescendantMatcher implements MatcherInterface
         //
     }
 
-    public function match(MatchResult $container, EspressoContext $context): MatchResult
+    public function match(MatchResult $container, EspressoContext $context): array
     {
-        return new MatchResult(
-            matcher: $this,
-            result: $context->isNegated
-                ? $this->matchElementsWithoutMatch($container, $context)
-                : $this->matchElementsWithMatch($container, $context),
-        );
+        return $context->isNegated
+            ? $this->matchElementsWithoutMatch($container, $context)
+            : $this->matchElementsWithMatch($container, $context);
     }
 
     /**
@@ -41,7 +38,7 @@ final readonly class HasDescendantMatcher implements MatcherInterface
 
         $elements = [];
 
-        foreach ($descendantMatch->all() as $descendant) {
+        foreach ($descendantMatch as $descendant) {
             /** @var WebDriverElement[] $ancestors */
             $ancestors = array_reverse($descendant->findElements(WebDriverBy::xpath('./ancestor::*')));
 

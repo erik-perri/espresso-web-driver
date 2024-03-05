@@ -24,17 +24,11 @@ final readonly class AllOfMatcher implements MatcherInterface
         $this->matchers = $matchers;
     }
 
-    /**
-     * @throws AmbiguousElementException|NoMatchingElementException
-     */
-    public function match(MatchResult $container, EspressoContext $context): MatchResult
+    public function match(MatchResult $container, EspressoContext $context): array
     {
-        return new MatchResult(
-            matcher: $this,
-            result: $context->isNegated
-                ? $this->matchElementsWithoutMatch($container, $context)
-                : $this->matchElementsWithMatch($container, $context),
-        );
+        return $context->isNegated
+            ? $this->matchElementsWithoutMatch($container, $context)
+            : $this->matchElementsWithMatch($container, $context);
     }
 
     /**
@@ -50,16 +44,14 @@ final readonly class AllOfMatcher implements MatcherInterface
             $resultsByMatcher[] = $matcher->match($container, $context);
         }
 
-        $firstResult = array_shift($resultsByMatcher);
+        $commonResults = array_shift($resultsByMatcher);
 
-        if ($firstResult === null) {
+        if ($commonResults === null) {
             return [];
         }
 
-        $commonResults = $firstResult->all();
-
         foreach ($resultsByMatcher as $result) {
-            $commonResults = array_uintersect($commonResults, $result->all(), $this->compareElements(...));
+            $commonResults = array_uintersect($commonResults, $result, $this->compareElements(...));
         }
 
         $commonResultsById = [];

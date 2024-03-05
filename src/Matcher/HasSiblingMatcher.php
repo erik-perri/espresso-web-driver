@@ -20,17 +20,11 @@ final readonly class HasSiblingMatcher implements MatcherInterface
         //
     }
 
-    /**
-     * @throws AmbiguousElementException|NoMatchingElementException
-     */
-    public function match(MatchResult $container, EspressoContext $context): MatchResult
+    public function match(MatchResult $container, EspressoContext $context): array
     {
-        return new MatchResult(
-            matcher: $this,
-            result: $context->isNegated
-                ? $this->matchElementsWithoutMatch($container, $context)
-                : $this->matchElementsWithMatch($container, $context),
-        );
+        return $context->isNegated
+            ? $this->matchElementsWithoutMatch($container, $context)
+            : $this->matchElementsWithMatch($container, $context);
     }
 
     /**
@@ -44,7 +38,7 @@ final readonly class HasSiblingMatcher implements MatcherInterface
 
         $elements = [];
 
-        foreach ($siblingResult->all() as $sibling) {
+        foreach ($siblingResult as $sibling) {
             $adjacentChildren = $sibling->findElements(
                 WebDriverBy::xpath('following-sibling::* | preceding-sibling::*'),
             );

@@ -29,11 +29,11 @@ class MatchesAssertionTest extends BaseUnitTestCase
         $mockMatcher = $this->createMock(MatcherInterface::class);
         $mockMatcher
             ->method('match')
-            ->willReturn(new MatchResult($mockMatcher, [
+            ->willReturn([
                 $this->createMockWebDriverElement('div'),
                 $mockContainer,
                 $this->createMockWebDriverElement('div'),
-            ]));
+            ]);
 
         $mockOptions = new EspressoOptions();
 
@@ -61,9 +61,9 @@ class MatchesAssertionTest extends BaseUnitTestCase
         $mockMatcher = $this->createMock(MatcherInterface::class);
         $mockMatcher
             ->method('match')
-            ->willReturn(new MatchResult($mockMatcher, [
+            ->willReturn([
                 $this->createMockWebDriverElement('div'),
-            ]));
+            ]);
 
         $mockOptions = new EspressoOptions();
 

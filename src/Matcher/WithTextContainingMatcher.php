@@ -18,14 +18,11 @@ final readonly class WithTextContainingMatcher implements MatcherInterface
         $this->normalizedText = (new TextNormalizer())->normalize($text);
     }
 
-    public function match(MatchResult $container, EspressoContext $context): MatchResult
+    public function match(MatchResult $container, EspressoContext $context): array
     {
-        return new MatchResult(
-            matcher: $this,
-            result: $context->isNegated
-                ? $this->matchElementsNotContainingText($container->single())
-                : $this->matchElementsContainingText($container->single()),
-        );
+        return $context->isNegated
+            ? $this->matchElementsNotContainingText($container->single())
+            : $this->matchElementsContainingText($container->single());
     }
 
     /**

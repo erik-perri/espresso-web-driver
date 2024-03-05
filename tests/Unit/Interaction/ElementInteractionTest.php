@@ -15,7 +15,6 @@ use EspressoWebDriver\Exception\NoRootElementException;
 use EspressoWebDriver\Exception\PerformException;
 use EspressoWebDriver\Interaction\ElementInteraction;
 use EspressoWebDriver\Matcher\MatcherInterface;
-use EspressoWebDriver\Matcher\MatchResult;
 use EspressoWebDriver\Reporter\AssertionReporterInterface;
 use EspressoWebDriver\Tests\Traits\MocksWebDriverElement;
 use EspressoWebDriver\Tests\Unit\BaseUnitTestCase;
@@ -68,7 +67,7 @@ class ElementInteractionTest extends BaseUnitTestCase
             ->willReturn('mock');
         $mockElementMatcher->expects($this->once())
             ->method('match')
-            ->willReturn(new MatchResult($mockElementMatcher, [$mockElement]));
+            ->willReturn([$mockElement]);
 
         $mockAssertion = $this->createMock(AssertionInterface::class);
         $mockAssertion->expects($this->once())
@@ -118,7 +117,7 @@ class ElementInteractionTest extends BaseUnitTestCase
             ->willReturn('mock');
         $mockElementMatcher->expects($this->once())
             ->method('match')
-            ->willReturn(new MatchResult($mockElementMatcher, []));
+            ->willReturn([]);
 
         $interaction = new ElementInteraction($mockElementMatcher, $mockContext, null);
 
@@ -217,7 +216,7 @@ class ElementInteractionTest extends BaseUnitTestCase
         $mockElementMatcher
             ->expects($this->once())
             ->method('match')
-            ->willReturn(new MatchResult($mockElementMatcher, [$mockElementOne, $mockElementTwo]));
+            ->willReturn([$mockElementOne, $mockElementTwo]);
 
         $interaction = new ElementInteraction($mockElementMatcher, $mockContext, null);
 
@@ -249,7 +248,7 @@ class ElementInteractionTest extends BaseUnitTestCase
         $mockElementMatcher
             ->expects($this->once())
             ->method('match')
-            ->willReturn(new MatchResult($mockElementMatcher, [$this->createMockWebDriverElement('mock')]));
+            ->willReturn([$this->createMockWebDriverElement('mock')]);
 
         $interaction = new ElementInteraction($mockElementMatcher, $mockContext, null);
 
@@ -302,7 +301,7 @@ class ElementInteractionTest extends BaseUnitTestCase
         $mockMatcher
             ->expects($this->once())
             ->method('match')
-            ->willReturn(new MatchResult($mockMatcher, [$mockElement]));
+            ->willReturn([$mockElement]);
 
         $interaction = new ElementInteraction($mockMatcher, $mockContext, null);
 
@@ -326,7 +325,7 @@ class ElementInteractionTest extends BaseUnitTestCase
             ->willReturn('mock');
         $mockMatcher->expects($this->once())
             ->method('match')
-            ->willReturn(new MatchResult($mockMatcher, []));
+            ->willReturn([]);
 
         $mockAction = $this->createMock(ActionInterface::class);
         $mockAction->expects($this->once())
@@ -373,7 +372,7 @@ class ElementInteractionTest extends BaseUnitTestCase
         $mockElementMatcher
             ->expects($this->once())
             ->method('match')
-            ->willReturn(new MatchResult($mockElementMatcher, [$this->createMockWebDriverElement('mock')]));
+            ->willReturn([$this->createMockWebDriverElement('mock')]);
 
         $interaction = new ElementInteraction($mockElementMatcher, $mockContext, null);
 
@@ -410,13 +409,13 @@ class ElementInteractionTest extends BaseUnitTestCase
         $mockContainerMatcher
             ->expects($this->once())
             ->method('match')
-            ->willReturn(new MatchResult($mockContainerMatcher, [$this->createMockWebDriverElement('div')]));
+            ->willReturn([$this->createMockWebDriverElement('div')]);
 
         $mockElementMatcher = $this->createMock(MatcherInterface::class);
         $mockElementMatcher
             ->expects($this->once())
             ->method('match')
-            ->willReturn(new MatchResult($mockElementMatcher, [$this->createMockWebDriverElement('mock')]));
+            ->willReturn([$this->createMockWebDriverElement('mock')]);
 
         $interaction = new ElementInteraction($mockElementMatcher, $mockContext, $mockContainerMatcher);
 

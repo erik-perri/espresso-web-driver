@@ -19,14 +19,11 @@ final readonly class WithLabelMatcher implements MatcherInterface
         $this->normalizedText = (new TextNormalizer())->normalize($text);
     }
 
-    public function match(MatchResult $container, EspressoContext $context): MatchResult
+    public function match(MatchResult $container, EspressoContext $context): array
     {
-        return new MatchResult(
-            matcher: $this,
-            result: $context->isNegated
-                ? $this->matchElementsWithoutLabel($container->single())
-                : $this->matchElementsWithLabel($container->single()),
-        );
+        return $context->isNegated
+            ? $this->matchElementsWithoutLabel($container->single())
+            : $this->matchElementsWithLabel($container->single());
     }
 
     /**

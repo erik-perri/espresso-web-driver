@@ -12,6 +12,9 @@ class MatchProcessor implements MatchProcessorInterface
 {
     public function process(MatchResult $previous, MatcherInterface $matcher, EspressoContext $context): MatchResult
     {
-        return $matcher->match($previous, $context);
+        return new MatchResult(
+            matcher: $matcher,
+            result: $matcher->match($previous, $context),
+        );
     }
 }
