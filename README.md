@@ -42,6 +42,7 @@ $containedEspresso->onElement(withText('Edit'))
     * [hasChild(`MatcherInterface`)](#haschildmatcherinterface)
     * [hasDescendant(`MatcherInterface`)](#hasdescendantmatcherinterface)
     * [hasSibling(`MatcherInterface`)](#hassiblingmatcherinterface)
+    * [hasParent(`MatcherInterface`)](#hasparentmatcherinterface)
     * [isChecked()](#ischecked)
     * [isDisplayed()](#isdisplayed)
     * [isDisplayedInViewport()](#isdisplayedinviewport)
@@ -116,6 +117,10 @@ Matches elements that have a descendant that matches the given matcher.
 ### hasSibling(`MatcherInterface`)
 
 Matches elements that have a sibling that matches the given matcher.
+
+### hasParent(`MatcherInterface`)
+
+Matches elements that have a parent that matches the given matcher.
 
 ### isChecked()
 
