@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace EspressoWebDriver\Matcher;
 
 use EspressoWebDriver\Core\EspressoContext;
+use EspressoWebDriver\Core\MatchResult;
 use Facebook\WebDriver\WebDriverElement;
 
 final readonly class AllOfMatcher implements MatcherInterface

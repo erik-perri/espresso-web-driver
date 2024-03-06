@@ -2,10 +2,11 @@
 
 declare(strict_types=1);
 
-namespace EspressoWebDriver\Matcher;
+namespace EspressoWebDriver\Core;
 
 use EspressoWebDriver\Exception\AmbiguousElementException;
 use EspressoWebDriver\Exception\NoMatchingElementException;
+use EspressoWebDriver\Matcher\MatcherInterface;
 use EspressoWebDriver\Utilities\ElementLoggerInterface;
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverElement;

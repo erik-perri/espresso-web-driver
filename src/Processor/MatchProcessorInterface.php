@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace EspressoWebDriver\Processor;
 
 use EspressoWebDriver\Core\EspressoContext;
+use EspressoWebDriver\Core\MatchResult;
 use EspressoWebDriver\Exception\AmbiguousElementException;
 use EspressoWebDriver\Exception\NoMatchingElementException;
 use EspressoWebDriver\Matcher\MatcherInterface;
-use EspressoWebDriver\Matcher\MatchResult;
 
 interface MatchProcessorInterface
 {

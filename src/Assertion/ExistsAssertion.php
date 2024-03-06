@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace EspressoWebDriver\Assertion;
 
 use EspressoWebDriver\Core\EspressoContext;
-use EspressoWebDriver\Matcher\MatchResult;
+use EspressoWebDriver\Core\MatchResult;
 
 final readonly class ExistsAssertion implements AssertionInterface
 {

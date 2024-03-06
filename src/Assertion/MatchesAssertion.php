@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace EspressoWebDriver\Assertion;
 
 use EspressoWebDriver\Core\EspressoContext;
+use EspressoWebDriver\Core\MatchResult;
 use EspressoWebDriver\Matcher\MatcherInterface;
-use EspressoWebDriver\Matcher\MatchResult;
 
 final readonly class MatchesAssertion implements AssertionInterface
 {

@@ -4,12 +4,12 @@
 
 declare(strict_types=1);
 
-namespace EspressoWebDriver\Tests\Unit\Matcher;
+namespace EspressoWebDriver\Tests\Unit\Core;
 
+use EspressoWebDriver\Core\MatchResult;
 use EspressoWebDriver\Exception\AmbiguousElementException;
 use EspressoWebDriver\Exception\NoMatchingElementException;
 use EspressoWebDriver\Matcher\MatcherInterface;
-use EspressoWebDriver\Matcher\MatchResult;
 use EspressoWebDriver\Tests\Traits\MocksWebDriverElement;
 use EspressoWebDriver\Utilities\ElementPathLogger;
 use Facebook\WebDriver\WebDriverBy;

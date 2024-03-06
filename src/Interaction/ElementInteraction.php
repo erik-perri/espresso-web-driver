@@ -7,13 +7,13 @@ namespace EspressoWebDriver\Interaction;
 use EspressoWebDriver\Action\ActionInterface;
 use EspressoWebDriver\Assertion\AssertionInterface;
 use EspressoWebDriver\Core\EspressoContext;
+use EspressoWebDriver\Core\MatchResult;
 use EspressoWebDriver\Exception\AmbiguousElementException;
 use EspressoWebDriver\Exception\AssertionFailedException;
 use EspressoWebDriver\Exception\NoMatchingElementException;
 use EspressoWebDriver\Exception\NoRootElementException;
 use EspressoWebDriver\Exception\PerformException;
 use EspressoWebDriver\Matcher\MatcherInterface;
-use EspressoWebDriver\Matcher\MatchResult;
 use Facebook\WebDriver\Exception\NoSuchElementException;
 use Facebook\WebDriver\WebDriverBy;
 
