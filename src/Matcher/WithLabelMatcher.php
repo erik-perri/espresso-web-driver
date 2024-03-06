@@ -21,10 +21,9 @@ final readonly class WithLabelMatcher implements MatcherInterface, NegativeMatch
 
     public function match(MatchResult $container, EspressoContext $context): array
     {
-        $containerElement = $container->single();
         $elements = [];
 
-        $labels = $containerElement->findElements(
+        $labels = $container->findElements(
             WebDriverBy::xpath(sprintf(
                 'descendant-or-self::label[normalize-space(text())="%s"]',
                 $this->normalizedText,
@@ -37,7 +36,13 @@ final readonly class WithLabelMatcher implements MatcherInterface, NegativeMatch
             // If the label has a "for" attribute we can use it to find the input, otherwise we need to look for an
             // input child.
             if ($for !== null) {
-                $elements[] = $this->matchElementsWithId($containerElement, $for);
+                $matchingElements = [];
+
+                foreach ($container->all() as $containerElement) {
+                    $matchingElements[] = $this->matchElementsWithId($containerElement, $for);
+                }
+
+                $elements[] = array_merge(...$matchingElements);
             } else {
                 $elements[] = $this->matchFirstFormElement($label);
             }
@@ -50,7 +55,7 @@ final readonly class WithLabelMatcher implements MatcherInterface, NegativeMatch
     {
         $labelledElements = $this->match($container, $context);
 
-        $allElements = $container->single()->findElements(
+        $allElements = $container->findElements(
             WebDriverBy::xpath(
                 'descendant::*[(self::input and not(@type="hidden")) or self::select or self::textarea]',
             ),

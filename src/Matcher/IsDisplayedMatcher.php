@@ -11,15 +11,16 @@ final readonly class IsDisplayedMatcher implements MatcherInterface, NegativeMat
 {
     public function match(MatchResult $container, EspressoContext $context): array
     {
-        $containerElement = $container->single();
         $elements = [];
 
-        if ($containerElement->isDisplayed()) {
-            $elements[] = $containerElement;
+        foreach ($container->all() as $containerElement) {
+            if ($containerElement->isDisplayed()) {
+                $elements[] = $containerElement;
+            }
         }
 
         // TODO This is probably a bad idea on dom heavy pages
-        $potentialElements = $containerElement->findElements(WebDriverBy::cssSelector('*'));
+        $potentialElements = $container->findElements(WebDriverBy::cssSelector('*'));
 
         foreach ($potentialElements as $element) {
             if ($element->isDisplayed()) {
@@ -32,15 +33,16 @@ final readonly class IsDisplayedMatcher implements MatcherInterface, NegativeMat
 
     public function matchNegative(MatchResult $container, EspressoContext $context): array
     {
-        $containerElement = $container->single();
         $elements = [];
 
-        if (!$containerElement->isDisplayed()) {
-            $elements[] = $containerElement;
+        foreach ($container->all() as $containerElement) {
+            if (!$containerElement->isDisplayed()) {
+                $elements[] = $containerElement;
+            }
         }
 
         // TODO This is probably a bad idea on dom heavy pages
-        $potentialElements = $containerElement->findElements(WebDriverBy::cssSelector('*'));
+        $potentialElements = $container->findElements(WebDriverBy::cssSelector('*'));
 
         foreach ($potentialElements as $element) {
             if (!$element->isDisplayed()) {

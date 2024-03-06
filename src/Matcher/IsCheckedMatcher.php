@@ -12,7 +12,7 @@ final readonly class IsCheckedMatcher implements MatcherInterface, NegativeMatch
 {
     public function match(MatchResult $container, EspressoContext $context): array
     {
-        $potentialElements = $container->single()->findElements(
+        $potentialElements = $container->findElements(
             WebDriverBy::xpath('descendant-or-self::*[self::input[@type="checkbox" or @type="radio"]]'),
         );
 
@@ -29,7 +29,7 @@ final readonly class IsCheckedMatcher implements MatcherInterface, NegativeMatch
 
     public function matchNegative(MatchResult $container, EspressoContext $context): array
     {
-        $potentialElements = $container->single()->findElements(
+        $potentialElements = $container->findElements(
             WebDriverBy::xpath('descendant-or-self::*[self::input[@type="checkbox" or @type="radio"]]'),
         );
 

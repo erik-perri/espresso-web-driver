@@ -7,7 +7,6 @@ namespace EspressoWebDriver\Assertion;
 use EspressoWebDriver\Core\EspressoContext;
 use EspressoWebDriver\Matcher\MatcherInterface;
 use EspressoWebDriver\Matcher\MatchResult;
-use Facebook\WebDriver\WebDriverElement;
 
 final readonly class MatchesAssertion implements AssertionInterface
 {
@@ -23,15 +22,15 @@ final readonly class MatchesAssertion implements AssertionInterface
             options: $context->options,
         ));
 
-        $filteredToResult = array_filter(
-            $matches->all(),
-            fn (WebDriverElement $match) => !empty(array_filter(
-                $container->all(),
-                fn (WebDriverElement $element) => $element->getID() === $match->getID(),
-            )),
-        );
+        $containerElement = $container->single();
 
-        return count($filteredToResult) > 0;
+        foreach ($matches->all() as $match) {
+            if ($containerElement->getID() === $match->getID()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public function __toString(): string

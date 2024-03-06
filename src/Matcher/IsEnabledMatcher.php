@@ -11,7 +11,7 @@ final readonly class IsEnabledMatcher implements MatcherInterface, NegativeMatch
 {
     public function match(MatchResult $container, EspressoContext $context): array
     {
-        $allElements = $container->single()->findElements(
+        $allElements = $container->findElements(
             WebDriverBy::xpath(
                 'descendant-or-self::*['
                 .'not(@disabled) and '
@@ -38,13 +38,11 @@ final readonly class IsEnabledMatcher implements MatcherInterface, NegativeMatch
 
     public function matchNegative(MatchResult $container, EspressoContext $context): array
     {
-        $containerElement = $container->single();
-
-        $disabledElements = $containerElement->findElements(
+        $disabledElements = $container->findElements(
             WebDriverBy::xpath('descendant-or-self::*[@disabled]'),
         );
 
-        $descendantsOfDisabledFieldSets = $containerElement->findElements(
+        $descendantsOfDisabledFieldSets = $container->findElements(
             WebDriverBy::xpath('descendant-or-self::fieldset[@disabled]//*'),
         );
 

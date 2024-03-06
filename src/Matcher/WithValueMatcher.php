@@ -16,35 +16,37 @@ final readonly class WithValueMatcher implements MatcherInterface, NegativeMatch
 
     public function match(MatchResult $container, EspressoContext $context): array
     {
-        $containerElement = $container->single();
         $elements = [];
 
-        if ($containerElement->getAttribute('value') === $this->value) {
-            $elements[] = $containerElement;
+        foreach ($container->all() as $containerElement) {
+            if ($containerElement->getAttribute('value') === $this->value) {
+                $elements[] = $containerElement;
+            }
         }
 
         $value = $this->cleanValueForCssSelector($this->value);
 
         return array_merge(
             $elements,
-            $containerElement->findElements(WebDriverBy::cssSelector(sprintf('[value="%1$s"]', $value))),
+            $container->findElements(WebDriverBy::cssSelector(sprintf('[value="%1$s"]', $value))),
         );
     }
 
     public function matchNegative(MatchResult $container, EspressoContext $context): array
     {
-        $containerElement = $container->single();
         $elements = [];
 
-        if ($containerElement->getAttribute('value') !== $this->value) {
-            $elements[] = $containerElement;
+        foreach ($container->all() as $containerElement) {
+            if ($containerElement->getAttribute('value') !== $this->value) {
+                $elements[] = $containerElement;
+            }
         }
 
         $value = $this->cleanValueForCssSelector($this->value);
 
         return array_merge(
             $elements,
-            $containerElement->findElements(WebDriverBy::cssSelector(sprintf(':not([value="%1$s"])', $value))),
+            $container->findElements(WebDriverBy::cssSelector(sprintf(':not([value="%1$s"])', $value))),
         );
     }
 

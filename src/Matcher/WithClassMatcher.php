@@ -16,7 +16,7 @@ final readonly class WithClassMatcher implements MatcherInterface, NegativeMatch
 
     public function match(MatchResult $container, EspressoContext $context): array
     {
-        return $container->single()->findElements(
+        return $container->findElements(
             WebDriverBy::xpath(sprintf(
                 'descendant-or-self::*[contains(concat(" ", normalize-space(@class), " "), " %1$s ")]',
                 $this->class,
@@ -26,7 +26,7 @@ final readonly class WithClassMatcher implements MatcherInterface, NegativeMatch
 
     public function matchNegative(MatchResult $container, EspressoContext $context): array
     {
-        return $container->single()->findElements(
+        return $container->findElements(
             WebDriverBy::xpath(sprintf(
                 'descendant-or-self::*[not(contains(concat(" ", normalize-space(@class), " "), " %1$s "))]',
                 $this->class,

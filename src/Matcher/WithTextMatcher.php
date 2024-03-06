@@ -16,14 +16,14 @@ final readonly class WithTextMatcher implements MatcherInterface, NegativeMatche
 
     public function match(MatchResult $container, EspressoContext $context): array
     {
-        return $container->single()->findElements(
+        return $container->findElements(
             WebDriverBy::xpath(sprintf('descendant-or-self::*[normalize-space(text())="%1$s"]', $this->text)),
         );
     }
 
     public function matchNegative(MatchResult $container, EspressoContext $context): array
     {
-        return $container->single()->findElements(
+        return $container->findElements(
             WebDriverBy::xpath(sprintf('descendant-or-self::*[not(normalize-space(text())="%1$s")]', $this->text)),
         );
     }

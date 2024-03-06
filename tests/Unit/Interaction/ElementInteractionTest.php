@@ -23,6 +23,7 @@ use Facebook\WebDriver\JavaScriptExecutor;
 use Facebook\WebDriver\WebDriver;
 use PHPUnit\Framework\Attributes\CoversClass;
 
+use function EspressoWebDriver\exists;
 use function EspressoWebDriver\isDisplayed;
 use function EspressoWebDriver\matches;
 
@@ -175,7 +176,7 @@ class ElementInteractionTest extends BaseUnitTestCase
     {
         // Expectations
         $this->expectException(AssertionFailedException::class);
-        $this->expectExceptionMessage('Failed to assert matches(isDisplayed), 2 elements found for mock');
+        $this->expectExceptionMessage('Failed to assert exists, 2 elements found for mock');
 
         // Arrange
         $reporter = $this->createMock(AssertionReporterInterface::class);
@@ -184,27 +185,16 @@ class ElementInteractionTest extends BaseUnitTestCase
             ->method('report')
             ->with(
                 false,
-                'Failed asserting that matches(isDisplayed) is true, '
+                'Failed asserting that exists is true, '
                 ."2 elements found for mock\n"
                 ."html/mock[1]\n"
                 .'html/mock[2]',
             );
 
-        $mockDriver = $this->createMock(WebDriver::class);
-        $mockDriver
-            ->expects($this->once())
-            ->method('findElement')
-            ->willReturn($this->createMockWebDriverElement('html'));
-
-        $mockContext = new EspressoContext(
-            driver: $mockDriver,
-            options: new EspressoOptions(assertionReporter: $reporter),
-        );
-
         $mockElementOne = $this->createMockWebDriverElement('mock');
         $mockElementTwo = $this->createMockWebDriverElement('mock');
 
-        $this->createMockWebDriverElement('html', children: [
+        $htmlElement = $this->createMockWebDriverElement('html', children: [
             $mockElementOne,
             $mockElementTwo,
         ]);
@@ -218,10 +208,21 @@ class ElementInteractionTest extends BaseUnitTestCase
             ->method('match')
             ->willReturn([$mockElementOne, $mockElementTwo]);
 
+        $mockDriver = $this->createMock(WebDriver::class);
+        $mockDriver
+            ->expects($this->once())
+            ->method('findElement')
+            ->willReturn($htmlElement);
+
+        $mockContext = new EspressoContext(
+            driver: $mockDriver,
+            options: new EspressoOptions(assertionReporter: $reporter),
+        );
+
         $interaction = new ElementInteraction($mockElementMatcher, $mockContext, null);
 
         // Act
-        $interaction->check(matches(isDisplayed()));
+        $interaction->check(exists());
 
         // Assert
         // No assertions, only expectations.

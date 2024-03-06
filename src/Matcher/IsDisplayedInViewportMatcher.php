@@ -18,18 +18,19 @@ final readonly class IsDisplayedInViewportMatcher implements MatcherInterface, N
      */
     public function match(MatchResult $container, EspressoContext $context): array
     {
-        $containerElement = $container->single();
         $elements = [];
 
         // TODO Move to a part of context for reuse of values? How would we know when to update?
         $checker = new ElementDisplayChecker($context->driver);
 
-        if ($checker->isDisplayed($containerElement)) {
-            $elements[] = $containerElement;
+        foreach ($container->all() as $containerElement) {
+            if ($checker->isDisplayed($containerElement)) {
+                $elements[] = $containerElement;
+            }
         }
 
         // TODO This is probably a bad idea on dom heavy pages
-        $potentialElements = $containerElement->findElements(WebDriverBy::cssSelector('*'));
+        $potentialElements = $container->findElements(WebDriverBy::cssSelector('*'));
 
         foreach ($potentialElements as $element) {
             if ($checker->isDisplayed($element)) {
@@ -45,18 +46,19 @@ final readonly class IsDisplayedInViewportMatcher implements MatcherInterface, N
      */
     public function matchNegative(MatchResult $container, EspressoContext $context): array
     {
-        $containerElement = $container->single();
         $elements = [];
 
         // TODO Move to a part of context for reuse of values? How would we know when to update?
         $checker = new ElementDisplayChecker($context->driver);
 
-        if (!$checker->isDisplayed($containerElement)) {
-            $elements[] = $containerElement;
+        foreach ($container->all() as $containerElement) {
+            if (!$checker->isDisplayed($containerElement)) {
+                $elements[] = $containerElement;
+            }
         }
 
         // TODO This is probably a bad idea on dom heavy pages
-        $potentialElements = $containerElement->findElements(WebDriverBy::cssSelector('*'));
+        $potentialElements = $container->findElements(WebDriverBy::cssSelector('*'));
 
         foreach ($potentialElements as $element) {
             if (!$checker->isDisplayed($element)) {
