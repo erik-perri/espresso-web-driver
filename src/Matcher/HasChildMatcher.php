@@ -6,7 +6,6 @@ namespace EspressoWebDriver\Matcher;
 
 use EspressoWebDriver\Core\EspressoContext;
 use Facebook\WebDriver\WebDriverBy;
-use Facebook\WebDriver\WebDriverElement;
 
 final readonly class HasChildMatcher implements MatcherInterface
 {
@@ -19,18 +18,13 @@ final readonly class HasChildMatcher implements MatcherInterface
     {
         $childMatch = $this->matcher->match($container, $context);
 
-        $elements = [];
+        $matchesByChild = [];
 
         foreach ($childMatch as $child) {
-            /** @var WebDriverElement[] $ancestors */
-            $ancestors = array_reverse($child->findElements(WebDriverBy::xpath('./parent::*')));
-
-            foreach ($ancestors as $ancestor) {
-                $elements[$ancestor->getID()] = $ancestor;
-            }
+            $matchesByChild[] = $child->findElements(WebDriverBy::xpath('./parent::*'));
         }
 
-        return $elements;
+        return array_merge(...$matchesByChild);
     }
 
     public function __toString(): string

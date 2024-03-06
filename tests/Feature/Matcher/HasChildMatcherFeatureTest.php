@@ -22,7 +22,7 @@ use function EspressoWebDriver\withClass;
 use function EspressoWebDriver\withText;
 
 #[CoversClass(HasChildMatcher::class)]
-#[CoversFunction('EspressoWebDriver\hasDescendant')]
+#[CoversFunction('EspressoWebDriver\hasChild')]
 class HasChildMatcherFeatureTest extends BaseFeatureTestCase
 {
     public function testFindsChildren(): void
