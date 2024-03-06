@@ -10,7 +10,7 @@ use Facebook\WebDriver\Exception\NoSuchElementException;
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverElement;
 
-final readonly class WithLabelMatcher implements MatcherInterface
+final readonly class WithLabelMatcher implements MatcherInterface, NegativeMatcherInterface
 {
     private string $normalizedText;
 
@@ -21,19 +21,10 @@ final readonly class WithLabelMatcher implements MatcherInterface
 
     public function match(MatchResult $container, EspressoContext $context): array
     {
-        return $context->isNegated
-            ? $this->matchElementsWithoutLabel($container->single())
-            : $this->matchElementsWithLabel($container->single());
-    }
-
-    /**
-     * @return WebDriverElement[]
-     */
-    private function matchElementsWithLabel(WebDriverElement $container): array
-    {
+        $containerElement = $container->single();
         $elements = [];
 
-        $labels = $container->findElements(
+        $labels = $containerElement->findElements(
             WebDriverBy::xpath(sprintf(
                 'descendant-or-self::label[normalize-space(text())="%s"]',
                 $this->normalizedText,
@@ -46,7 +37,7 @@ final readonly class WithLabelMatcher implements MatcherInterface
             // If the label has a "for" attribute we can use it to find the input, otherwise we need to look for an
             // input child.
             if ($for !== null) {
-                $elements[] = $this->matchElementsWithId($container, $for);
+                $elements[] = $this->matchElementsWithId($containerElement, $for);
             } else {
                 $elements[] = $this->matchFirstFormElement($label);
             }
@@ -55,14 +46,11 @@ final readonly class WithLabelMatcher implements MatcherInterface
         return array_merge(...$elements);
     }
 
-    /**
-     * @return WebDriverElement[]
-     */
-    private function matchElementsWithoutLabel(WebDriverElement $container): array
+    public function matchNegative(MatchResult $container, EspressoContext $context): array
     {
-        $labelledElements = $this->matchElementsWithLabel($container);
+        $labelledElements = $this->match($container, $context);
 
-        $allElements = $container->findElements(
+        $allElements = $container->single()->findElements(
             WebDriverBy::xpath(
                 'descendant::*[(self::input and not(@type="hidden")) or self::select or self::textarea]',
             ),

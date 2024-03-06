@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace EspressoWebDriver\Matcher;
 
 use EspressoWebDriver\Core\EspressoContext;
+use Facebook\WebDriver\WebDriverBy;
 
 final readonly class NotMatcher implements MatcherInterface
 {
@@ -15,11 +16,30 @@ final readonly class NotMatcher implements MatcherInterface
 
     public function match(MatchResult $container, EspressoContext $context): array
     {
-        return $this->matcher->match($container, new EspressoContext(
-            driver: $context->driver,
-            options: $context->options,
-            isNegated: true,
-        ));
+        if ($this->matcher instanceof NegativeMatcherInterface) {
+            return $this->matcher->matchNegative($container, $context);
+        }
+
+        $elementsMatching = [];
+
+        foreach ($this->matcher->match($container, $context) as $element) {
+            $elementsMatching[$element->getID()] = $element;
+        }
+
+        $elementsNotMatching = [];
+
+        foreach ($container->all() as $containerElement) {
+            // TODO This is probably a bad idea on dom heavy pages
+            $potentiallyNotMatching = $containerElement->findElements(WebDriverBy::cssSelector('*'));
+
+            foreach ($potentiallyNotMatching as $element) {
+                if (!isset($elementsMatching[$element->getID()])) {
+                    $elementsNotMatching[$element->getID()] = $element;
+                }
+            }
+        }
+
+        return $elementsNotMatching;
     }
 
     public function __toString(): string

@@ -6,9 +6,8 @@ namespace EspressoWebDriver\Matcher;
 
 use EspressoWebDriver\Core\EspressoContext;
 use Facebook\WebDriver\WebDriverBy;
-use Facebook\WebDriver\WebDriverElement;
 
-final readonly class WithValueMatcher implements MatcherInterface
+final readonly class WithValueMatcher implements MatcherInterface, NegativeMatcherInterface
 {
     public function __construct(private string $value)
     {
@@ -17,46 +16,35 @@ final readonly class WithValueMatcher implements MatcherInterface
 
     public function match(MatchResult $container, EspressoContext $context): array
     {
-        return $context->isNegated
-            ? $this->matchElementsWithoutValue($container->single())
-            : $this->matchElementsWithValue($container->single());
-    }
-
-    /**
-     * @return WebDriverElement[]
-     */
-    private function matchElementsWithValue(WebDriverElement $container): array
-    {
+        $containerElement = $container->single();
         $elements = [];
 
-        if ($container->getAttribute('value') === $this->value) {
-            $elements[] = $container;
+        if ($containerElement->getAttribute('value') === $this->value) {
+            $elements[] = $containerElement;
         }
 
         $value = $this->cleanValueForCssSelector($this->value);
 
         return array_merge(
             $elements,
-            $container->findElements(WebDriverBy::cssSelector(sprintf('[value="%1$s"]', $value))),
+            $containerElement->findElements(WebDriverBy::cssSelector(sprintf('[value="%1$s"]', $value))),
         );
     }
 
-    /**
-     * @return WebDriverElement[]
-     */
-    private function matchElementsWithoutValue(WebDriverElement $container): array
+    public function matchNegative(MatchResult $container, EspressoContext $context): array
     {
+        $containerElement = $container->single();
         $elements = [];
 
-        if ($container->getAttribute('value') !== $this->value) {
-            $elements[] = $container;
+        if ($containerElement->getAttribute('value') !== $this->value) {
+            $elements[] = $containerElement;
         }
 
         $value = $this->cleanValueForCssSelector($this->value);
 
         return array_merge(
             $elements,
-            $container->findElements(WebDriverBy::cssSelector(sprintf(':not([value="%1$s"])', $value))),
+            $containerElement->findElements(WebDriverBy::cssSelector(sprintf(':not([value="%1$s"])', $value))),
         );
     }
 

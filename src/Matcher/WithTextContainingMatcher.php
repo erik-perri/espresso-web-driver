@@ -7,9 +7,8 @@ namespace EspressoWebDriver\Matcher;
 use EspressoWebDriver\Core\EspressoContext;
 use EspressoWebDriver\Utilities\TextNormalizer;
 use Facebook\WebDriver\WebDriverBy;
-use Facebook\WebDriver\WebDriverElement;
 
-final readonly class WithTextContainingMatcher implements MatcherInterface
+final readonly class WithTextContainingMatcher implements MatcherInterface, NegativeMatcherInterface
 {
     private string $normalizedText;
 
@@ -20,19 +19,9 @@ final readonly class WithTextContainingMatcher implements MatcherInterface
 
     public function match(MatchResult $container, EspressoContext $context): array
     {
-        return $context->isNegated
-            ? $this->matchElementsNotContainingText($container->single())
-            : $this->matchElementsContainingText($container->single());
-    }
-
-    /**
-     * @return WebDriverElement[]
-     */
-    private function matchElementsContainingText(WebDriverElement $container): array
-    {
         // TODO Figure out a better path that works for all languages
         //      XPath's newer lower-case() or matches() are not supported
-        return $container->findElements(
+        return $container->single()->findElements(
             WebDriverBy::xpath(sprintf(
                 'descendant-or-self::*[contains(%1$s, "%2$s")]',
                 'translate(normalize-space(text()), "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "abcdefghijklmnopqrstuvwxyz")',
@@ -41,14 +30,11 @@ final readonly class WithTextContainingMatcher implements MatcherInterface
         );
     }
 
-    /**
-     * @return WebDriverElement[]
-     */
-    private function matchElementsNotContainingText(WebDriverElement $container): array
+    public function matchNegative(MatchResult $container, EspressoContext $context): array
     {
         // TODO Figure out a better path that works for all languages
         //      XPath's newer lower-case() or matches() are not supported
-        return $container->findElements(
+        return $container->single()->findElements(
             WebDriverBy::xpath(sprintf(
                 'descendant-or-self::*[not(contains(%1$s, "%2$s"))]',
                 'translate(normalize-space(text()), "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "abcdefghijklmnopqrstuvwxyz")',

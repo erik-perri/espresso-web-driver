@@ -5,15 +5,10 @@ declare(strict_types=1);
 namespace EspressoWebDriver\Matcher;
 
 use EspressoWebDriver\Core\EspressoContext;
-use EspressoWebDriver\Exception\AmbiguousElementException;
-use EspressoWebDriver\Exception\NoMatchingElementException;
-use EspressoWebDriver\Matcher\Traits\NegatesUsingPositiveMatch;
 use Facebook\WebDriver\WebDriverElement;
 
 final readonly class AllOfMatcher implements MatcherInterface
 {
-    use NegatesUsingPositiveMatch;
-
     /**
      * @var MatcherInterface[]
      */
@@ -25,18 +20,6 @@ final readonly class AllOfMatcher implements MatcherInterface
     }
 
     public function match(MatchResult $container, EspressoContext $context): array
-    {
-        return $context->isNegated
-            ? $this->matchElementsWithoutMatch($container, $context)
-            : $this->matchElementsWithMatch($container, $context);
-    }
-
-    /**
-     * @return array<string, WebDriverElement>
-     *
-     * @throws AmbiguousElementException|NoMatchingElementException
-     */
-    private function matchElementsWithMatch(MatchResult $container, EspressoContext $context): array
     {
         $resultsByMatcher = [];
 

@@ -6,9 +6,8 @@ namespace EspressoWebDriver\Matcher;
 
 use EspressoWebDriver\Core\EspressoContext;
 use Facebook\WebDriver\WebDriverBy;
-use Facebook\WebDriver\WebDriverElement;
 
-final readonly class WithIdMatcher implements MatcherInterface
+final readonly class WithIdMatcher implements MatcherInterface, NegativeMatcherInterface
 {
     public function __construct(private string $id)
     {
@@ -17,27 +16,14 @@ final readonly class WithIdMatcher implements MatcherInterface
 
     public function match(MatchResult $container, EspressoContext $context): array
     {
-        return $context->isNegated
-            ? $this->matchElementsWithoutId($container->single())
-            : $this->matchElementsWithId($container->single());
-    }
-
-    /**
-     * @return WebDriverElement[]
-     */
-    private function matchElementsWithId(WebDriverElement $container): array
-    {
-        return $container->findElements(
+        return $container->single()->findElements(
             WebDriverBy::xpath(sprintf('descendant-or-self::*[@id="%1$s"]', $this->id)),
         );
     }
 
-    /**
-     * @return WebDriverElement[]
-     */
-    private function matchElementsWithoutId(WebDriverElement $container): array
+    public function matchNegative(MatchResult $container, EspressoContext $context): array
     {
-        return $container->findElements(
+        return $container->single()->findElements(
             WebDriverBy::xpath(sprintf('descendant-or-self::*[not(@id="%1$s")]', $this->id)),
         );
     }

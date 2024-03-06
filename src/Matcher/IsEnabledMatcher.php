@@ -6,39 +6,12 @@ namespace EspressoWebDriver\Matcher;
 
 use EspressoWebDriver\Core\EspressoContext;
 use Facebook\WebDriver\WebDriverBy;
-use Facebook\WebDriver\WebDriverElement;
 
-final readonly class IsEnabledMatcher implements MatcherInterface
+final readonly class IsEnabledMatcher implements MatcherInterface, NegativeMatcherInterface
 {
     public function match(MatchResult $container, EspressoContext $context): array
     {
-        return $context->isNegated
-            ? $this->matchDisabledElements($container->single())
-            : $this->matchEnabledElements($container->single());
-    }
-
-    /**
-     * @return WebDriverElement[]
-     */
-    private function matchDisabledElements(WebDriverElement $container): array
-    {
-        $disabledElements = $container->findElements(
-            WebDriverBy::xpath('descendant-or-self::*[@disabled]'),
-        );
-
-        $descendantsOfDisabledFieldSets = $container->findElements(
-            WebDriverBy::xpath('descendant-or-self::fieldset[@disabled]//*'),
-        );
-
-        return array_merge($disabledElements, $descendantsOfDisabledFieldSets);
-    }
-
-    /**
-     * @return WebDriverElement[]
-     */
-    private function matchEnabledElements(WebDriverElement $container): array
-    {
-        $allElements = $container->findElements(
+        $allElements = $container->single()->findElements(
             WebDriverBy::xpath(
                 'descendant-or-self::*['
                 .'not(@disabled) and '
@@ -61,6 +34,21 @@ final readonly class IsEnabledMatcher implements MatcherInterface
         }
 
         return $enabledElements;
+    }
+
+    public function matchNegative(MatchResult $container, EspressoContext $context): array
+    {
+        $containerElement = $container->single();
+
+        $disabledElements = $containerElement->findElements(
+            WebDriverBy::xpath('descendant-or-self::*[@disabled]'),
+        );
+
+        $descendantsOfDisabledFieldSets = $containerElement->findElements(
+            WebDriverBy::xpath('descendant-or-self::fieldset[@disabled]//*'),
+        );
+
+        return array_merge($disabledElements, $descendantsOfDisabledFieldSets);
     }
 
     public function __toString(): string

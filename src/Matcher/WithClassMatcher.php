@@ -6,9 +6,8 @@ namespace EspressoWebDriver\Matcher;
 
 use EspressoWebDriver\Core\EspressoContext;
 use Facebook\WebDriver\WebDriverBy;
-use Facebook\WebDriver\WebDriverElement;
 
-final readonly class WithClassMatcher implements MatcherInterface
+final readonly class WithClassMatcher implements MatcherInterface, NegativeMatcherInterface
 {
     public function __construct(private string $class)
     {
@@ -17,17 +16,7 @@ final readonly class WithClassMatcher implements MatcherInterface
 
     public function match(MatchResult $container, EspressoContext $context): array
     {
-        return $context->isNegated
-            ? $this->matchElementsWithoutClass($container->single())
-            : $this->matchElementsWithClass($container->single());
-    }
-
-    /**
-     * @return WebDriverElement[]
-     */
-    private function matchElementsWithClass(WebDriverElement $container): array
-    {
-        return $container->findElements(
+        return $container->single()->findElements(
             WebDriverBy::xpath(sprintf(
                 'descendant-or-self::*[contains(concat(" ", normalize-space(@class), " "), " %1$s ")]',
                 $this->class,
@@ -35,12 +24,9 @@ final readonly class WithClassMatcher implements MatcherInterface
         );
     }
 
-    /**
-     * @return WebDriverElement[]
-     */
-    private function matchElementsWithoutClass(WebDriverElement $container): array
+    public function matchNegative(MatchResult $container, EspressoContext $context): array
     {
-        return $container->findElements(
+        return $container->single()->findElements(
             WebDriverBy::xpath(sprintf(
                 'descendant-or-self::*[not(contains(concat(" ", normalize-space(@class), " "), " %1$s "))]',
                 $this->class,

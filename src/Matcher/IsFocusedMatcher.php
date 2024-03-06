@@ -10,49 +10,38 @@ use EspressoWebDriver\Exception\NoMatchingElementException;
 use EspressoWebDriver\Exception\NoParentException;
 use Facebook\WebDriver\Exception\NoSuchElementException;
 use Facebook\WebDriver\WebDriverBy;
-use Facebook\WebDriver\WebDriverElement;
 
-final readonly class IsFocusedMatcher implements MatcherInterface
+final readonly class IsFocusedMatcher implements MatcherInterface, NegativeMatcherInterface
 {
     /**
      * @throws AmbiguousElementException|NoMatchingElementException|NoParentException
      */
     public function match(MatchResult $container, EspressoContext $context): array
     {
-        return $context->isNegated
-            ? $this->matchUnfocusedElements($container->single(), $context)
-            : $this->matchFocusedElements($container->single(), $context);
-    }
+        $containerElement = $container->single();
 
-    /**
-     * @return WebDriverElement[]
-     *
-     * @throws NoParentException
-     */
-    private function matchFocusedElements(WebDriverElement $container, EspressoContext $context): array
-    {
         try {
-            $parent = $container->findElement(WebDriverBy::xpath('./parent::*'));
+            $parent = $containerElement->findElement(WebDriverBy::xpath('./parent::*'));
         } catch (NoSuchElementException) {
             // If we cannot find the parent there is no way for us to find the focused element.
-            throw new NoParentException($this, $context->options->elementLogger->describe($container));
+            throw new NoParentException($this, $context->options->elementLogger->describe($containerElement));
         }
 
         return $parent->findElements(WebDriverBy::cssSelector(':focus'));
     }
 
     /**
-     * @return WebDriverElement[]
-     *
-     * @throws NoParentException
+     * @throws AmbiguousElementException|NoMatchingElementException|NoParentException
      */
-    private function matchUnfocusedElements(WebDriverElement $container, EspressoContext $context): array
+    public function matchNegative(MatchResult $container, EspressoContext $context): array
     {
+        $containerElement = $container->single();
+
         try {
-            $parent = $container->findElement(WebDriverBy::xpath('./parent::*'));
+            $parent = $containerElement->findElement(WebDriverBy::xpath('./parent::*'));
         } catch (NoSuchElementException) {
             // If we cannot find the parent there is no way for us to find the focused element.
-            throw new NoParentException($this, $context->options->elementLogger->describe($container));
+            throw new NoParentException($this, $context->options->elementLogger->describe($containerElement));
         }
 
         return $parent->findElements(WebDriverBy::cssSelector(':not(:focus)'));

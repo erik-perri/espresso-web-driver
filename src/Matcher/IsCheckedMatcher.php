@@ -8,21 +8,11 @@ use EspressoWebDriver\Core\EspressoContext;
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverElement;
 
-final readonly class IsCheckedMatcher implements MatcherInterface
+final readonly class IsCheckedMatcher implements MatcherInterface, NegativeMatcherInterface
 {
     public function match(MatchResult $container, EspressoContext $context): array
     {
-        return $context->isNegated
-            ? $this->matchUncheckedElements($container->single())
-            : $this->matchCheckedElements($container->single());
-    }
-
-    /**
-     * @return WebDriverElement[]
-     */
-    private function matchCheckedElements(WebDriverElement $container): array
-    {
-        $potentialElements = $container->findElements(
+        $potentialElements = $container->single()->findElements(
             WebDriverBy::xpath('descendant-or-self::*[self::input[@type="checkbox" or @type="radio"]]'),
         );
 
@@ -37,12 +27,9 @@ final readonly class IsCheckedMatcher implements MatcherInterface
         return $elements;
     }
 
-    /**
-     * @return WebDriverElement[]
-     */
-    private function matchUncheckedElements(WebDriverElement $container): array
+    public function matchNegative(MatchResult $container, EspressoContext $context): array
     {
-        $potentialElements = $container->findElements(
+        $potentialElements = $container->single()->findElements(
             WebDriverBy::xpath('descendant-or-self::*[self::input[@type="checkbox" or @type="radio"]]'),
         );
 

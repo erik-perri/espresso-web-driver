@@ -14,6 +14,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\CoversFunction;
 
 use function EspressoWebDriver\allOf;
+use function EspressoWebDriver\hasDescendant;
 use function EspressoWebDriver\matches;
 use function EspressoWebDriver\not;
 use function EspressoWebDriver\usingDriver;
@@ -37,5 +38,19 @@ class NotMatcherFeatureTest extends BaseFeatureTestCase
         // Act and Assert
         $espresso->onElement(allOf(withClass('test'), not(withTagName('div'))))
             ->check(matches(withText('Span')));
+    }
+
+    public function testMatchesElementsUsingTheInverseOfPositiveWhenUsingMatchersWithoutNegativeSupport(): void
+    {
+        // Arrange
+        $driver = $this->driver()->get($this->mockStaticUrl('matchers/not.html'));
+
+        $options = new EspressoOptions(assertionReporter: new PhpunitReporter);
+
+        $espresso = usingDriver($driver, $options);
+
+        // Act and Assert
+        $espresso->onElement(allOf(withClass('parent'), not(hasDescendant(withText('Child A')))))
+            ->check(matches(withClass('b')));
     }
 }
