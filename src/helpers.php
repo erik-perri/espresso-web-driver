@@ -22,6 +22,7 @@ use EspressoWebDriver\Core\EspressoCore;
 use EspressoWebDriver\Core\EspressoOptions;
 use EspressoWebDriver\Matcher\AllOfMatcher;
 use EspressoWebDriver\Matcher\AnyOfMatcher;
+use EspressoWebDriver\Matcher\HasChildMatcher;
 use EspressoWebDriver\Matcher\HasDescendantMatcher;
 use EspressoWebDriver\Matcher\HasSiblingMatcher;
 use EspressoWebDriver\Matcher\IsCheckedMatcher;
@@ -126,6 +127,11 @@ function allOf(MatcherInterface ...$matchers): MatcherInterface
 function anyOf(MatcherInterface ...$matchers): MatcherInterface
 {
     return new AnyOfMatcher(...$matchers);
+}
+
+function hasChild(MatcherInterface $matcher): MatcherInterface
+{
+    return new HasChildMatcher($matcher);
 }
 
 function hasDescendant(MatcherInterface $matcher): MatcherInterface
