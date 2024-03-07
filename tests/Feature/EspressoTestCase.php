@@ -61,7 +61,7 @@ abstract class EspressoTestCase extends TestCase
 
         $lockFileName = implode(
             DIRECTORY_SEPARATOR,
-            [sys_get_temp_dir(), sprintf('phpunit-test-running-%1$s.lock', hash('sha256', self::class))],
+            [sys_get_temp_dir(), sprintf('phpunit-test-running-%1$s.lock', hash('sha256', __FILE__))],
         );
 
         touch($lockFileName);
