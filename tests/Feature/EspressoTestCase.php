@@ -27,18 +27,18 @@ abstract class EspressoTestCase extends TestCase
         self::quitDriver();
     }
 
+    public static function setUpBeforeClass(): void
+    {
+        parent::setUpBeforeClass();
+
+        self::removeFailureOutput(static::getFailureOutputPath());
+    }
+
     public static function tearDownAfterClass(): void
     {
         parent::tearDownAfterClass();
 
         static::quitDriver();
-    }
-
-    public function setUp(): void
-    {
-        parent::setUp();
-
-        $this->removeFailureOutput($this->getFailureFilePrefix());
     }
 
     protected function espresso(EspressoOptions $options = new EspressoOptions): EspressoCore
@@ -49,7 +49,7 @@ abstract class EspressoTestCase extends TestCase
         );
     }
 
-    abstract protected function getFailureOutputPath(): string;
+    abstract protected static function getFailureOutputPath(): string;
 
     abstract protected function getSeleniumUrl(): string;
 
@@ -115,13 +115,16 @@ abstract class EspressoTestCase extends TestCase
         self::$driver = null;
     }
 
-    private function removeFailureOutput(string $filePrefix): void
+    private static function removeFailureOutput(string $filePrefix): void
     {
-        $files = glob(sprintf('%1$s*', $filePrefix));
+        $paths = [
+            sprintf('%1$s/*.png', rtrim($filePrefix, '/')),
+            sprintf('%1$s/*-source.txt', rtrim($filePrefix, '/')),
+            sprintf('%1$s/*-console.txt', rtrim($filePrefix, '/')),
+        ];
 
-        if ($files === false) {
-            return;
-        }
+        /** @var string[] $files */
+        $files = array_merge(...array_map(fn (string $path) => glob($path) ?: [], $paths));
 
         foreach ($files as $file) {
             unlink($file);
