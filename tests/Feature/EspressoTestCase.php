@@ -27,32 +27,6 @@ abstract class EspressoTestCase extends TestCase
         self::quitDriver();
     }
 
-    public static function setUpBeforeClass(): void
-    {
-        parent::setUpBeforeClass();
-
-        self::removeFailureOutput(static::getFailureOutputPath());
-    }
-
-    public static function tearDownAfterClass(): void
-    {
-        parent::tearDownAfterClass();
-
-        static::quitDriver();
-    }
-
-    protected function espresso(EspressoOptions $options = new EspressoOptions): EspressoCore
-    {
-        return usingDriver(
-            $this->driver(),
-            $options,
-        );
-    }
-
-    abstract protected static function getFailureOutputPath(): string;
-
-    abstract protected function getSeleniumUrl(): string;
-
     protected function driver(): WebDriver
     {
         if (self::$driver !== null) {
@@ -65,16 +39,17 @@ abstract class EspressoTestCase extends TestCase
         );
     }
 
-    protected function getFailureFilePrefix(): string
+    protected function espresso(?EspressoOptions $options = null): EspressoCore
     {
-        $shortClassName = (new ReflectionClass(static::class))->getShortName();
-
-        return sprintf(
-            '%1$s/%2$s-%3$s',
-            $this->getFailureOutputPath(),
-            $shortClassName,
-            $this->nameWithDataSet(),
+        return usingDriver(
+            $this->driver(),
+            $options ?? $this->getEspressoOptions(),
         );
+    }
+
+    protected function getEspressoOptions(): EspressoOptions
+    {
+        return new EspressoOptions;
     }
 
     protected function getSeleniumOptions(): ChromeOptions
@@ -82,13 +57,46 @@ abstract class EspressoTestCase extends TestCase
         return (new ChromeOptions)->addArguments(['--start-maximized']);
     }
 
+    abstract protected function getSeleniumUrl(): string;
+
     protected function onNotSuccessfulTest(Throwable $t): never
     {
-        if (self::$driver !== null) {
-            $this->saveFailureOutput(self::$driver, $this->getFailureFilePrefix());
+        $outputPath = static::getFailureOutputPath();
+        if ($outputPath) {
+            $this->saveFailureOutput($outputPath);
         }
 
         parent::onNotSuccessfulTest($t);
+    }
+
+    private function saveFailureOutput(string $path): void
+    {
+        if (!self::$driver) {
+            return;
+        }
+
+        $shortClassName = (new ReflectionClass(static::class))->getShortName();
+
+        $filePrefix = sprintf(
+            '%1$s/%2$s-%3$s',
+            $path,
+            $shortClassName,
+            $this->nameWithDataSet(),
+        );
+
+        self::$driver->takeScreenshot($filePrefix.'.png');
+
+        file_put_contents($filePrefix.'-source.txt', self::$driver->getPageSource());
+
+        $console = self::$driver->manage()->getLog('browser');
+        if (count($console)) {
+            file_put_contents($filePrefix.'-console.txt', json_encode($console, JSON_PRETTY_PRINT));
+        }
+    }
+
+    protected static function getFailureOutputPath(): ?string
+    {
+        return null;
     }
 
     protected static function quitDriver(): void
@@ -97,31 +105,36 @@ abstract class EspressoTestCase extends TestCase
         self::$driver = null;
     }
 
-    private static function removeFailureOutput(string $filePrefix): void
+    private static function removeFailureOutput(string $path): void
     {
         $paths = [
-            sprintf('%1$s/*.png', rtrim($filePrefix, '/')),
-            sprintf('%1$s/*-source.txt', rtrim($filePrefix, '/')),
-            sprintf('%1$s/*-console.txt', rtrim($filePrefix, '/')),
+            sprintf('%1$s/*.png', rtrim($path, '/')),
+            sprintf('%1$s/*-source.txt', rtrim($path, '/')),
+            sprintf('%1$s/*-console.txt', rtrim($path, '/')),
         ];
 
         /** @var string[] $files */
-        $files = array_merge(...array_map(fn (string $path) => glob($path) ?: [], $paths));
+        $files = array_merge(...array_map(fn (string $search) => glob($search) ?: [], $paths));
 
         foreach ($files as $file) {
             unlink($file);
         }
     }
 
-    protected function saveFailureOutput(WebDriver $driver, string $filePrefix): void
+    public static function setUpBeforeClass(): void
     {
-        $driver->takeScreenshot($filePrefix.'.png');
+        parent::setUpBeforeClass();
 
-        file_put_contents($filePrefix.'-source.txt', $driver->getPageSource());
-
-        $console = $driver->manage()->getLog('browser');
-        if (count($console)) {
-            file_put_contents($filePrefix.'-console.txt', json_encode($console, JSON_PRETTY_PRINT));
+        $outputPath = static::getFailureOutputPath();
+        if ($outputPath) {
+            self::removeFailureOutput($outputPath);
         }
+    }
+
+    public static function tearDownAfterClass(): void
+    {
+        parent::tearDownAfterClass();
+
+        static::quitDriver();
     }
 }
