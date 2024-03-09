@@ -7,9 +7,7 @@ declare(strict_types=1);
 namespace Action;
 
 use EspressoWebDriver\Action\ClickAction;
-use EspressoWebDriver\Core\EspressoOptions;
 use EspressoWebDriver\Tests\Feature\BaseFeatureTestCase;
-use EspressoWebDriver\Tests\Utilities\PhpunitReporter;
 use Facebook\WebDriver\WebDriverKeys;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\CoversFunction;
@@ -31,11 +29,11 @@ class ClickActionFeatureTest extends BaseFeatureTestCase
     public function testSelectsInputsOnClick(): void
     {
         // Arrange
-        $espresso = $this->espresso(new EspressoOptions(assertionReporter: new PhpunitReporter));
+        $espresso = $this->espresso();
 
         // Act and Assert
         $espresso
-            ->navigateTo($this->mockStaticUrl('actions/click.html'))
+            ->navigateTo('/actions/click.html')
             ->onElement(withId('test-a'))
             ->perform(click(), sendKeys(WebDriverKeys::HOME, WebDriverKeys::DELETE))
             ->check(matches(withValue('alue A')));
@@ -44,13 +42,13 @@ class ClickActionFeatureTest extends BaseFeatureTestCase
     public function testPressesButtonsOnClick(): void
     {
         // Arrange
-        $espresso = $this->espresso(new EspressoOptions(assertionReporter: new PhpunitReporter));
+        $espresso = $this->espresso();
 
         $modal = $espresso->onElement(withClass('modal'));
         $button = $espresso->onElement(withTagName('button'));
 
         // Act and Assert
-        $espresso->navigateTo($this->mockStaticUrl('actions/click.html'));
+        $espresso->navigateTo('/actions/click.html');
 
         $modal->check(matches(not(isDisplayedInViewport())));
 

@@ -7,9 +7,7 @@ declare(strict_types=1);
 namespace Action;
 
 use EspressoWebDriver\Action\ClearTextAction;
-use EspressoWebDriver\Core\EspressoOptions;
 use EspressoWebDriver\Tests\Feature\BaseFeatureTestCase;
-use EspressoWebDriver\Tests\Utilities\PhpunitReporter;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\CoversFunction;
 
@@ -26,11 +24,11 @@ class ClearTextActionFeatureTest extends BaseFeatureTestCase
     public function testClearsTextInTextInputs(): void
     {
         // Arrange
-        $espresso = $this->espresso(new EspressoOptions(assertionReporter: new PhpunitReporter));
+        $espresso = $this->espresso();
 
         // Act and Assert
         $espresso
-            ->navigateTo($this->mockStaticUrl('actions/clear-text.html'))
+            ->navigateTo('/actions/clear-text.html')
             ->onElement(withId('test-a'))
             ->perform(typeText('Value A'))
             ->check(matches(withValue('Value A')))
@@ -41,11 +39,11 @@ class ClearTextActionFeatureTest extends BaseFeatureTestCase
     public function testClearsTextInTextareaInputs(): void
     {
         // Arrange
-        $espresso = $this->espresso(new EspressoOptions(assertionReporter: new PhpunitReporter));
+        $espresso = $this->espresso();
 
         // Act and Assert
         $espresso
-            ->navigateTo($this->mockStaticUrl('actions/clear-text.html'))
+            ->navigateTo('/actions/clear-text.html')
             ->onElement(withId('test-b'))
             ->perform(clearText())
             ->check(matches(withValue('')))

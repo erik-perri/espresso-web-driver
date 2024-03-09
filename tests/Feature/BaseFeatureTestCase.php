@@ -8,6 +8,8 @@ use EspressoWebDriver\Core\EspressoCore;
 use EspressoWebDriver\Core\EspressoOptions;
 use EspressoWebDriver\Tests\Utilities\DriverManager;
 use EspressoWebDriver\Tests\Utilities\OutputManager;
+use EspressoWebDriver\Tests\Utilities\PhpunitReporter;
+use EspressoWebDriver\Tests\Utilities\StaticUrlProcessor;
 use Facebook\WebDriver\Chrome\ChromeOptions;
 use Facebook\WebDriver\WebDriver;
 use PHPUnit\Framework\TestCase;
@@ -29,8 +31,13 @@ class BaseFeatureTestCase extends TestCase
         );
     }
 
-    protected function espresso(EspressoOptions $options = new EspressoOptions): EspressoCore
+    protected function espresso(?EspressoOptions $options = null): EspressoCore
     {
+        $options ??= new EspressoOptions(
+            assertionReporter: new PhpunitReporter,
+            urlProcessor: new StaticUrlProcessor,
+        );
+
         return usingDriver($this->driver(), $options);
     }
 

@@ -7,16 +7,13 @@ declare(strict_types=1);
 namespace Action;
 
 use EspressoWebDriver\Action\SubmitAction;
-use EspressoWebDriver\Core\EspressoOptions;
 use EspressoWebDriver\Tests\Feature\BaseFeatureTestCase;
-use EspressoWebDriver\Tests\Utilities\PhpunitReporter;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\CoversFunction;
 use PHPUnit\Framework\Attributes\DataProvider;
 
 use function EspressoWebDriver\matches;
 use function EspressoWebDriver\submit;
-use function EspressoWebDriver\usingDriver;
 use function EspressoWebDriver\withId;
 use function EspressoWebDriver\withText;
 
@@ -28,14 +25,11 @@ class SubmitActionFeatureTest extends BaseFeatureTestCase
     public function testSubmitsFormFromInputs(string $id): void
     {
         // Arrange
-        $driver = $this->driver()->get($this->mockStaticUrl('actions/submit.html'));
-
-        $options = new EspressoOptions(assertionReporter: new PhpunitReporter);
-
-        $espresso = usingDriver($driver, $options);
+        $espresso = $this->espresso();
 
         // Act
         $espresso
+            ->navigateTo('/actions/submit.html')
             ->onElement(withId($id))
             ->perform(submit());
 

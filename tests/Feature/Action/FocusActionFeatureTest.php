@@ -7,9 +7,7 @@ declare(strict_types=1);
 namespace Action;
 
 use EspressoWebDriver\Action\FocusAction;
-use EspressoWebDriver\Core\EspressoOptions;
 use EspressoWebDriver\Tests\Feature\BaseFeatureTestCase;
-use EspressoWebDriver\Tests\Utilities\PhpunitReporter;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\CoversFunction;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -17,7 +15,6 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use function EspressoWebDriver\focus;
 use function EspressoWebDriver\isFocused;
 use function EspressoWebDriver\matches;
-use function EspressoWebDriver\usingDriver;
 use function EspressoWebDriver\withId;
 
 #[CoversClass(FocusAction::class)]
@@ -28,14 +25,11 @@ class FocusActionFeatureTest extends BaseFeatureTestCase
     public function testFocusesElements(string $id): void
     {
         // Arrange
-        $driver = $this->driver()->get($this->mockStaticUrl('actions/focus.html'));
-
-        $options = new EspressoOptions(assertionReporter: new PhpunitReporter);
-
-        $espresso = usingDriver($driver, $options);
+        $espresso = $this->espresso();
 
         // Act and Assert
         $espresso
+            ->navigateTo('/actions/focus.html')
             ->onElement(withId($id))
             ->perform(focus())
             ->check(matches(isFocused()));

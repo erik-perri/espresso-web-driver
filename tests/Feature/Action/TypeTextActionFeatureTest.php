@@ -7,16 +7,15 @@ declare(strict_types=1);
 namespace EspressoWebDriver\Tests\Feature\Action;
 
 use EspressoWebDriver\Action\TypeTextAction;
-use EspressoWebDriver\Core\EspressoOptions;
 use EspressoWebDriver\Tests\Feature\BaseFeatureTestCase;
-use Facebook\WebDriver\WebDriverBy;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\CoversFunction;
 
 use function EspressoWebDriver\focus;
+use function EspressoWebDriver\matches;
 use function EspressoWebDriver\typeText;
-use function EspressoWebDriver\usingDriver;
 use function EspressoWebDriver\withId;
+use function EspressoWebDriver\withValue;
 
 #[CoversClass(TypeTextAction::class)]
 #[CoversFunction('EspressoWebDriver\typeText')]
@@ -25,63 +24,39 @@ class TypeTextActionFeatureTest extends BaseFeatureTestCase
     public function testTypesTextInTextInputs(): void
     {
         // Arrange
-        $driver = $this->driver()->get($this->mockStaticUrl('actions/type-text.html'));
+        $espresso = $this->espresso();
 
-        $options = new EspressoOptions();
-
-        $espresso = usingDriver($driver, $options);
-
-        // Act
+        // Act and Assert
         $espresso
+            ->navigateTo('/actions/type-text.html')
             ->onElement(withId('test-a'))
-            ->perform(typeText('Value A'));
-
-        // Assert
-        $this->assertSame(
-            'Value A',
-            $driver->findElement(WebDriverBy::id('test-a'))->getAttribute('value'),
-        );
+            ->perform(typeText('Value A'))
+            ->check(matches(withValue('Value A')));
     }
 
     public function testTypesTextInTextareaInputs(): void
     {
         // Arrange
-        $driver = $this->driver()->get($this->mockStaticUrl('actions/type-text.html'));
+        $espresso = $this->espresso();
 
-        $options = new EspressoOptions();
-
-        $espresso = usingDriver($driver, $options);
-
-        // Act
+        // Act and Assert
         $espresso
+            ->navigateTo('/actions/type-text.html')
             ->onElement(withId('test-b'))
-            ->perform(typeText("Value B\nWith new line"));
-
-        // Assert
-        $this->assertSame(
-            "Value B\nWith new line",
-            $driver->findElement(WebDriverBy::id('test-b'))->getAttribute('value'),
-        );
+            ->perform(typeText("Value B\nWith new line"))
+            ->check(matches(withValue("Value B\nWith new line")));
     }
 
     public function testTypesTextInSelectInputs(): void
     {
         // Arrange
-        $driver = $this->driver()->get($this->mockStaticUrl('actions/type-text.html'));
+        $espresso = $this->espresso();
 
-        $options = new EspressoOptions();
-
-        $espresso = usingDriver($driver, $options);
-
-        // Act
+        // Act and Assert
         $espresso
+            ->navigateTo('/actions/type-text.html')
             ->onElement(withId('test-c'))
-            ->perform(focus(), typeText('Value C'));
-
-        // Assert
-        $this->assertSame(
-            'Value C',
-            $driver->findElement(WebDriverBy::id('test-c'))->getAttribute('value'),
-        );
+            ->perform(focus(), typeText('Value C'))
+            ->check(matches(withValue('Value C')));
     }
 }
