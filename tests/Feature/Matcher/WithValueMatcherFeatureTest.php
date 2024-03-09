@@ -12,11 +12,13 @@ use EspressoWebDriver\Tests\Feature\BaseFeatureTestCase;
 use EspressoWebDriver\Tests\Utilities\PhpunitReporter;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\CoversFunction;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 use function EspressoWebDriver\allOf;
 use function EspressoWebDriver\matches;
 use function EspressoWebDriver\not;
 use function EspressoWebDriver\usingDriver;
+use function EspressoWebDriver\withId;
 use function EspressoWebDriver\withTagName;
 use function EspressoWebDriver\withText;
 use function EspressoWebDriver\withValue;
@@ -136,5 +138,37 @@ class WithValueMatcherFeatureTest extends BaseFeatureTestCase
         $espresso->onElement(withValue('0.6'))
             ->check(matches(withValue('0.6')))
             ->check(matches(not(withValue('0.5'))));
+    }
+
+    #[DataProvider('quoteValueProvider')]
+    public function testMatchesValuesWithQuotes(string $value, string $expectedId): void
+    {
+        // Arrange
+        $driver = $this->driver()->get($this->mockStaticUrl('matchers/with-value.html'));
+
+        $options = new EspressoOptions(assertionReporter: new PhpunitReporter);
+
+        $espresso = usingDriver($driver, $options);
+
+        // Act and Assert
+        $espresso->onElement(withValue($value))
+            ->check(matches(withId($expectedId)));
+    }
+
+    /**
+     * @return array<string, array{value: string, expectedId: string}>
+     */
+    public static function quoteValueProvider(): array
+    {
+        return [
+            'double quotes' => [
+                'value' => 'Double "quotes"',
+                'expectedId' => 'double-quotes',
+            ],
+            'single quotes' => [
+                'value' => "Single 'quotes'",
+                'expectedId' => 'single-quotes',
+            ],
+        ];
     }
 }

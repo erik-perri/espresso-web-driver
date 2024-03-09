@@ -53,7 +53,7 @@ final readonly class WithValueMatcher implements MatcherInterface, NegativeMatch
 
     private function cleanValueForCssSelector(string $value): string
     {
-        return str_replace("\n", '\n', $value);
+        return str_replace(["\n", '"'], ['\n', '\"'], $value);
     }
 
     public function __toString(): string
