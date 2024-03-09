@@ -11,6 +11,8 @@ use EspressoWebDriver\Core\EspressoCore;
 use EspressoWebDriver\Core\EspressoOptions;
 use EspressoWebDriver\Processor\MatchProcessor;
 use EspressoWebDriver\Tests\Feature\BaseFeatureTestCase;
+use EspressoWebDriver\Tests\Utilities\PhpunitReporter;
+use EspressoWebDriver\Tests\Utilities\StaticUrlProcessor;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\CoversFunction;
 
@@ -20,6 +22,7 @@ use function EspressoWebDriver\hasDescendant;
 use function EspressoWebDriver\matches;
 use function EspressoWebDriver\usingDriver;
 use function EspressoWebDriver\withClass;
+use function EspressoWebDriver\withId;
 use function EspressoWebDriver\withTagName;
 use function EspressoWebDriver\withText;
 
@@ -34,9 +37,12 @@ class EspressoCoreFeatureTest extends BaseFeatureTestCase
     public function testConstrainsToRequestedContainer(): void
     {
         // Arrange
-        $driver = $this->driver()->get($this->mockStaticUrl('core/in-container.html'));
+        $driver = $this->driver();
 
-        $options = new EspressoOptions();
+        $options = new EspressoOptions(
+            assertionReporter: new PhpunitReporter,
+            urlProcessor: new StaticUrlProcessor,
+        );
 
         $espresso = usingDriver($driver, $options);
 
@@ -45,12 +51,15 @@ class EspressoCoreFeatureTest extends BaseFeatureTestCase
             ->inContainer(allOf(withClass('item'), hasDescendant(withText('Item 2'))));
 
         // Act
+        $espresso->navigateTo('/core/in-container.html');
+
         $containedEspresso
             ->onElement(withTagName('a'))
             ->check(matches(withText('Edit')))
             ->perform(click());
 
         // Assert
-        $this->assertStringEndsWith('index.html?2', $driver->getCurrentURL());
+        $espresso->onElement(withId('status'))
+            ->check(matches(withText('Edit 2')));
     }
 }

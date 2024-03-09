@@ -11,7 +11,7 @@ use EspressoWebDriver\Assertion\ExistsAssertion;
 use EspressoWebDriver\Core\EspressoOptions;
 use EspressoWebDriver\Exception\AssertionFailedException;
 use EspressoWebDriver\Tests\Feature\BaseFeatureTestCase;
-use EspressoWebDriver\Tests\Utilities\PhpunitReporter;
+use EspressoWebDriver\Tests\Utilities\StaticUrlProcessor;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\CoversFunction;
 
@@ -19,7 +19,6 @@ use function EspressoWebDriver\allOf;
 use function EspressoWebDriver\click;
 use function EspressoWebDriver\doesNotExist;
 use function EspressoWebDriver\exists;
-use function EspressoWebDriver\usingDriver;
 use function EspressoWebDriver\withTagName;
 use function EspressoWebDriver\withText;
 
@@ -32,13 +31,11 @@ class ExistsAssertionFeatureTest extends BaseFeatureTestCase
     public function testChecksExistence(): void
     {
         // Arrange
-        $driver = $this->driver()->get($this->mockStaticUrl('assertions/exists.html'));
-
-        $options = new EspressoOptions(assertionReporter: new PhpunitReporter);
-
-        $espresso = usingDriver($driver, $options);
+        $espresso = $this->espresso();
 
         // Act and Assert
+        $espresso->navigateTo('/assertions/exists.html');
+
         $espresso
             ->onElement(withText('Mock element'))
             ->check(doesNotExist());
@@ -59,13 +56,13 @@ class ExistsAssertionFeatureTest extends BaseFeatureTestCase
         $this->expectExceptionMessage('Failed to assert doesNotExist');
 
         // Arrange
-        $driver = $this->driver()->get($this->mockStaticUrl('assertions/exists.html'));
-
-        $options = new EspressoOptions();
-
-        $espresso = usingDriver($driver, $options);
+        $espresso = $this->espresso(new EspressoOptions(
+            urlProcessor: new StaticUrlProcessor,
+        ));
 
         // Act and Assert
+        $espresso->navigateTo('/assertions/exists.html');
+
         $espresso
             ->onElement(allOf(withTagName('button'), withText('Create element')))
             ->perform(click());
