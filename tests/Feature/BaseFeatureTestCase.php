@@ -41,13 +41,6 @@ class BaseFeatureTestCase extends TestCase
         return usingDriver($this->driver(), $options);
     }
 
-    protected function mockStaticUrl(string $url): string
-    {
-        $startUrl = rtrim($_ENV['SELENIUM_START_URL'], '/');
-
-        return sprintf('%1$s/%2$s', $startUrl, $url);
-    }
-
     protected function onNotSuccessfulTest(Throwable $t): never
     {
         if ($this->driver) {
