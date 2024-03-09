@@ -8,7 +8,7 @@ use EspressoWebDriver\Tests\Utilities\OutputManager;
 use PHPUnit\Event\TestRunner\Started;
 use PHPUnit\Event\TestRunner\StartedSubscriber;
 
-class PhpunitStartedSubscriber implements StartedSubscriber
+final readonly class PhpunitStartedSubscriber implements StartedSubscriber
 {
     public function __construct(private OutputManager $outputManager)
     {
