@@ -47,14 +47,12 @@ class EspressoCoreFeatureTest extends BaseFeatureTestCase
         $espresso = usingDriver($driver, $options);
 
         // Contain the instance to an individual row, then click a matcher that would match many rows if not contained
-        $containedEspresso = $espresso
-            ->inContainer(allOf(withClass('item'), hasDescendant(withText('Item 2'))));
+        $containedEspresso = $espresso->inContainer(allOf(withClass('item'), hasDescendant(withText('Item 2'))));
 
         // Act
         $espresso->navigateTo('/core/in-container.html');
 
-        $containedEspresso
-            ->onElement(withTagName('a'))
+        $containedEspresso->onElement(withTagName('a'))
             ->check(matches(withText('Edit')))
             ->perform(click());
 

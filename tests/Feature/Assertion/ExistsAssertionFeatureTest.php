@@ -36,16 +36,13 @@ class ExistsAssertionFeatureTest extends BaseFeatureTestCase
         // Act and Assert
         $espresso->navigateTo('/assertions/exists.html');
 
-        $espresso
-            ->onElement(withText('Mock element'))
+        $espresso->onElement(withText('Mock element'))
             ->check(doesNotExist());
 
-        $espresso
-            ->onElement(allOf(withTagName('button'), withText('Create element')))
+        $espresso->onElement(allOf(withTagName('button'), withText('Create element')))
             ->perform(click());
 
-        $espresso
-            ->onElement(withText('Mock element'))
+        $espresso->onElement(withText('Mock element'))
             ->check(exists());
     }
 
@@ -63,12 +60,10 @@ class ExistsAssertionFeatureTest extends BaseFeatureTestCase
         // Act and Assert
         $espresso->navigateTo('/assertions/exists.html');
 
-        $espresso
-            ->onElement(allOf(withTagName('button'), withText('Create element')))
+        $espresso->onElement(allOf(withTagName('button'), withText('Create element')))
             ->perform(click());
 
-        $espresso
-            ->onElement(withText('Mock element'))
+        $espresso->onElement(withText('Mock element'))
             ->check(doesNotExist());
     }
 }

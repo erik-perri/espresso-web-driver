@@ -27,8 +27,7 @@ class ClearTextActionFeatureTest extends BaseFeatureTestCase
         $espresso = $this->espresso();
 
         // Act and Assert
-        $espresso
-            ->navigateTo('/actions/clear-text.html')
+        $espresso->navigateTo('/actions/clear-text.html')
             ->onElement(withId('test-a'))
             ->perform(typeText('Value A'))
             ->check(matches(withValue('Value A')))
@@ -42,8 +41,7 @@ class ClearTextActionFeatureTest extends BaseFeatureTestCase
         $espresso = $this->espresso();
 
         // Act and Assert
-        $espresso
-            ->navigateTo('/actions/clear-text.html')
+        $espresso->navigateTo('/actions/clear-text.html')
             ->onElement(withId('test-b'))
             ->perform(clearText())
             ->check(matches(withValue('')))

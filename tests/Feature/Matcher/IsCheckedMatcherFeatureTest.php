@@ -6,10 +6,8 @@ declare(strict_types=1);
 
 namespace EspressoWebDriver\Tests\Feature\Matcher;
 
-use EspressoWebDriver\Core\EspressoOptions;
 use EspressoWebDriver\Matcher\IsCheckedMatcher;
 use EspressoWebDriver\Tests\Feature\BaseFeatureTestCase;
-use EspressoWebDriver\Tests\Utilities\PhpunitReporter;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\CoversFunction;
 
@@ -17,7 +15,6 @@ use function EspressoWebDriver\click;
 use function EspressoWebDriver\isChecked;
 use function EspressoWebDriver\matches;
 use function EspressoWebDriver\not;
-use function EspressoWebDriver\usingDriver;
 use function EspressoWebDriver\withLabel;
 
 #[CoversClass(IsCheckedMatcher::class)]
@@ -27,15 +24,14 @@ class IsCheckedMatcherFeatureTest extends BaseFeatureTestCase
     public function testMatchesDefaultCheckedState(): void
     {
         // Arrange
-        $driver = $this->driver()->get($this->mockStaticUrl('matchers/is-checked.html'));
-
-        $options = new EspressoOptions(assertionReporter: new PhpunitReporter);
-
-        $espresso = usingDriver($driver, $options);
+        $espresso = $this->espresso();
 
         // Act and Assert
+        $espresso->navigateTo('/matchers/is-checked.html');
+
         $espresso->onElement(withLabel('Checked'))
             ->check(matches(isChecked()));
+
         $espresso->onElement(withLabel('Unchecked'))
             ->check(matches(not(isChecked())));
     }
@@ -43,13 +39,11 @@ class IsCheckedMatcherFeatureTest extends BaseFeatureTestCase
     public function testMatchesChangedState(): void
     {
         // Arrange
-        $driver = $this->driver()->get($this->mockStaticUrl('matchers/is-checked.html'));
-
-        $options = new EspressoOptions(assertionReporter: new PhpunitReporter);
-
-        $espresso = usingDriver($driver, $options);
+        $espresso = $this->espresso();
 
         // Act and Assert
+        $espresso->navigateTo('/matchers/is-checked.html');
+
         $espresso->onElement(withLabel('Unchecked'))
             ->check(matches(not(isChecked())));
 

@@ -6,17 +6,14 @@ declare(strict_types=1);
 
 namespace EspressoWebDriver\Tests\Feature\Matcher;
 
-use EspressoWebDriver\Core\EspressoOptions;
 use EspressoWebDriver\Matcher\WithTagNameMatcher;
 use EspressoWebDriver\Tests\Feature\BaseFeatureTestCase;
-use EspressoWebDriver\Tests\Utilities\PhpunitReporter;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\CoversFunction;
 
 use function EspressoWebDriver\allOf;
 use function EspressoWebDriver\matches;
 use function EspressoWebDriver\not;
-use function EspressoWebDriver\usingDriver;
 use function EspressoWebDriver\withTagName;
 use function EspressoWebDriver\withText;
 
@@ -27,13 +24,11 @@ class WithTagNameMatcherFeatureTest extends BaseFeatureTestCase
     public function testMatchesTagNameWithoutSelectingMoreSpecificText(): void
     {
         // Arrange
-        $driver = $this->driver()->get($this->mockStaticUrl('matchers/with-tag-name.html'));
-
-        $options = new EspressoOptions(assertionReporter: new PhpunitReporter);
-
-        $espresso = usingDriver($driver, $options);
+        $espresso = $this->espresso();
 
         // Act and Assert
+        $espresso->navigateTo('/matchers/with-tag-name.html');
+
         $espresso->onElement(withTagName('b'))
             ->check(matches(withText('Bold')));
 
@@ -44,14 +39,11 @@ class WithTagNameMatcherFeatureTest extends BaseFeatureTestCase
     public function testMatchesTagNameNegativeWithoutSelectingMoreSpecificText(): void
     {
         // Arrange
-        $driver = $this->driver()->get($this->mockStaticUrl('matchers/with-tag-name.html'));
-
-        $options = new EspressoOptions(assertionReporter: new PhpunitReporter);
-
-        $espresso = usingDriver($driver, $options);
+        $espresso = $this->espresso();
 
         // Act and Assert
-        $espresso->inContainer(withTagName('table'))
+        $espresso->navigateTo('/matchers/with-tag-name.html')
+            ->inContainer(withTagName('table'))
             ->onElement(allOf(not(withTagName('col')), not(withTagName('table'))))
             ->check(matches(withTagName('colgroup')));
     }
@@ -59,28 +51,22 @@ class WithTagNameMatcherFeatureTest extends BaseFeatureTestCase
     public function testMatchesFromContainer(): void
     {
         // Arrange
-        $driver = $this->driver()->get($this->mockStaticUrl('matchers/with-tag-name.html'));
-
-        $options = new EspressoOptions(assertionReporter: new PhpunitReporter);
-
-        $espresso = usingDriver($driver, $options);
+        $espresso = $this->espresso();
 
         // Act and Assert
-        $espresso->onElement(withTagName('html'))
+        $espresso->navigateTo('/matchers/with-tag-name.html')
+            ->onElement(withTagName('html'))
             ->check(matches(withTagName('html')));
     }
 
     public function testMatchesNegativeFromContainer(): void
     {
         // Arrange
-        $driver = $this->driver()->get($this->mockStaticUrl('matchers/with-tag-name.html'));
-
-        $options = new EspressoOptions(assertionReporter: new PhpunitReporter);
-
-        $espresso = usingDriver($driver, $options);
+        $espresso = $this->espresso();
 
         // Act and Assert
-        $espresso->onElement(withTagName('html'))
+        $espresso->navigateTo('/matchers/with-tag-name.html')
+            ->onElement(withTagName('html'))
             ->check(matches(not(withTagName('body'))));
     }
 }

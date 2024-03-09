@@ -27,8 +27,7 @@ class TypeTextActionFeatureTest extends BaseFeatureTestCase
         $espresso = $this->espresso();
 
         // Act and Assert
-        $espresso
-            ->navigateTo('/actions/type-text.html')
+        $espresso->navigateTo('/actions/type-text.html')
             ->onElement(withId('test-a'))
             ->perform(typeText('Value A'))
             ->check(matches(withValue('Value A')));
@@ -40,8 +39,7 @@ class TypeTextActionFeatureTest extends BaseFeatureTestCase
         $espresso = $this->espresso();
 
         // Act and Assert
-        $espresso
-            ->navigateTo('/actions/type-text.html')
+        $espresso->navigateTo('/actions/type-text.html')
             ->onElement(withId('test-b'))
             ->perform(typeText("Value B\nWith new line"))
             ->check(matches(withValue("Value B\nWith new line")));
@@ -53,8 +51,7 @@ class TypeTextActionFeatureTest extends BaseFeatureTestCase
         $espresso = $this->espresso();
 
         // Act and Assert
-        $espresso
-            ->navigateTo('/actions/type-text.html')
+        $espresso->navigateTo('/actions/type-text.html')
             ->onElement(withId('test-c'))
             ->perform(focus(), typeText('Value C'))
             ->check(matches(withValue('Value C')));

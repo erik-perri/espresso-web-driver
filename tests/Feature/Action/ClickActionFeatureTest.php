@@ -32,8 +32,7 @@ class ClickActionFeatureTest extends BaseFeatureTestCase
         $espresso = $this->espresso();
 
         // Act and Assert
-        $espresso
-            ->navigateTo('/actions/click.html')
+        $espresso->navigateTo('/actions/click.html')
             ->onElement(withId('test-a'))
             ->perform(click(), sendKeys(WebDriverKeys::HOME, WebDriverKeys::DELETE))
             ->check(matches(withValue('alue A')));

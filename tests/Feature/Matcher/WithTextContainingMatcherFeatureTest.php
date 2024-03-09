@@ -6,10 +6,8 @@ declare(strict_types=1);
 
 namespace EspressoWebDriver\Tests\Feature\Matcher;
 
-use EspressoWebDriver\Core\EspressoOptions;
 use EspressoWebDriver\Matcher\WithTextContainingMatcher;
 use EspressoWebDriver\Tests\Feature\BaseFeatureTestCase;
-use EspressoWebDriver\Tests\Utilities\PhpunitReporter;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\CoversFunction;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -18,7 +16,6 @@ use function EspressoWebDriver\allOf;
 use function EspressoWebDriver\exists;
 use function EspressoWebDriver\matches;
 use function EspressoWebDriver\not;
-use function EspressoWebDriver\usingDriver;
 use function EspressoWebDriver\withClass;
 use function EspressoWebDriver\withTagName;
 use function EspressoWebDriver\withText;
@@ -32,14 +29,11 @@ class WithTextContainingMatcherFeatureTest extends BaseFeatureTestCase
     public function testMatchesExactly(string $match, string $expectedClass): void
     {
         // Arrange
-        $driver = $this->driver()->get($this->mockStaticUrl('matchers/with-text.html'));
-
-        $options = new EspressoOptions(assertionReporter: new PhpunitReporter);
-
-        $espresso = usingDriver($driver, $options);
+        $espresso = $this->espresso();
 
         // Act and Assert
-        $espresso->onElement(withTextContaining($match))
+        $espresso->navigateTo('/matchers/with-text.html')
+            ->onElement(withTextContaining($match))
             ->check(matches(withClass($expectedClass)));
     }
 
@@ -67,86 +61,68 @@ class WithTextContainingMatcherFeatureTest extends BaseFeatureTestCase
     public function testMatchesContainer(): void
     {
         // Arrange
-        $driver = $this->driver()->get($this->mockStaticUrl('matchers/with-text.html'));
-
-        $options = new EspressoOptions(assertionReporter: new PhpunitReporter);
-
-        $espresso = usingDriver($driver, $options)
+        $containedEspresso = $this->espresso()
             ->inContainer(allOf(withTagName('li'), withTextContaining('Mock A')));
 
         // Act and Assert
-        $espresso->onElement(withTextContaining('Mock A'))
+        $containedEspresso->navigateTo('/matchers/with-text.html')
+            ->onElement(withTextContaining('Mock A'))
             ->check(exists());
     }
 
     public function testMatchesNegativeContainer(): void
     {
         // Arrange
-        $driver = $this->driver()->get($this->mockStaticUrl('matchers/with-text.html'));
-
-        $options = new EspressoOptions(assertionReporter: new PhpunitReporter);
-
-        $espresso = usingDriver($driver, $options)
+        $containedEspresso = $this->espresso()
             ->inContainer(allOf(withTagName('li'), withTextContaining('Another D')));
 
         // Act and Assert
-        $espresso->onElement(not(withTextContaining('Mock')))
+        $containedEspresso->navigateTo('/matchers/with-text.html')
+            ->onElement(not(withTextContaining('Mock')))
             ->check(exists());
     }
 
     public function testMatchesWhenCaseIsWrong(): void
     {
         // Arrange
-        $driver = $this->driver()->get($this->mockStaticUrl('matchers/with-text.html'));
-
-        $options = new EspressoOptions(assertionReporter: new PhpunitReporter);
-
-        $espresso = usingDriver($driver, $options);
+        $espresso = $this->espresso();
 
         // Act and Assert
-        $espresso->onElement(allOf(withTagName('li'), withTextContaining('MOCK A')))
+        $espresso->navigateTo('/matchers/with-text.html')
+            ->onElement(allOf(withTagName('li'), withTextContaining('MOCK A')))
             ->check(exists());
     }
 
     public function testDoesMatchesWithLeadingSpaces(): void
     {
         // Arrange
-        $driver = $this->driver()->get($this->mockStaticUrl('matchers/with-text.html'));
-
-        $options = new EspressoOptions(assertionReporter: new PhpunitReporter);
-
-        $espresso = usingDriver($driver, $options);
+        $espresso = $this->espresso();
 
         // Act and Assert
-        $espresso->onElement(allOf(withTagName('li'), withTextContaining('Mock B')))
+        $espresso->navigateTo('/matchers/with-text.html')
+            ->onElement(allOf(withTagName('li'), withTextContaining('Mock B')))
             ->check(exists());
     }
 
     public function testMatchesSubstrings(): void
     {
         // Arrange
-        $driver = $this->driver()->get($this->mockStaticUrl('matchers/with-text.html'));
-
-        $options = new EspressoOptions(assertionReporter: new PhpunitReporter);
-
-        $espresso = usingDriver($driver, $options);
+        $espresso = $this->espresso();
 
         // Act and Assert
-        $espresso->onElement(allOf(withTagName('li'), withTextContaining('Mock C')))
+        $espresso->navigateTo('/matchers/with-text.html')
+            ->onElement(allOf(withTagName('li'), withTextContaining('Mock C')))
             ->check(exists());
     }
 
     public function testMatchesNegativeSubstrings(): void
     {
         // Arrange
-        $driver = $this->driver()->get($this->mockStaticUrl('matchers/with-text.html'));
-
-        $options = new EspressoOptions(assertionReporter: new PhpunitReporter);
-
-        $espresso = usingDriver($driver, $options);
+        $espresso = $this->espresso();
 
         // Act and Assert
-        $espresso->onElement(allOf(withTagName('li'), not(withTextContaining('mock'))))
+        $espresso->navigateTo('/matchers/with-text.html')
+            ->onElement(allOf(withTagName('li'), not(withTextContaining('mock'))))
             ->check(matches(withText('Another D')));
     }
 }

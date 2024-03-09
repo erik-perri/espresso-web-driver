@@ -6,10 +6,8 @@ declare(strict_types=1);
 
 namespace EspressoWebDriver\Tests\Feature\Matcher;
 
-use EspressoWebDriver\Core\EspressoOptions;
 use EspressoWebDriver\Matcher\IsDisplayedMatcher;
 use EspressoWebDriver\Tests\Feature\BaseFeatureTestCase;
-use EspressoWebDriver\Tests\Utilities\PhpunitReporter;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\CoversFunction;
 
@@ -17,7 +15,6 @@ use function EspressoWebDriver\click;
 use function EspressoWebDriver\isDisplayed;
 use function EspressoWebDriver\matches;
 use function EspressoWebDriver\not;
-use function EspressoWebDriver\usingDriver;
 use function EspressoWebDriver\withClass;
 use function EspressoWebDriver\withText;
 
@@ -28,16 +25,14 @@ class IsDisplayedMatcherFeatureTest extends BaseFeatureTestCase
     public function testCannotSeeElementsThatAreHiddenWithCss(): void
     {
         // Arrange
-        $driver = $this->driver()->get($this->mockStaticUrl('matchers/is-displayed.html'));
-
-        $options = new EspressoOptions(assertionReporter: new PhpunitReporter);
-
-        $espresso = usingDriver($driver, $options);
+        $espresso = $this->espresso();
 
         $targetElement = $espresso->onElement(withText('Mock C'));
         $hiddenUntilClickElement = $espresso->onElement(withClass('hidden'));
 
         // Act and Assert
+        $espresso->navigateTo('/matchers/is-displayed.html');
+
         $hiddenUntilClickElement->check(matches(not(isDisplayed())));
 
         $targetElement->perform(click());

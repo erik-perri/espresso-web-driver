@@ -28,8 +28,7 @@ class FocusActionFeatureTest extends BaseFeatureTestCase
         $espresso = $this->espresso();
 
         // Act and Assert
-        $espresso
-            ->navigateTo('/actions/focus.html')
+        $espresso->navigateTo('/actions/focus.html')
             ->onElement(withId($id))
             ->perform(focus())
             ->check(matches(isFocused()));

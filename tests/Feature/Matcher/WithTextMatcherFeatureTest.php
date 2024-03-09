@@ -10,7 +10,7 @@ use EspressoWebDriver\Core\EspressoOptions;
 use EspressoWebDriver\Exception\PerformException;
 use EspressoWebDriver\Matcher\WithTextMatcher;
 use EspressoWebDriver\Tests\Feature\BaseFeatureTestCase;
-use EspressoWebDriver\Tests\Utilities\PhpunitReporter;
+use EspressoWebDriver\Tests\Utilities\StaticUrlProcessor;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\CoversFunction;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -20,7 +20,6 @@ use function EspressoWebDriver\click;
 use function EspressoWebDriver\exists;
 use function EspressoWebDriver\matches;
 use function EspressoWebDriver\not;
-use function EspressoWebDriver\usingDriver;
 use function EspressoWebDriver\withClass;
 use function EspressoWebDriver\withTagName;
 use function EspressoWebDriver\withText;
@@ -33,14 +32,11 @@ class WithTextMatcherFeatureTest extends BaseFeatureTestCase
     public function testMatchesExactly(string $match, string $expectedClass): void
     {
         // Arrange
-        $driver = $this->driver()->get($this->mockStaticUrl('matchers/with-text.html'));
-
-        $options = new EspressoOptions(assertionReporter: new PhpunitReporter);
-
-        $espresso = usingDriver($driver, $options);
+        $espresso = $this->espresso();
 
         // Act and Assert
-        $espresso->onElement(withText($match))
+        $espresso->navigateTo('/matchers/with-text.html')
+            ->onElement(withText($match))
             ->check(matches(withClass($expectedClass)));
     }
 
@@ -68,51 +64,42 @@ class WithTextMatcherFeatureTest extends BaseFeatureTestCase
     public function testMatchesNegativeExactly(): void
     {
         // Arrange
-        $driver = $this->driver()->get($this->mockStaticUrl('matchers/with-text.html'));
-
-        $options = new EspressoOptions(assertionReporter: new PhpunitReporter);
-
-        $espresso = usingDriver($driver, $options);
+        $espresso = $this->espresso();
 
         // Act and Assert
-        $espresso->onElement(allOf(
-            withTagName('li'),
-            not(withText('Mock A')),
-            not(withText('Mock B')),
-            not(withText('Another D')),
-            not(withText('Some mock "quoted" text.')),
-            not(withText("Some mock 'quoted' text.")),
-        ))
+        $espresso->navigateTo('/matchers/with-text.html')
+            ->onElement(allOf(
+                withTagName('li'),
+                not(withText('Mock A')),
+                not(withText('Mock B')),
+                not(withText('Another D')),
+                not(withText('Some mock "quoted" text.')),
+                not(withText("Some mock 'quoted' text.")),
+            ))
             ->check(matches(withClass('c')));
     }
 
     public function testMatchesContainer(): void
     {
         // Arrange
-        $driver = $this->driver()->get($this->mockStaticUrl('matchers/with-text.html'));
-
-        $options = new EspressoOptions(assertionReporter: new PhpunitReporter);
-
-        $espresso = usingDriver($driver, $options)
+        $containedEspresso = $this->espresso()
             ->inContainer(withText('Mock A'));
 
         // Act and Assert
-        $espresso->onElement(withText('Mock A'))
+        $containedEspresso->navigateTo('/matchers/with-text.html')
+            ->onElement(withText('Mock A'))
             ->check(exists());
     }
 
     public function testMatchesNegativeContainer(): void
     {
         // Arrange
-        $driver = $this->driver()->get($this->mockStaticUrl('matchers/with-text.html'));
-
-        $options = new EspressoOptions(assertionReporter: new PhpunitReporter);
-
-        $espresso = usingDriver($driver, $options)
+        $containedEspresso = $this->espresso()
             ->inContainer(withText('Another D'));
 
         // Act and Assert
-        $espresso->onElement(not(withText('Mock A')))
+        $containedEspresso->navigateTo('/matchers/with-text.html')
+            ->onElement(not(withText('Mock A')))
             ->check(exists());
     }
 
@@ -123,14 +110,13 @@ class WithTextMatcherFeatureTest extends BaseFeatureTestCase
         $this->expectExceptionMessage('Failed to perform action click, no element found for withText(MOCK A)');
 
         // Arrange
-        $driver = $this->driver()->get($this->mockStaticUrl('matchers/with-text.html'));
-
-        $options = new EspressoOptions();
-
-        $espresso = usingDriver($driver, $options);
+        $espresso = $this->espresso(new EspressoOptions(
+            urlProcessor: new StaticUrlProcessor,
+        ));
 
         // Act
-        $espresso->onElement(withText('MOCK A'))
+        $espresso->navigateTo('/matchers/with-text.html')
+            ->onElement(withText('MOCK A'))
             ->perform(click());
 
         // Assert
@@ -144,14 +130,13 @@ class WithTextMatcherFeatureTest extends BaseFeatureTestCase
         $this->expectExceptionMessage('Failed to perform action click, no element found for withText(Mock C)');
 
         // Arrange
-        $driver = $this->driver()->get($this->mockStaticUrl('matchers/with-text.html'));
-
-        $options = new EspressoOptions();
-
-        $espresso = usingDriver($driver, $options);
+        $espresso = $this->espresso(new EspressoOptions(
+            urlProcessor: new StaticUrlProcessor,
+        ));
 
         // Act
-        $espresso->onElement(withText('Mock C'))
+        $espresso->navigateTo('/matchers/with-text.html')
+            ->onElement(withText('Mock C'))
             ->perform(click());
 
         // Assert

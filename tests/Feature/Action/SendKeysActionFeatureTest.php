@@ -32,8 +32,7 @@ class SendKeysActionFeatureTest extends BaseFeatureTestCase
         $espresso = $this->espresso();
 
         // Act and Assert
-        $espresso
-            ->navigateTo('/actions/send-keys.html')
+        $espresso->navigateTo('/actions/send-keys.html')
             ->onElement(withId('test-a'))
             ->perform(focus(), sendKeys(WebDriverKeys::END, WebDriverKeys::BACKSPACE))
             ->check(matches(withValue('Value ')));

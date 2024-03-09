@@ -6,10 +6,8 @@ declare(strict_types=1);
 
 namespace EspressoWebDriver\Tests\Feature\Matcher;
 
-use EspressoWebDriver\Core\EspressoOptions;
 use EspressoWebDriver\Matcher\WithLabelMatcher;
 use EspressoWebDriver\Tests\Feature\BaseFeatureTestCase;
-use EspressoWebDriver\Tests\Utilities\PhpunitReporter;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\CoversFunction;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -18,7 +16,6 @@ use function EspressoWebDriver\allOf;
 use function EspressoWebDriver\doesNotExist;
 use function EspressoWebDriver\matches;
 use function EspressoWebDriver\not;
-use function EspressoWebDriver\usingDriver;
 use function EspressoWebDriver\withClass;
 use function EspressoWebDriver\withId;
 use function EspressoWebDriver\withLabel;
@@ -32,14 +29,11 @@ class WithLabelMatcherFeatureTest extends BaseFeatureTestCase
     public function testMatchesLabelsWithText(string $labelText, string $expectedId): void
     {
         // Arrange
-        $driver = $this->driver()->get($this->mockStaticUrl('matchers/with-label.html'));
-
-        $options = new EspressoOptions(assertionReporter: new PhpunitReporter);
-
-        $espresso = usingDriver($driver, $options);
+        $espresso = $this->espresso();
 
         // Act and Assert
-        $espresso->onElement(withLabel($labelText))
+        $espresso->navigateTo('/matchers/with-label.html')
+            ->onElement(withLabel($labelText))
             ->check(matches(withId($expectedId)));
     }
 
@@ -83,43 +77,34 @@ class WithLabelMatcherFeatureTest extends BaseFeatureTestCase
     public function testReturnsNoResultsForEmptyLabels(): void
     {
         // Arrange
-        $driver = $this->driver()->get($this->mockStaticUrl('matchers/with-label.html'));
-
-        $options = new EspressoOptions(assertionReporter: new PhpunitReporter);
-
-        $espresso = usingDriver($driver, $options);
+        $espresso = $this->espresso();
 
         // Act and Assert
-        $espresso->onElement(withLabel('Empty implicit'))
+        $espresso->navigateTo('/matchers/with-label.html')
+            ->onElement(withLabel('Empty implicit'))
             ->check(doesNotExist());
     }
 
     public function testReturnsNoResultsForLabelsWithUnavailableIds(): void
     {
         // Arrange
-        $driver = $this->driver()->get($this->mockStaticUrl('matchers/with-label.html'));
-
-        $options = new EspressoOptions(assertionReporter: new PhpunitReporter);
-
-        $espresso = usingDriver($driver, $options)
+        $containedEspresso = $this->espresso()
             ->inContainer(withClass('label-container'));
 
         // Act and Assert
-        $espresso->onElement(withLabel('Outside'))
+        $containedEspresso->navigateTo('/matchers/with-label.html')
+            ->onElement(withLabel('Outside'))
             ->check(doesNotExist());
     }
 
     public function testMatchesNegativeResults(): void
     {
         // Arrange
-        $driver = $this->driver()->get($this->mockStaticUrl('matchers/with-label.html'));
-
-        $options = new EspressoOptions(assertionReporter: new PhpunitReporter);
-
-        $espresso = usingDriver($driver, $options);
+        $espresso = $this->espresso();
 
         // Act and Assert
-        $espresso->onElement(allOf(not(withLabel('Explicit')), withTagName('select')))
+        $espresso->navigateTo('/matchers/with-label.html')
+            ->onElement(allOf(not(withLabel('Explicit')), withTagName('select')))
             ->check(matches(withId('implicit')));
     }
 }

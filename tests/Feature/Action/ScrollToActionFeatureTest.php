@@ -26,8 +26,7 @@ class ScrollToActionFeatureTest extends BaseFeatureTestCase
         $espresso = $this->espresso();
 
         // Act and Assert
-        $espresso
-            ->navigateTo('/actions/scroll-to.html')
+        $espresso->navigateTo('/actions/scroll-to.html')
             ->onElement(withText('Mock Z'))
             ->perform(scrollTo())
             ->check(matches(isDisplayedInViewport()));

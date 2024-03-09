@@ -28,14 +28,12 @@ class SubmitActionFeatureTest extends BaseFeatureTestCase
         $espresso = $this->espresso();
 
         // Act
-        $espresso
-            ->navigateTo('/actions/submit.html')
+        $espresso->navigateTo('/actions/submit.html')
             ->onElement(withId($id))
             ->perform(submit());
 
         // Assert
-        $espresso
-            ->onElement(withId('status'))
+        $espresso->onElement(withId('status'))
             ->check(matches(withText('Submitted')));
     }
 

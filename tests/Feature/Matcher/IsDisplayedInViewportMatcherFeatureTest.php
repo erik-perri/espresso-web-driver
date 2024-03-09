@@ -6,10 +6,8 @@ declare(strict_types=1);
 
 namespace EspressoWebDriver\Tests\Feature\Matcher;
 
-use EspressoWebDriver\Core\EspressoOptions;
 use EspressoWebDriver\Matcher\IsDisplayedInViewportMatcher;
 use EspressoWebDriver\Tests\Feature\BaseFeatureTestCase;
-use EspressoWebDriver\Tests\Utilities\PhpunitReporter;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\CoversFunction;
 
@@ -18,7 +16,6 @@ use function EspressoWebDriver\isDisplayedInViewport;
 use function EspressoWebDriver\matches;
 use function EspressoWebDriver\not;
 use function EspressoWebDriver\scrollTo;
-use function EspressoWebDriver\usingDriver;
 use function EspressoWebDriver\withClass;
 use function EspressoWebDriver\withText;
 
@@ -29,16 +26,14 @@ class IsDisplayedInViewportMatcherFeatureTest extends BaseFeatureTestCase
     public function testCannotSeeElementsThatAreOutOfTheViewport(): void
     {
         // Arrange
-        $driver = $this->driver()->get($this->mockStaticUrl('matchers/is-displayed.html'));
-
-        $options = new EspressoOptions(assertionReporter: new PhpunitReporter);
-
-        $espresso = usingDriver($driver, $options);
+        $espresso = $this->espresso();
 
         $topElement = $espresso->onElement(withText('Mock A'));
         $bottomElement = $espresso->onElement(withText('Mock Z'));
 
         // Act and Assert
+        $espresso->navigateTo('/matchers/is-displayed.html');
+
         $topElement
             ->check(matches(isDisplayedInViewport()));
         $bottomElement
@@ -57,16 +52,14 @@ class IsDisplayedInViewportMatcherFeatureTest extends BaseFeatureTestCase
     public function testCannotSeeElementsThatAreHiddenWithCss(): void
     {
         // Arrange
-        $driver = $this->driver()->get($this->mockStaticUrl('matchers/is-displayed.html'));
-
-        $options = new EspressoOptions(assertionReporter: new PhpunitReporter);
-
-        $espresso = usingDriver($driver, $options);
+        $espresso = $this->espresso();
 
         $targetElement = $espresso->onElement(withText('Mock C'));
         $hiddenUntilClickElement = $espresso->onElement(withClass('hidden'));
 
         // Act and Assert
+        $espresso->navigateTo('/matchers/is-displayed.html');
+
         $hiddenUntilClickElement->check(matches(not(isDisplayedInViewport())));
 
         $targetElement->perform(click());
