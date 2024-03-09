@@ -26,7 +26,11 @@ final readonly class EspressoCore
 
     public function navigateTo(string $url): self
     {
-        $this->driver->get($url);
+        $this->driver->get(
+            $this->options->urlProcessor
+                ? $this->options->urlProcessor->process($url)
+                : $url,
+        );
 
         return $this;
     }
