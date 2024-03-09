@@ -12,6 +12,7 @@ use EspressoWebDriver\Tests\Feature\BaseFeatureTestCase;
 use EspressoWebDriver\Tests\Utilities\PhpunitReporter;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\CoversFunction;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 use function EspressoWebDriver\allOf;
 use function EspressoWebDriver\doesNotExist;
@@ -27,7 +28,8 @@ use function EspressoWebDriver\withTagName;
 #[CoversFunction('EspressoWebDriver\withLabel')]
 class WithLabelMatcherFeatureTest extends BaseFeatureTestCase
 {
-    public function testMatchesExplicitLabelledElement(): void
+    #[DataProvider('labelTextProvider')]
+    public function testMatchesLabelsWithText(string $labelText, string $expectedId): void
     {
         // Arrange
         $driver = $this->driver()->get($this->mockStaticUrl('matchers/with-label.html'));
@@ -37,50 +39,45 @@ class WithLabelMatcherFeatureTest extends BaseFeatureTestCase
         $espresso = usingDriver($driver, $options);
 
         // Act and Assert
-        $espresso->onElement(withLabel('Explicit'))
-            ->check(matches(withId('explicit')));
+        $espresso->onElement(withLabel($labelText))
+            ->check(matches(withId($expectedId)));
     }
 
-    public function testMatchesImplicitLabelledElement(): void
+    /**
+     * @return array<string, array{labelText: string, expectedId: string}>
+     */
+    public static function labelTextProvider(): array
     {
-        // Arrange
-        $driver = $this->driver()->get($this->mockStaticUrl('matchers/with-label.html'));
-
-        $options = new EspressoOptions(assertionReporter: new PhpunitReporter);
-
-        $espresso = usingDriver($driver, $options);
-
-        // Act and Assert
-        $espresso->onElement(withLabel('Implicit'))
-            ->check(matches(withId('implicit')));
-    }
-
-    public function testMatchesOnlyFirstElementOnIncorrectlyImplicitlyLabelledElements(): void
-    {
-        // Arrange
-        $driver = $this->driver()->get($this->mockStaticUrl('matchers/with-label.html'));
-
-        $options = new EspressoOptions(assertionReporter: new PhpunitReporter);
-
-        $espresso = usingDriver($driver, $options);
-
-        // Act and Assert
-        $espresso->onElement(withLabel('Invalid implicit'))
-            ->check(matches(withId('implicit_invalid_first')));
-    }
-
-    public function testMatchesCorrectElementOnImplicitlyLabelledElementsWithHidden(): void
-    {
-        // Arrange
-        $driver = $this->driver()->get($this->mockStaticUrl('matchers/with-label.html'));
-
-        $options = new EspressoOptions(assertionReporter: new PhpunitReporter);
-
-        $espresso = usingDriver($driver, $options);
-
-        // Act and Assert
-        $espresso->onElement(withLabel('Valid implicit'))
-            ->check(matches(withId('implicit_valid_second')));
+        return [
+            'explicit' => [
+                'labelText' => 'Explicit',
+                'expectedId' => 'explicit',
+            ],
+            'implicit' => [
+                'labelText' => 'Implicit',
+                'expectedId' => 'implicit',
+            ],
+            'invalid implicit' => [
+                'labelText' => 'Invalid implicit',
+                'expectedId' => 'implicit_invalid_first',
+            ],
+            'valid implicit' => [
+                'labelText' => 'Valid implicit',
+                'expectedId' => 'implicit_valid_second',
+            ],
+            'outside' => [
+                'labelText' => 'Outside',
+                'expectedId' => 'outside',
+            ],
+            'double quotes' => [
+                'labelText' => 'Double "quotes"',
+                'expectedId' => 'double-quotes',
+            ],
+            'single quotes' => [
+                'labelText' => "Single 'quotes'",
+                'expectedId' => 'single-quotes',
+            ],
+        ];
     }
 
     public function testReturnsNoResultsForEmptyLabels(): void
@@ -95,20 +92,6 @@ class WithLabelMatcherFeatureTest extends BaseFeatureTestCase
         // Act and Assert
         $espresso->onElement(withLabel('Empty implicit'))
             ->check(doesNotExist());
-    }
-
-    public function testReturnsResultsFromOutsideTheLabelsParent(): void
-    {
-        // Arrange
-        $driver = $this->driver()->get($this->mockStaticUrl('matchers/with-label.html'));
-
-        $options = new EspressoOptions(assertionReporter: new PhpunitReporter);
-
-        $espresso = usingDriver($driver, $options);
-
-        // Act and Assert
-        $espresso->onElement(withLabel('Outside'))
-            ->check(matches(withId('outside')));
     }
 
     public function testReturnsNoResultsForLabelsWithUnavailableIds(): void

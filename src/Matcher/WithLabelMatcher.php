@@ -7,6 +7,7 @@ namespace EspressoWebDriver\Matcher;
 use EspressoWebDriver\Core\EspressoContext;
 use EspressoWebDriver\Core\MatchResult;
 use EspressoWebDriver\Utilities\TextNormalizer;
+use EspressoWebDriver\Utilities\XPathStringWrapper;
 use Facebook\WebDriver\Exception\NoSuchElementException;
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverElement;
@@ -15,9 +16,12 @@ final readonly class WithLabelMatcher implements MatcherInterface, NegativeMatch
 {
     private string $normalizedText;
 
+    private string $wrappedText;
+
     public function __construct(string $text)
     {
         $this->normalizedText = (new TextNormalizer())->normalize($text);
+        $this->wrappedText = (new XPathStringWrapper())->wrap($this->normalizedText);
     }
 
     public function match(MatchResult $container, EspressoContext $context): array
@@ -26,8 +30,8 @@ final readonly class WithLabelMatcher implements MatcherInterface, NegativeMatch
 
         $labels = $container->findElements(
             WebDriverBy::xpath(sprintf(
-                'descendant-or-self::label[normalize-space(text())="%s"]',
-                $this->normalizedText,
+                'descendant-or-self::label[normalize-space(text())=%s]',
+                $this->wrappedText,
             )),
         );
 
