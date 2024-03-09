@@ -13,6 +13,7 @@ use EspressoWebDriver\Tests\Feature\BaseFeatureTestCase;
 use EspressoWebDriver\Tests\Utilities\PhpunitReporter;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\CoversFunction;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 use function EspressoWebDriver\allOf;
 use function EspressoWebDriver\click;
@@ -28,7 +29,8 @@ use function EspressoWebDriver\withText;
 #[CoversFunction('EspressoWebDriver\withText')]
 class WithTextMatcherFeatureTest extends BaseFeatureTestCase
 {
-    public function testMatchesExactly(): void
+    #[DataProvider('exactMatchProvider')]
+    public function testMatchesExactly(string $match, string $expectedClass): void
     {
         // Arrange
         $driver = $this->driver()->get($this->mockStaticUrl('matchers/with-text.html'));
@@ -38,8 +40,29 @@ class WithTextMatcherFeatureTest extends BaseFeatureTestCase
         $espresso = usingDriver($driver, $options);
 
         // Act and Assert
-        $espresso->onElement(withText('Mock A'))
-            ->check(matches(withClass('a')));
+        $espresso->onElement(withText($match))
+            ->check(matches(withClass($expectedClass)));
+    }
+
+    /**
+     * @return array<string, array{match: string, expectedClass: string}>
+     */
+    public static function exactMatchProvider(): array
+    {
+        return [
+            'normal text' => [
+                'match' => 'Mock A',
+                'expectedClass' => 'a',
+            ],
+            'quoted text using double quotes' => [
+                'match' => 'Some mock "quoted" text.',
+                'expectedClass' => 'e',
+            ],
+            'quoted text using single quotes' => [
+                'match' => "Some mock 'quoted' text.",
+                'expectedClass' => 'f',
+            ],
+        ];
     }
 
     public function testMatchesNegativeExactly(): void
@@ -57,6 +80,8 @@ class WithTextMatcherFeatureTest extends BaseFeatureTestCase
             not(withText('Mock A')),
             not(withText('Mock B')),
             not(withText('Another D')),
+            not(withText('Some mock "quoted" text.')),
+            not(withText("Some mock 'quoted' text.")),
         ))
             ->check(matches(withClass('c')));
     }
