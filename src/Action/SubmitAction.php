@@ -13,9 +13,9 @@ final readonly class SubmitAction implements ActionInterface
     /**
      * @throws PerformException
      */
-    public function perform(WebDriverElement $element, EspressoContext $context): bool
+    public function perform(WebDriverElement $target, EspressoContext $context): bool
     {
-        if (!in_array(strtolower($element->getTagName()), [
+        if (!in_array(strtolower($target->getTagName()), [
             'button',
             'form',
             'input',
@@ -24,12 +24,12 @@ final readonly class SubmitAction implements ActionInterface
         ])) {
             throw new PerformException(
                 action: $this,
-                element: $context->options->elementLogger->describe($element),
+                element: $context->options->elementLogger->describe($target),
                 reason: 'not a submittable element',
             );
         }
 
-        $element->submit();
+        $target->submit();
 
         return true;
     }

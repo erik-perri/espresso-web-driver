@@ -14,17 +14,17 @@ final readonly class FocusAction implements ActionInterface
     /**
      * @throws PerformException
      */
-    public function perform(WebDriverElement $element, EspressoContext $context): bool
+    public function perform(WebDriverElement $target, EspressoContext $context): bool
     {
         if (!($context->driver instanceof JavaScriptExecutor)) {
             throw new PerformException(
                 action: $this,
-                element: $context->options->elementLogger->describe($element),
+                element: $context->options->elementLogger->describe($target),
                 reason: 'driver does not have access to executeScript',
             );
         }
 
-        $context->driver->executeScript('arguments[0].focus();', [$element]);
+        $context->driver->executeScript('arguments[0].focus();', [$target]);
 
         return true;
     }

@@ -9,7 +9,7 @@ use Facebook\WebDriver\WebDriverElement;
 
 interface ActionInterface
 {
-    public function perform(WebDriverElement $element, EspressoContext $context): bool;
+    public function perform(WebDriverElement $target, EspressoContext $context): bool;
 
     public function __toString(): string;
 }

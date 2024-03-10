@@ -17,9 +17,9 @@ final readonly class TypeTextAction implements ActionInterface
         //
     }
 
-    public function perform(WebDriverElement $element, EspressoContext $context): bool
+    public function perform(WebDriverElement $target, EspressoContext $context): bool
     {
-        $element->sendKeys($this->text);
+        $target->sendKeys($this->text);
 
         return true;
     }

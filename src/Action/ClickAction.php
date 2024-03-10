@@ -9,9 +9,9 @@ use Facebook\WebDriver\WebDriverElement;
 
 final readonly class ClickAction implements ActionInterface
 {
-    public function perform(WebDriverElement $element, EspressoContext $context): bool
+    public function perform(WebDriverElement $target, EspressoContext $context): bool
     {
-        $element->click();
+        $target->click();
 
         return true;
     }
