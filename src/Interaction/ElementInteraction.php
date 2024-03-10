@@ -81,7 +81,7 @@ final readonly class ElementInteraction implements InteractionInterface
 
                 $targetElement = $targetResult->single();
 
-                if (!$action->perform($targetElement, $this->context)) {
+                if (!$action->perform($targetElement, $this->container, $this->context)) {
                     throw new PerformException(
                         action: $action,
                         element: $this->context->options->elementLogger->describe($targetElement),

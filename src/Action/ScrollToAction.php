@@ -6,6 +6,7 @@ namespace EspressoWebDriver\Action;
 
 use EspressoWebDriver\Core\EspressoContext;
 use EspressoWebDriver\Exception\PerformException;
+use EspressoWebDriver\Matcher\MatcherInterface;
 use Facebook\WebDriver\JavaScriptExecutor;
 use Facebook\WebDriver\WebDriverElement;
 
@@ -14,7 +15,7 @@ final readonly class ScrollToAction implements ActionInterface
     /**
      * @throws PerformException
      */
-    public function perform(WebDriverElement $target, EspressoContext $context): bool
+    public function perform(WebDriverElement $target, ?MatcherInterface $container, EspressoContext $context): bool
     {
         if (!($context->driver instanceof JavaScriptExecutor)) {
             throw new PerformException(

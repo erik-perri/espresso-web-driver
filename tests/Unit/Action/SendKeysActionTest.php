@@ -65,7 +65,7 @@ class SendKeysActionTest extends BaseUnitTestCase
         );
 
         // Act
-        $action->perform($element, $context);
+        $action->perform($element, null, $context);
 
         // Assert
         // No assertions, only expectations.

@@ -35,7 +35,7 @@ class ClearTextActionTest extends BaseUnitTestCase
         $action = new ClearTextAction();
 
         // Act
-        $result = $action->perform($mockContainer, $mockContext);
+        $result = $action->perform($mockContainer, null, $mockContext);
 
         // Assert
         $this->assertTrue($result);

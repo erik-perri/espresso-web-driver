@@ -6,6 +6,7 @@ namespace EspressoWebDriver\Action;
 
 use EspressoWebDriver\Core\EspressoContext;
 use EspressoWebDriver\Exception\PerformException;
+use EspressoWebDriver\Matcher\MatcherInterface;
 use Facebook\WebDriver\WebDriverElement;
 use Facebook\WebDriver\WebDriverHasInputDevices;
 use Facebook\WebDriver\WebDriverKeys;
@@ -33,7 +34,7 @@ final readonly class SendKeysAction implements ActionInterface
     /**
      * @throws PerformException
      */
-    public function perform(WebDriverElement $target, EspressoContext $context): bool
+    public function perform(WebDriverElement $target, ?MatcherInterface $container, EspressoContext $context): bool
     {
         if (!($context->driver instanceof WebDriverHasInputDevices)) {
             throw new PerformException(

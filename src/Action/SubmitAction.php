@@ -6,6 +6,7 @@ namespace EspressoWebDriver\Action;
 
 use EspressoWebDriver\Core\EspressoContext;
 use EspressoWebDriver\Exception\PerformException;
+use EspressoWebDriver\Matcher\MatcherInterface;
 use Facebook\WebDriver\WebDriverElement;
 
 final readonly class SubmitAction implements ActionInterface
@@ -13,7 +14,7 @@ final readonly class SubmitAction implements ActionInterface
     /**
      * @throws PerformException
      */
-    public function perform(WebDriverElement $target, EspressoContext $context): bool
+    public function perform(WebDriverElement $target, ?MatcherInterface $container, EspressoContext $context): bool
     {
         if (!in_array(strtolower($target->getTagName()), [
             'button',

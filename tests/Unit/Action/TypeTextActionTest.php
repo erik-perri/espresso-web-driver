@@ -36,7 +36,7 @@ class TypeTextActionTest extends BaseUnitTestCase
         $action = new TypeTextAction('Mock Keys');
 
         // Act
-        $result = $action->perform($mockContainer, $mockContext);
+        $result = $action->perform($mockContainer, null, $mockContext);
 
         // Assert
         $this->assertTrue($result);

@@ -49,7 +49,7 @@ class SubmitActionTest extends BaseUnitTestCase
         );
 
         // Act
-        $action->perform($mockElement, $mockContext);
+        $action->perform($mockElement, null, $mockContext);
 
         // Assert
         // No assertions, only expectations.
