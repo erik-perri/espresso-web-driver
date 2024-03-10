@@ -8,12 +8,13 @@ namespace EspressoWebDriver\Tests\Unit\Interaction;
 
 use EspressoWebDriver\Action\ActionInterface;
 use EspressoWebDriver\Assertion\AssertionInterface;
+use EspressoWebDriver\Assertion\MatchesAssertion;
 use EspressoWebDriver\Core\EspressoContext;
 use EspressoWebDriver\Core\EspressoOptions;
 use EspressoWebDriver\Exception\AssertionFailedException;
-use EspressoWebDriver\Exception\NoRootElementException;
 use EspressoWebDriver\Exception\PerformException;
 use EspressoWebDriver\Interaction\ElementInteraction;
+use EspressoWebDriver\Matcher\IsDisplayedMatcher;
 use EspressoWebDriver\Matcher\MatcherInterface;
 use EspressoWebDriver\Reporter\AssertionReporterInterface;
 use EspressoWebDriver\Tests\Traits\MocksWebDriverElement;
@@ -29,7 +30,6 @@ use function EspressoWebDriver\matches;
 
 #[CoversClass(AssertionFailedException::class)]
 #[CoversClass(ElementInteraction::class)]
-#[CoversClass(NoRootElementException::class)]
 #[CoversClass(PerformException::class)]
 class ElementInteractionTest extends BaseUnitTestCase
 {
@@ -47,28 +47,15 @@ class ElementInteractionTest extends BaseUnitTestCase
             ->method('report')
             ->with(
                 false,
-                "Failed asserting that match(mock) is true, 1 element found for mock\nmock",
+                'Failed asserting that match(mock) is true',
             );
 
-        $mockDriver = $this->createMock(WebDriver::class);
-        $mockDriver->expects($this->once())
-            ->method('findElement')
-            ->willReturn($this->createMockWebDriverElement('html'));
-
         $mockContext = new EspressoContext(
-            driver: $mockDriver,
+            driver: $this->createMock(WebDriver::class),
             options: new EspressoOptions(assertionReporter: $reporter),
         );
 
-        $mockElement = $this->createMockWebDriverElement('mock');
-
         $mockElementMatcher = $this->createMock(MatcherInterface::class);
-        $mockElementMatcher->expects($this->once())
-            ->method('__toString')
-            ->willReturn('mock');
-        $mockElementMatcher->expects($this->once())
-            ->method('match')
-            ->willReturn([$mockElement]);
 
         $mockAssertion = $this->createMock(AssertionInterface::class);
         $mockAssertion->expects($this->once())
@@ -78,7 +65,7 @@ class ElementInteractionTest extends BaseUnitTestCase
             ->method('__toString')
             ->willReturn('match(mock)');
 
-        $interaction = new ElementInteraction($mockElementMatcher, $mockContext, null);
+        $interaction = new ElementInteraction($mockElementMatcher, null, $mockContext);
 
         // Act
         $interaction->check($mockAssertion);
@@ -99,7 +86,7 @@ class ElementInteractionTest extends BaseUnitTestCase
             ->method('report')
             ->with(
                 false,
-                'Failed asserting that matches(isDisplayed) is true, no elements found for mock',
+                'Failed asserting that matches(isDisplayed) is true, no element found for mock',
             );
 
         $mockDriver = $this->createMock(WebDriver::class);
@@ -113,14 +100,14 @@ class ElementInteractionTest extends BaseUnitTestCase
         );
 
         $mockElementMatcher = $this->createMock(MatcherInterface::class);
-        $mockElementMatcher->expects($this->exactly(2))
+        $mockElementMatcher->expects($this->once())
             ->method('__toString')
             ->willReturn('mock');
         $mockElementMatcher->expects($this->once())
             ->method('match')
             ->willReturn([]);
 
-        $interaction = new ElementInteraction($mockElementMatcher, $mockContext, null);
+        $interaction = new ElementInteraction($mockElementMatcher, null, $mockContext);
 
         // Act
         $interaction->check(matches(isDisplayed()));
@@ -158,12 +145,9 @@ class ElementInteractionTest extends BaseUnitTestCase
 
         $mockElementMatcher = $this->createMock(MatcherInterface::class);
 
-        $interaction = new ElementInteraction($mockElementMatcher, $mockContext, null);
+        $interaction = new ElementInteraction($mockElementMatcher, null, $mockContext);
 
-        $mockAssertion = $this->createMock(AssertionInterface::class);
-        $mockAssertion->expects($this->exactly(2))
-            ->method('__toString')
-            ->willReturn('matches(isDisplayed)');
+        $mockAssertion = new MatchesAssertion(new IsDisplayedMatcher);
 
         // Act
         $interaction->check($mockAssertion);
@@ -219,7 +203,7 @@ class ElementInteractionTest extends BaseUnitTestCase
             options: new EspressoOptions(assertionReporter: $reporter),
         );
 
-        $interaction = new ElementInteraction($mockElementMatcher, $mockContext, null);
+        $interaction = new ElementInteraction($mockElementMatcher, null, $mockContext);
 
         // Act
         $interaction->check(exists());
@@ -231,27 +215,14 @@ class ElementInteractionTest extends BaseUnitTestCase
     public function testCheckProvidesFluentInterface(): void
     {
         // Arrange
-        $mockDriver = $this->createMockForIntersectionOfInterfaces([WebDriver::class, JavaScriptExecutor::class]);
-        $mockDriver
-            ->expects($this->once())
-            ->method('findElement')
-            ->willReturn($this->createMockWebDriverElement('html'));
-
-        /**
-         * @var WebDriver $mockDriver
-         */
         $mockContext = new EspressoContext(
-            driver: $mockDriver,
+            driver: $this->createMock(WebDriver::class),
             options: new EspressoOptions,
         );
 
         $mockElementMatcher = $this->createMock(MatcherInterface::class);
-        $mockElementMatcher
-            ->expects($this->once())
-            ->method('match')
-            ->willReturn([$this->createMockWebDriverElement('mock')]);
 
-        $interaction = new ElementInteraction($mockElementMatcher, $mockContext, null);
+        $interaction = new ElementInteraction($mockElementMatcher, null, $mockContext);
 
         $mockAssertion = $this->createMock(AssertionInterface::class);
         $mockAssertion
@@ -304,7 +275,7 @@ class ElementInteractionTest extends BaseUnitTestCase
             ->method('match')
             ->willReturn([$mockElement]);
 
-        $interaction = new ElementInteraction($mockMatcher, $mockContext, null);
+        $interaction = new ElementInteraction($mockMatcher, null, $mockContext);
 
         // Act
         $interaction->perform($mockAction);
@@ -343,7 +314,7 @@ class ElementInteractionTest extends BaseUnitTestCase
             options: new EspressoOptions,
         );
 
-        $interaction = new ElementInteraction($mockMatcher, $mockContext, null);
+        $interaction = new ElementInteraction($mockMatcher, null, $mockContext);
 
         // Act
         $interaction->perform($mockAction);
@@ -375,7 +346,7 @@ class ElementInteractionTest extends BaseUnitTestCase
             ->method('match')
             ->willReturn([$this->createMockWebDriverElement('mock')]);
 
-        $interaction = new ElementInteraction($mockElementMatcher, $mockContext, null);
+        $interaction = new ElementInteraction($mockElementMatcher, null, $mockContext);
 
         $mockAction = $this->createMock(ActionInterface::class);
         $mockAction
@@ -418,7 +389,7 @@ class ElementInteractionTest extends BaseUnitTestCase
             ->method('match')
             ->willReturn([$this->createMockWebDriverElement('mock')]);
 
-        $interaction = new ElementInteraction($mockElementMatcher, $mockContext, $mockContainerMatcher);
+        $interaction = new ElementInteraction($mockElementMatcher, $mockContainerMatcher, $mockContext);
 
         $mockAction = $this->createMock(ActionInterface::class);
         $mockAction

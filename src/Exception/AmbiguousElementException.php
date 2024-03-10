@@ -12,7 +12,7 @@ class AmbiguousElementException extends EspressoWebDriverException
     /**
      * @param  WebDriverElement[]  $elements
      */
-    public function __construct(array $elements, MatcherInterface $matcher)
+    public function __construct(public readonly array $elements, public readonly MatcherInterface $matcher)
     {
         $totalElements = count($elements);
 

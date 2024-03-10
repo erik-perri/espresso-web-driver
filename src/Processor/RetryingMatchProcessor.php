@@ -7,36 +7,42 @@ namespace EspressoWebDriver\Processor;
 use EspressoWebDriver\Core\EspressoContext;
 use EspressoWebDriver\Core\MatchResult;
 use EspressoWebDriver\Matcher\MatcherInterface;
+use RuntimeException;
 
-class RetryingMatchProcessor implements MatchProcessorInterface
+final readonly class RetryingMatchProcessor implements MatchProcessorInterface
 {
     public function __construct(
-        public int $waitTimeoutInSeconds = 5,
-        public int $waitIntervalInMilliseconds = 250,
+        private int $waitTimeoutInSeconds = 5,
+        private int $waitIntervalInMilliseconds = 250,
+        private MatchProcessorInterface $matchProcessor = new MatchProcessor,
     ) {
         //
     }
 
-    public function process(MatchResult $previous, MatcherInterface $matcher, EspressoContext $context): MatchResult
-    {
+    public function process(
+        MatcherInterface $target,
+        MatcherInterface|MatchResult|null $container,
+        EspressoContext $context,
+    ): MatchResult {
         $startTime = (float) microtime(true);
         $endTime = $startTime + $this->waitTimeoutInSeconds;
         $waitIntervalInMicroseconds = $this->waitIntervalInMilliseconds * 1000;
-        $lastResult = [];
+        $lastResult = null;
 
         while (microtime(true) < $endTime) {
-            $lastResult = $matcher->match($previous, $context);
+            $lastResult = $this->matchProcessor->process($target, $container, $context);
 
-            if (!empty($lastResult)) {
+            if ($lastResult->count()) {
                 break;
             }
 
             usleep($waitIntervalInMicroseconds);
         }
 
-        return new MatchResult(
-            matcher: $matcher,
-            result: $lastResult,
-        );
+        if ($lastResult === null) {
+            throw new RuntimeException('No result processed. Ensure the wait time is greater than 0.');
+        }
+
+        return $lastResult;
     }
 }

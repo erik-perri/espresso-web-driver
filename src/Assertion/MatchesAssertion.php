@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace EspressoWebDriver\Assertion;
 
 use EspressoWebDriver\Core\EspressoContext;
-use EspressoWebDriver\Core\MatchResult;
 use EspressoWebDriver\Matcher\MatcherInterface;
 
 final readonly class MatchesAssertion implements AssertionInterface
@@ -15,17 +14,19 @@ final readonly class MatchesAssertion implements AssertionInterface
         //
     }
 
-    public function assert(MatchResult $container, EspressoContext $context): bool
-    {
-        $matches = $context->options->matchProcessor->process($container, $this->matcher, new EspressoContext(
-            driver: $context->driver,
-            options: $context->options,
-        ));
+    public function assert(
+        MatcherInterface $target,
+        ?MatcherInterface $container,
+        EspressoContext $context,
+    ): bool {
+        $targetResult = $context->options->matchProcessor->process($target, $container, $context);
 
-        $containerElement = $container->single();
+        $targetElement = $targetResult->single();
+
+        $matches = $context->options->matchProcessor->process($this->matcher, $targetResult, $context);
 
         foreach ($matches->all() as $match) {
-            if ($containerElement->getID() === $match->getID()) {
+            if ($targetElement->getID() === $match->getID()) {
                 return true;
             }
         }

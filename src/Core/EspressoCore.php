@@ -14,7 +14,7 @@ final readonly class EspressoCore
     public function __construct(
         private WebDriver $driver,
         private EspressoOptions $options,
-        private ?MatcherInterface $containerMatcher = null,
+        private ?MatcherInterface $container = null,
     ) {
         //
     }
@@ -42,6 +42,6 @@ final readonly class EspressoCore
             options: $this->options,
         );
 
-        return new ElementInteraction($matcher, $context, $this->containerMatcher);
+        return new ElementInteraction($matcher, $this->container, $context);
     }
 }

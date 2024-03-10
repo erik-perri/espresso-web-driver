@@ -8,12 +8,17 @@ use EspressoWebDriver\Core\EspressoContext;
 use EspressoWebDriver\Core\MatchResult;
 use EspressoWebDriver\Exception\AmbiguousElementException;
 use EspressoWebDriver\Exception\NoMatchingElementException;
+use EspressoWebDriver\Exception\NoRootElementException;
 use EspressoWebDriver\Matcher\MatcherInterface;
 
 interface MatchProcessorInterface
 {
     /**
-     * @throws AmbiguousElementException|NoMatchingElementException
+     * @throws AmbiguousElementException|NoMatchingElementException|NoRootElementException
      */
-    public function process(MatchResult $previous, MatcherInterface $matcher, EspressoContext $context): MatchResult;
+    public function process(
+        MatcherInterface $target,
+        MatcherInterface|MatchResult|null $container,
+        EspressoContext $context,
+    ): MatchResult;
 }

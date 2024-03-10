@@ -9,7 +9,6 @@ namespace Assertion;
 use EspressoWebDriver\Assertion\DoesNotExistAssertion;
 use EspressoWebDriver\Core\EspressoContext;
 use EspressoWebDriver\Core\EspressoOptions;
-use EspressoWebDriver\Core\MatchResult;
 use EspressoWebDriver\Matcher\MatcherInterface;
 use EspressoWebDriver\Tests\Traits\MocksWebDriverElement;
 use EspressoWebDriver\Tests\Unit\BaseUnitTestCase;
@@ -24,19 +23,25 @@ class DoesNotExistAssertionTest extends BaseUnitTestCase
     public function testReturnsTrueIfNoMatchesWereFound(): void
     {
         // Arrange
-        $mockMatcher = $this->createMock(MatcherInterface::class);
+        $mockDriver = $this->createMock(WebDriver::class);
+        $mockDriver->expects($this->once())
+            ->method('findElement')
+            ->willReturn($this->createMockWebDriverElement('html'));
 
         $mockContext = new EspressoContext(
-            driver: $this->createMock(WebDriver::class),
+            driver: $mockDriver,
             options: new EspressoOptions(),
         );
 
         $assertion = new DoesNotExistAssertion();
 
-        $mockResult = new MatchResult($mockMatcher, []);
+        $mockMatcher = $this->createMock(MatcherInterface::class);
+        $mockMatcher->expects($this->once())
+            ->method('match')
+            ->willReturn([]);
 
         // Act
-        $result = $assertion->assert($mockResult, $mockContext);
+        $result = $assertion->assert($mockMatcher, null, $mockContext);
 
         // Assert
         $this->assertTrue($result);
@@ -45,19 +50,27 @@ class DoesNotExistAssertionTest extends BaseUnitTestCase
     public function testReturnsFalseIfElementsExist(): void
     {
         // Arrange
-        $mockMatcher = $this->createMock(MatcherInterface::class);
+        $mockElement = $this->createMockWebDriverElement('div');
+
+        $mockDriver = $this->createMock(WebDriver::class);
+        $mockDriver->expects($this->once())
+            ->method('findElement')
+            ->willReturn($this->createMockWebDriverElement('html', children: [$mockElement]));
 
         $mockContext = new EspressoContext(
-            driver: $this->createMock(WebDriver::class),
+            driver: $mockDriver,
             options: new EspressoOptions(),
         );
 
         $assertion = new DoesNotExistAssertion();
 
-        $mockResult = new MatchResult($mockMatcher, [$this->createMockWebDriverElement('div')]);
+        $mockMatcher = $this->createMock(MatcherInterface::class);
+        $mockMatcher->expects($this->once())
+            ->method('match')
+            ->willReturn([$mockElement]);
 
         // Act
-        $result = $assertion->assert($mockResult, $mockContext);
+        $result = $assertion->assert($mockMatcher, null, $mockContext);
 
         // Assert
         $this->assertFalse($result);

@@ -7,24 +7,19 @@ namespace EspressoWebDriver\Interaction;
 use EspressoWebDriver\Action\ActionInterface;
 use EspressoWebDriver\Assertion\AssertionInterface;
 use EspressoWebDriver\Core\EspressoContext;
-use EspressoWebDriver\Core\MatchResult;
 use EspressoWebDriver\Exception\AmbiguousElementException;
 use EspressoWebDriver\Exception\AssertionFailedException;
 use EspressoWebDriver\Exception\NoMatchingElementException;
 use EspressoWebDriver\Exception\NoRootElementException;
 use EspressoWebDriver\Exception\PerformException;
 use EspressoWebDriver\Matcher\MatcherInterface;
-use Facebook\WebDriver\Exception\NoSuchElementException;
-use Facebook\WebDriver\WebDriverBy;
-
-use function EspressoWebDriver\withTagName;
 
 final readonly class ElementInteraction implements InteractionInterface
 {
     public function __construct(
-        private MatcherInterface $matcher,
+        private MatcherInterface $target,
+        private ?MatcherInterface $container,
         private EspressoContext $context,
-        private ?MatcherInterface $containerMatcher,
     ) {
         //
     }
@@ -34,39 +29,32 @@ final readonly class ElementInteraction implements InteractionInterface
      */
     public function check(AssertionInterface $assertion): InteractionInterface
     {
-        $success = false;
-
         try {
-            $result = $this->result();
-        } catch (AmbiguousElementException|NoMatchingElementException|NoRootElementException $e) {
-            $this->context->options->assertionReporter?->report(
-                false,
-                sprintf(
-                    'Failed asserting that %1$s is true, %2$s',
-                    $assertion,
-                    $e->getMessage(),
-                ),
-            );
-
-            throw new AssertionFailedException($assertion, $e);
-        }
-
-        try {
-            $success = $assertion->assert($result, $this->context);
+            $message = null;
+            $success = $assertion->assert($this->target, $this->container, $this->context);
 
             if (!$success) {
                 throw new AssertionFailedException($assertion);
             }
-        } catch (AmbiguousElementException|NoMatchingElementException $exception) {
+        } catch (AmbiguousElementException|NoMatchingElementException|NoRootElementException $exception) {
+            $message = $exception->getMessage();
+            $success = false;
+
+            if ($exception instanceof AmbiguousElementException) {
+                $message = sprintf(
+                    "%s\n%s",
+                    $exception->getMessage(),
+                    $this->context->options->elementLogger->describeMany($exception->elements),
+                );
+            }
+
             throw new AssertionFailedException($assertion, $exception);
         } finally {
             $this->context->options->assertionReporter?->report(
                 $success,
-                sprintf(
-                    'Failed asserting that %1$s is true, %2$s',
-                    $assertion,
-                    $result->describe($this->context->options->elementLogger),
-                ),
+                $message
+                    ? sprintf('Failed asserting that %1$s is true, %2$s', $assertion, $message)
+                    : sprintf('Failed asserting that %1$s is true', $assertion),
             );
         }
 
@@ -79,58 +67,29 @@ final readonly class ElementInteraction implements InteractionInterface
     public function perform(ActionInterface ...$actions): InteractionInterface
     {
         try {
-            $element = $this->result()->single();
-        } catch (AmbiguousElementException|NoMatchingElementException|NoRootElementException $e) {
-            throw new PerformException(
-                action: $actions,
-                reason: $e->getMessage(),
-            );
-        }
-
-        foreach ($actions as $action) {
-            if (!$action->perform($element, $this->context)) {
-                throw new PerformException(
-                    action: $action,
-                    element: $this->context->options->elementLogger->describe($element),
+            foreach ($actions as $action) {
+                $targetResult = $this->context->options->matchProcessor->process(
+                    $this->target,
+                    $this->container,
+                    $this->context,
                 );
+
+                $targetElement = $targetResult->single();
+
+                if (!$action->perform($targetElement, $this->context)) {
+                    throw new PerformException(
+                        action: $action,
+                        element: $this->context->options->elementLogger->describe($targetElement),
+                    );
+                }
             }
+        } catch (AmbiguousElementException|NoMatchingElementException|NoRootElementException $exception) {
+            throw new PerformException(
+                action: $action,
+                reason: $exception->getMessage(),
+            );
         }
 
         return $this;
-    }
-
-    /**
-     * @throws AmbiguousElementException|NoMatchingElementException|NoRootElementException
-     */
-    private function result(): MatchResult
-    {
-        $rootElement = $this->findHtmlElement();
-
-        if ($this->containerMatcher !== null) {
-            $rootElement = $this->context->options->matchProcessor->process(
-                $rootElement,
-                $this->containerMatcher,
-                $this->context,
-            );
-        }
-
-        return $this->context->options->matchProcessor->process($rootElement, $this->matcher, $this->context);
-    }
-
-    /**
-     * @throws NoRootElementException
-     */
-    private function findHtmlElement(): MatchResult
-    {
-        $matcher = withTagName('html');
-
-        try {
-            return new MatchResult(
-                matcher: $matcher,
-                result: [$this->context->driver->findElement(WebDriverBy::tagName('html'))],
-            );
-        } catch (NoSuchElementException) {
-            throw new NoRootElementException($matcher);
-        }
     }
 }
