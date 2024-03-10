@@ -38,13 +38,7 @@ final readonly class AllOfMatcher implements MatcherInterface
             $commonResults = array_uintersect($commonResults, $result, $this->compareElements(...));
         }
 
-        $commonResultsById = [];
-
-        foreach ($commonResults as $element) {
-            $commonResultsById[$element->getID()] = $element;
-        }
-
-        return $commonResultsById;
+        return $commonResults;
     }
 
     private function compareElements(WebDriverElement $a, WebDriverElement $b): int
