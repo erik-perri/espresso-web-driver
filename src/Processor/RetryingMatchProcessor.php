@@ -50,7 +50,7 @@ final readonly class RetryingMatchProcessor implements MatchProcessorInterface
         }
 
         if ($lastResult === null) {
-            throw new RuntimeException('No result processed. Ensure the wait time is greater than 0.');
+            throw new RuntimeException('No result processed. Ensure the wait timeout is greater than 0.');
         }
 
         return $lastResult;

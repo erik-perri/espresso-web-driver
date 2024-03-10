@@ -19,6 +19,7 @@ use EspressoWebDriver\Tests\Traits\MocksWebDriverElement;
 use EspressoWebDriver\Tests\Unit\BaseUnitTestCase;
 use Facebook\WebDriver\WebDriver;
 use PHPUnit\Framework\Attributes\CoversClass;
+use RuntimeException;
 use Symfony\Bridge\PhpUnit\ClockMock;
 
 #[CoversClass(MatchProcessorOptions::class)]
@@ -217,8 +218,8 @@ class RetryingMatchProcessorTest extends BaseUnitTestCase
     public function testThrowsExceptionWithExplanationWhenProvidedTimeoutWhichProducesNoResult(): void
     {
         // Expectations
-        $this->expectExceptionMessage('No result processed. Ensure the wait time is greater than 0.');
-        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('No result processed. Ensure the wait timeout is greater than 0.');
+        $this->expectException(RuntimeException::class);
 
         // Arrange
         $matchContext = new EspressoContext(
