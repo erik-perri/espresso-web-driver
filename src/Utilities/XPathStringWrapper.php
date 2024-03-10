@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace EspressoWebDriver\Utilities;
 
+/**
+ * Wraps text in quotes for XPath queries, splitting into parts using concat() when it contains both single and double
+ * quotes.
+ */
 class XPathStringWrapper
 {
     public function wrap(string $text): string
