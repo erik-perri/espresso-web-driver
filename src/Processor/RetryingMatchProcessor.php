@@ -23,6 +23,7 @@ final readonly class RetryingMatchProcessor implements MatchProcessorInterface
         MatcherInterface $target,
         MatcherInterface|MatchResult|null $container,
         EspressoContext $context,
+        MatchProcessorOptions $options = new MatchProcessorOptions,
     ): MatchResult {
         $startTime = (float) microtime(true);
         $endTime = $startTime + $this->waitTimeoutInSeconds;
@@ -30,9 +31,18 @@ final readonly class RetryingMatchProcessor implements MatchProcessorInterface
         $lastResult = null;
 
         while (microtime(true) < $endTime) {
-            $lastResult = $this->matchProcessor->process($target, $container, $context);
+            $lastResult = $this->matchProcessor->process($target, $container, $context, $options);
 
-            if ($lastResult->count()) {
+            $count = $lastResult->count();
+
+            $isExpectedCount = match ($options->expectedCount) {
+                MatchProcessorExpectedCount::Any => $count > 0,
+                MatchProcessorExpectedCount::Many => $count > 1,
+                MatchProcessorExpectedCount::None => $count === 0,
+                MatchProcessorExpectedCount::Single => $count === 1,
+            };
+
+            if ($isExpectedCount) {
                 break;
             }
 

@@ -6,6 +6,8 @@ namespace EspressoWebDriver\Assertion;
 
 use EspressoWebDriver\Core\EspressoContext;
 use EspressoWebDriver\Matcher\MatcherInterface;
+use EspressoWebDriver\Processor\MatchProcessorExpectedCount;
+use EspressoWebDriver\Processor\MatchProcessorOptions;
 
 final readonly class MatchesAssertion implements AssertionInterface
 {
@@ -19,11 +21,22 @@ final readonly class MatchesAssertion implements AssertionInterface
         ?MatcherInterface $container,
         EspressoContext $context,
     ): bool {
-        $targetResult = $context->options->matchProcessor->process($target, $container, $context);
+        $targetResult = $context->options->matchProcessor->process(
+            target: $target,
+            container: $container,
+            context: $context,
+            options: new MatchProcessorOptions(
+                expectedCount: MatchProcessorExpectedCount::Single,
+            ),
+        );
 
         $targetElement = $targetResult->single();
 
-        $matches = $context->options->matchProcessor->process($this->matcher, $targetResult, $context);
+        $matches = $context->options->matchProcessor->process(
+            target: $this->matcher,
+            container: $targetResult,
+            context: $context,
+        );
 
         foreach ($matches->all() as $match) {
             if ($targetElement->getID() === $match->getID()) {

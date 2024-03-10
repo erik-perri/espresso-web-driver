@@ -21,6 +21,7 @@ class MatchProcessor implements MatchProcessorInterface
         MatcherInterface $target,
         MatcherInterface|MatchResult|null $container,
         EspressoContext $context,
+        MatchProcessorOptions $options = new MatchProcessorOptions,
     ): MatchResult {
         $containerResult = $container instanceof MatchResult
             ? $container

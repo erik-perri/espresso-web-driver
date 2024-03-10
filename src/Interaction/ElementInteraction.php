@@ -13,6 +13,8 @@ use EspressoWebDriver\Exception\NoMatchingElementException;
 use EspressoWebDriver\Exception\NoRootElementException;
 use EspressoWebDriver\Exception\PerformException;
 use EspressoWebDriver\Matcher\MatcherInterface;
+use EspressoWebDriver\Processor\MatchProcessorExpectedCount;
+use EspressoWebDriver\Processor\MatchProcessorOptions;
 
 final readonly class ElementInteraction implements InteractionInterface
 {
@@ -69,9 +71,12 @@ final readonly class ElementInteraction implements InteractionInterface
         try {
             foreach ($actions as $action) {
                 $targetResult = $this->context->options->matchProcessor->process(
-                    $this->target,
-                    $this->container,
-                    $this->context,
+                    target: $this->target,
+                    container: $this->container,
+                    context: $this->context,
+                    options: new MatchProcessorOptions(
+                        expectedCount: MatchProcessorExpectedCount::Single,
+                    ),
                 );
 
                 $targetElement = $targetResult->single();
