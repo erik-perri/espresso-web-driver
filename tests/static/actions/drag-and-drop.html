@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>drag-and-drop</title>
+    <style>
+        .draggable {
+            width: 100px;
+            height: 100px;
+            background-color: #f9f9f9;
+            border: 1px solid #ccc;
+            margin: 10px;
+            display: inline-block;
+        }
+
+        .draggable:active {
+            cursor: move;
+        }
+
+        .draggable:hover {
+            cursor: pointer;
+            background-color: #f0f0f0;
+        }
+
+        .dropzone {
+            width: 220px;
+            height: 100px;
+            background-color: #f9f9f9;
+            border: 1px solid #ccc;
+            margin: 10px;
+        }
+
+        .dropzone:hover {
+            background-color: #f0f0f0;
+        }
+
+        .below {
+            margin-top: 100vh;
+        }
+    </style>
+</head>
+<body>
+<button class="draggable" draggable="true">Item A</button>
+<button class="draggable" draggable="true">Item B</button>
+<div class="dropzone"></div>
+<button class="draggable below" draggable="true">Item C</button>
+
+<script>
+    document.querySelectorAll('.draggable').forEach(function (draggable) {
+        draggable.addEventListener('dragstart', function (e) {
+            e.dataTransfer.setData('text', e.target.textContent);
+        });
+    });
+
+    const dropzone = document.querySelector('.dropzone');
+
+    dropzone.addEventListener('dragover', function (e) {
+        e.preventDefault();
+    });
+
+    dropzone.addEventListener('drop', function (e) {
+        e.preventDefault();
+
+        this.textContent = e.dataTransfer.getData('text') + ' dropped';
+    });
+</script>
+</body>
+</html>

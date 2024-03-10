@@ -9,6 +9,7 @@ namespace EspressoWebDriver;
 use EspressoWebDriver\Action\ActionInterface;
 use EspressoWebDriver\Action\ClearTextAction;
 use EspressoWebDriver\Action\ClickAction;
+use EspressoWebDriver\Action\DragAndDropAction;
 use EspressoWebDriver\Action\FocusAction;
 use EspressoWebDriver\Action\ScrollToAction;
 use EspressoWebDriver\Action\SendKeysAction;
@@ -62,6 +63,11 @@ function clearText(): ActionInterface
 function click(): ActionInterface
 {
     return new ClickAction();
+}
+
+function dragAndDrop(MatcherInterface $matcher): ActionInterface
+{
+    return new DragAndDropAction($matcher);
 }
 
 function focus(): ActionInterface
