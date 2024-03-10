@@ -7,7 +7,6 @@ namespace EspressoWebDriver\Matcher;
 use EspressoWebDriver\Core\EspressoContext;
 use EspressoWebDriver\Core\MatchResult;
 use Facebook\WebDriver\WebDriverBy;
-use Facebook\WebDriver\WebDriverElement;
 
 final readonly class HasDescendantMatcher implements MatcherInterface
 {
@@ -23,8 +22,7 @@ final readonly class HasDescendantMatcher implements MatcherInterface
         $elements = [];
 
         foreach ($descendantMatch as $descendant) {
-            /** @var WebDriverElement[] $ancestors */
-            $ancestors = array_reverse($descendant->findElements(WebDriverBy::xpath('./ancestor::*')));
+            $ancestors = $descendant->findElements(WebDriverBy::xpath('./ancestor::*'));
 
             foreach ($ancestors as $ancestor) {
                 $elements[$ancestor->getID()] = $ancestor;
