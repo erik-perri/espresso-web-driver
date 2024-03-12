@@ -14,9 +14,9 @@ use EspressoWebDriver\Utilities\ElementPathLogger;
 final readonly class EspressoOptions
 {
     public function __construct(
-        public MatchProcessorInterface $matchProcessor = new MatchProcessor,
-        public ElementLoggerInterface $elementLogger = new ElementPathLogger,
         public ?AssertionReporterInterface $assertionReporter = null,
+        public ElementLoggerInterface $elementLogger = new ElementPathLogger,
+        public MatchProcessorInterface $matchProcessor = new MatchProcessor,
         public ?UrlProcessorInterface $urlProcessor = null,
     ) {
         //
