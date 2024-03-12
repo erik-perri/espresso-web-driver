@@ -69,8 +69,8 @@ final readonly class ElementInteraction implements InteractionInterface
      */
     public function perform(ActionInterface ...$actions): InteractionInterface
     {
-        try {
-            foreach ($actions as $action) {
+        foreach ($actions as $action) {
+            try {
                 $targetResult = $this->context->options->matchProcessor->process(
                     target: $this->target,
                     container: $this->container,
@@ -88,12 +88,12 @@ final readonly class ElementInteraction implements InteractionInterface
                         element: $this->context->options->elementLogger->describe($targetElement),
                     );
                 }
+            } catch (AmbiguousElementException|NoMatchingElementException|NoRootElementException $exception) {
+                throw new PerformException(
+                    action: $action,
+                    reason: $exception->getMessage(),
+                );
             }
-        } catch (AmbiguousElementException|NoMatchingElementException|NoRootElementException $exception) {
-            throw new PerformException(
-                action: $action,
-                reason: $exception->getMessage(),
-            );
         }
 
         return $this;
