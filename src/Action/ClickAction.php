@@ -11,7 +11,10 @@ final readonly class ClickAction implements ActionInterface
 {
     public function perform(MatchResult $target, EspressoContext $context): bool
     {
-        $target->single()->click();
+        $interactableParent = $context->options->elementLocator
+            ->findNonScreenReaderParent($target->single(), $target->container?->single());
+
+        $interactableParent->click();
 
         return true;
     }

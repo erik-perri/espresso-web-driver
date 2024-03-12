@@ -13,6 +13,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\CoversFunction;
 
 use function EspressoWebDriver\click;
+use function EspressoWebDriver\isDisplayed;
 use function EspressoWebDriver\isDisplayedInViewport;
 use function EspressoWebDriver\matches;
 use function EspressoWebDriver\not;
@@ -20,6 +21,7 @@ use function EspressoWebDriver\sendKeys;
 use function EspressoWebDriver\withClass;
 use function EspressoWebDriver\withId;
 use function EspressoWebDriver\withTagName;
+use function EspressoWebDriver\withText;
 use function EspressoWebDriver\withValue;
 
 #[CoversClass(ClickAction::class)]
@@ -58,5 +60,23 @@ class ClickActionFeatureTest extends BaseFeatureTestCase
         $button->perform(click());
 
         $modal->check(matches(not(isDisplayedInViewport())));
+    }
+
+    public function testPressesButtonsViaScreenReaderText(): void
+    {
+        // Arrange
+        $espresso = $this->espresso();
+
+        $modal = $espresso->onElement(withClass('modal'));
+
+        // Act and Assert
+        $espresso->navigateTo('/actions/click.html');
+
+        $modal->check(matches(not(isDisplayed())));
+
+        $espresso->onElement(withText('Screen reader text'))
+            ->perform(click());
+
+        $modal->check(matches(isDisplayed()));
     }
 }
