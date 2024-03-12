@@ -20,7 +20,7 @@ final class DriverManager
     public static function getInstance(): DriverManager
     {
         if (self::$instance === null) {
-            self::$instance = new DriverManager();
+            self::$instance = new DriverManager;
         }
 
         return self::$instance;

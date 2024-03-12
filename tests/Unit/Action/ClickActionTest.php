@@ -16,7 +16,7 @@ class ClickActionTest extends BaseUnitTestCase
     public function testClickToString(): void
     {
         // Arrange
-        $action = new ClickAction();
+        $action = new ClickAction;
 
         // Act
         $result = (string) $action;

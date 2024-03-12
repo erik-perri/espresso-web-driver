@@ -23,7 +23,7 @@ class ScrollToActionTest extends BaseUnitTestCase
     public function testScrollToToString(): void
     {
         // Arrange
-        $action = new ScrollToAction();
+        $action = new ScrollToAction;
 
         // Act
         $result = (string) $action;
@@ -39,13 +39,13 @@ class ScrollToActionTest extends BaseUnitTestCase
         $this->expectExceptionMessage('Failed to perform action scrollTo on mock, driver does not have access to executeScript');
 
         // Arrange
-        $action = new ScrollToAction();
+        $action = new ScrollToAction;
 
         $mockElement = $this->createMockWebDriverElement('mock');
 
         $mockContext = new EspressoContext(
             driver: $this->createMock(WebDriver::class),
-            options: new EspressoOptions(),
+            options: new EspressoOptions,
         );
 
         // Act

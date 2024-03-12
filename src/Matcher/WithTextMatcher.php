@@ -15,7 +15,7 @@ final readonly class WithTextMatcher implements MatcherInterface, NegativeMatche
 
     public function __construct(private string $text)
     {
-        $this->wrappedText = (new XPathStringWrapper())->wrap($this->text);
+        $this->wrappedText = (new XPathStringWrapper)->wrap($this->text);
     }
 
     public function match(MatchResult $container, EspressoContext $context): array

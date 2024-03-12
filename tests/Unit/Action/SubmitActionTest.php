@@ -23,7 +23,7 @@ class SubmitActionTest extends BaseUnitTestCase
     public function testSubmitToString(): void
     {
         // Arrange
-        $action = new SubmitAction();
+        $action = new SubmitAction;
 
         // Act
         $result = (string) $action;
@@ -39,13 +39,13 @@ class SubmitActionTest extends BaseUnitTestCase
         $this->expectExceptionMessage('Failed to perform action submit on mock, not a submittable element');
 
         // Arrange
-        $action = new SubmitAction();
+        $action = new SubmitAction;
 
         $mockElement = $this->createMockWebDriverElement('mock');
 
         $mockContext = new EspressoContext(
             driver: $this->createMock(WebDriver::class),
-            options: new EspressoOptions(),
+            options: new EspressoOptions,
         );
 
         // Act

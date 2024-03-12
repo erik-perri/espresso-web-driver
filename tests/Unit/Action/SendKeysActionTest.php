@@ -55,13 +55,13 @@ class SendKeysActionTest extends BaseUnitTestCase
         );
 
         // Arrange
-        $action = new SendKeysAction();
+        $action = new SendKeysAction;
 
         $element = $this->createMockWebDriverElement('textarea');
 
         $context = new EspressoContext(
             driver: $this->createMock(WebDriver::class),
-            options: new EspressoOptions(),
+            options: new EspressoOptions,
         );
 
         // Act

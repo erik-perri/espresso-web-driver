@@ -64,7 +64,7 @@ class MatchResultTest extends TestCase
         );
 
         // Act
-        $resultAsString = $result->describe(new ElementPathLogger());
+        $resultAsString = $result->describe(new ElementPathLogger);
 
         // Assert
         $this->assertSame("1 element found for matcher()\nmock", $resultAsString);
@@ -84,7 +84,7 @@ class MatchResultTest extends TestCase
         );
 
         // Act
-        $resultAsString = $result->describe(new ElementPathLogger());
+        $resultAsString = $result->describe(new ElementPathLogger);
 
         // Assert
         $this->assertSame('no elements found for matcher()', $resultAsString);

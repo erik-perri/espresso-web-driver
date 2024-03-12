@@ -16,7 +16,7 @@ class IsCheckedMatcherTest extends BaseUnitTestCase
     public function testIsCheckedToString(): void
     {
         // Arrange
-        $matcher = new IsCheckedMatcher();
+        $matcher = new IsCheckedMatcher;
 
         // Act
         $result = (string) $matcher;

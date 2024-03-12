@@ -16,7 +16,7 @@ class ExistsAssertionTest extends BaseUnitTestCase
     public function testPresentMatcherToString(): void
     {
         // Arrange
-        $matcher = new ExistsAssertion();
+        $matcher = new ExistsAssertion;
 
         // Act
         $result = (string) $matcher;

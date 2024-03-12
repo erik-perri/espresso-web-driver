@@ -20,8 +20,8 @@ final readonly class WithLabelMatcher implements MatcherInterface, NegativeMatch
 
     public function __construct(string $text)
     {
-        $this->normalizedText = (new TextNormalizer())->normalize($text);
-        $this->wrappedText = (new XPathStringWrapper())->wrap($this->normalizedText);
+        $this->normalizedText = (new TextNormalizer)->normalize($text);
+        $this->wrappedText = (new XPathStringWrapper)->wrap($this->normalizedText);
     }
 
     public function match(MatchResult $container, EspressoContext $context): array

@@ -18,8 +18,8 @@ final readonly class WithTextContainingMatcher implements MatcherInterface, Nega
 
     public function __construct(string $text)
     {
-        $this->normalizedText = (new TextNormalizer())->normalize($text);
-        $this->wrappedText = (new XPathStringWrapper())->wrap(mb_strtolower($this->normalizedText));
+        $this->normalizedText = (new TextNormalizer)->normalize($text);
+        $this->wrappedText = (new XPathStringWrapper)->wrap(mb_strtolower($this->normalizedText));
     }
 
     public function match(MatchResult $container, EspressoContext $context): array

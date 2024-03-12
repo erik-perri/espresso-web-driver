@@ -56,22 +56,22 @@ function usingDriver(WebDriver $driver, EspressoOptions $options = new EspressoO
 
 function clearText(): ActionInterface
 {
-    return new ClearTextAction();
+    return new ClearTextAction;
 }
 
 function click(): ActionInterface
 {
-    return new ClickAction();
+    return new ClickAction;
 }
 
 function focus(): ActionInterface
 {
-    return new FocusAction();
+    return new FocusAction;
 }
 
 function scrollTo(): ActionInterface
 {
-    return new ScrollToAction();
+    return new ScrollToAction;
 }
 
 /**
@@ -86,7 +86,7 @@ function sendKeys(string ...$keys): ActionInterface
 
 function submit(): ActionInterface
 {
-    return new SubmitAction();
+    return new SubmitAction;
 }
 
 /**
@@ -103,12 +103,12 @@ function typeText(string $text): ActionInterface
 
 function doesNotExist(): AssertionInterface
 {
-    return new DoesNotExistAssertion();
+    return new DoesNotExistAssertion;
 }
 
 function exists(): AssertionInterface
 {
-    return new ExistsAssertion();
+    return new ExistsAssertion;
 }
 
 function matches(MatcherInterface $matcher): AssertionInterface
@@ -147,7 +147,7 @@ function hasParent(MatcherInterface $matcher): MatcherInterface
 
 function isFocused(): MatcherInterface
 {
-    return new IsFocusedMatcher();
+    return new IsFocusedMatcher;
 }
 
 function hasSibling(MatcherInterface $matcher): MatcherInterface
@@ -157,7 +157,7 @@ function hasSibling(MatcherInterface $matcher): MatcherInterface
 
 function isChecked(): MatcherInterface
 {
-    return new IsCheckedMatcher();
+    return new IsCheckedMatcher;
 }
 
 /**
@@ -165,7 +165,7 @@ function isChecked(): MatcherInterface
  */
 function isDisplayed(): MatcherInterface
 {
-    return new IsDisplayedMatcher();
+    return new IsDisplayedMatcher;
 }
 
 /**
@@ -173,12 +173,12 @@ function isDisplayed(): MatcherInterface
  */
 function isDisplayedInViewport(): MatcherInterface
 {
-    return new IsDisplayedInViewportMatcher();
+    return new IsDisplayedInViewportMatcher;
 }
 
 function isEnabled(): MatcherInterface
 {
-    return new IsEnabledMatcher();
+    return new IsEnabledMatcher;
 }
 
 function not(MatcherInterface $matcher): MatcherInterface

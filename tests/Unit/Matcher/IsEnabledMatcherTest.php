@@ -16,7 +16,7 @@ class IsEnabledMatcherTest extends BaseUnitTestCase
     public function testIsEnabledToString(): void
     {
         // Arrange
-        $matcher = new IsEnabledMatcher();
+        $matcher = new IsEnabledMatcher;
 
         // Act
         $result = (string) $matcher;

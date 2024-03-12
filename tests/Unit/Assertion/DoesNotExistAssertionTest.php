@@ -30,10 +30,10 @@ class DoesNotExistAssertionTest extends BaseUnitTestCase
 
         $mockContext = new EspressoContext(
             driver: $mockDriver,
-            options: new EspressoOptions(),
+            options: new EspressoOptions,
         );
 
-        $assertion = new DoesNotExistAssertion();
+        $assertion = new DoesNotExistAssertion;
 
         $mockMatcher = $this->createMock(MatcherInterface::class);
         $mockMatcher->expects($this->once())
@@ -59,10 +59,10 @@ class DoesNotExistAssertionTest extends BaseUnitTestCase
 
         $mockContext = new EspressoContext(
             driver: $mockDriver,
-            options: new EspressoOptions(),
+            options: new EspressoOptions,
         );
 
-        $assertion = new DoesNotExistAssertion();
+        $assertion = new DoesNotExistAssertion;
 
         $mockMatcher = $this->createMock(MatcherInterface::class);
         $mockMatcher->expects($this->once())
@@ -79,7 +79,7 @@ class DoesNotExistAssertionTest extends BaseUnitTestCase
     public function testDoesNotExistAssertionToString(): void
     {
         // Arrange
-        $assertion = new DoesNotExistAssertion();
+        $assertion = new DoesNotExistAssertion;
 
         // Act
         $result = (string) $assertion;

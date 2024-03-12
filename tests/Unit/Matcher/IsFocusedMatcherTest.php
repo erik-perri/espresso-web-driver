@@ -16,7 +16,7 @@ class IsFocusedMatcherTest extends BaseUnitTestCase
     public function testIsFocusedToString(): void
     {
         // Arrange
-        $matcher = new IsFocusedMatcher();
+        $matcher = new IsFocusedMatcher;
 
         // Act
         $result = (string) $matcher;

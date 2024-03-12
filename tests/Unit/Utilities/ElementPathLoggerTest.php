@@ -36,7 +36,7 @@ class ElementPathLoggerTest extends BaseUnitTestCase
             ],
         );
 
-        $pathLogger = new ElementPathLogger();
+        $pathLogger = new ElementPathLogger;
 
         // Act
         $elementPath = $pathLogger->describe($element);
@@ -50,7 +50,7 @@ class ElementPathLoggerTest extends BaseUnitTestCase
         // Arrange
         $element = $this->createMockWebDriverElement('html');
 
-        $logger = new ElementPathLogger();
+        $logger = new ElementPathLogger;
 
         // Act
         $result = $logger->describe($element);
@@ -72,7 +72,7 @@ class ElementPathLoggerTest extends BaseUnitTestCase
             ],
         );
 
-        $logger = new ElementPathLogger();
+        $logger = new ElementPathLogger;
 
         // Act
         $result = $logger->describe($element);
@@ -88,7 +88,7 @@ class ElementPathLoggerTest extends BaseUnitTestCase
 
         $this->createMockWebDriverElement('body', children: [$element]);
 
-        $logger = new ElementPathLogger();
+        $logger = new ElementPathLogger;
 
         // Act
         $result = $logger->describe($element);
@@ -109,7 +109,7 @@ class ElementPathLoggerTest extends BaseUnitTestCase
             ->with(WebDriverBy::xpath('./parent::*'))
             ->willReturn($bodyElement);
 
-        $logger = new ElementPathLogger();
+        $logger = new ElementPathLogger;
 
         // Act
         $result = $logger->describe($element);
@@ -126,7 +126,7 @@ class ElementPathLoggerTest extends BaseUnitTestCase
         $elementThree = $this->createMockWebDriverElement('div', ['id' => 'test-3']);
         $elementFour = $this->createMockWebDriverElement('div', ['id' => 'test-4']);
 
-        $logger = new ElementPathLogger();
+        $logger = new ElementPathLogger;
 
         // Act
         $result = $logger->describeMany([
@@ -146,7 +146,7 @@ class ElementPathLoggerTest extends BaseUnitTestCase
     public function testManyLogsNothingWhileEmpty(): void
     {
         // Arrange
-        $logger = new ElementPathLogger();
+        $logger = new ElementPathLogger;
 
         // Act
         $result = $logger->describeMany([]);
@@ -165,7 +165,7 @@ class ElementPathLoggerTest extends BaseUnitTestCase
             ->with(WebDriverBy::xpath('./parent::*'))
             ->willThrowException(new NoSuchElementException(''));
 
-        $logger = new ElementPathLogger();
+        $logger = new ElementPathLogger;
 
         // Act
         $result = $logger->describe($element);

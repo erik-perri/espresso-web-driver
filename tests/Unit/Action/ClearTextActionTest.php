@@ -29,10 +29,10 @@ class ClearTextActionTest extends BaseUnitTestCase
 
         $mockContext = new EspressoContext(
             driver: $this->createMock(WebDriver::class),
-            options: new EspressoOptions(),
+            options: new EspressoOptions,
         );
 
-        $action = new ClearTextAction();
+        $action = new ClearTextAction;
 
         // Act
         $result = $action->perform($mockContainer, $mockContext);
@@ -44,7 +44,7 @@ class ClearTextActionTest extends BaseUnitTestCase
     public function testTypeTextToString(): void
     {
         // Arrange
-        $action = new ClearTextAction();
+        $action = new ClearTextAction;
 
         // Act
         $result = (string) $action;

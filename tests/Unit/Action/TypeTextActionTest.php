@@ -30,7 +30,7 @@ class TypeTextActionTest extends BaseUnitTestCase
 
         $mockContext = new EspressoContext(
             driver: $this->createMock(WebDriver::class),
-            options: new EspressoOptions(),
+            options: new EspressoOptions,
         );
 
         $action = new TypeTextAction('Mock Keys');
