@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace EspressoWebDriver\Action;
 
 use EspressoWebDriver\Core\EspressoContext;
-use Facebook\WebDriver\WebDriverElement;
+use EspressoWebDriver\Core\MatchResult;
 
 /**
  * Selects the matched element and types the given text into it.
@@ -17,9 +17,9 @@ final readonly class TypeTextAction implements ActionInterface
         //
     }
 
-    public function perform(WebDriverElement $target, EspressoContext $context): bool
+    public function perform(MatchResult $target, EspressoContext $context): bool
     {
-        $target->sendKeys($this->text);
+        $target->single()->sendKeys($this->text);
 
         return true;
     }

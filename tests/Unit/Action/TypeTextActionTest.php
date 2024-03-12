@@ -9,6 +9,8 @@ namespace EspressoWebDriver\Tests\Unit\Action;
 use EspressoWebDriver\Action\TypeTextAction;
 use EspressoWebDriver\Core\EspressoContext;
 use EspressoWebDriver\Core\EspressoOptions;
+use EspressoWebDriver\Core\MatchResult;
+use EspressoWebDriver\Matcher\MatcherInterface;
 use EspressoWebDriver\Tests\Traits\MocksWebDriverElement;
 use EspressoWebDriver\Tests\Unit\BaseUnitTestCase;
 use Facebook\WebDriver\WebDriver;
@@ -28,6 +30,12 @@ class TypeTextActionTest extends BaseUnitTestCase
             ->method('sendKeys')
             ->with('Mock Keys');
 
+        $mockResult = new MatchResult(
+            container: null,
+            matcher: $this->createMock(MatcherInterface::class),
+            result: [$mockContainer],
+        );
+
         $mockContext = new EspressoContext(
             driver: $this->createMock(WebDriver::class),
             options: new EspressoOptions,
@@ -36,7 +44,7 @@ class TypeTextActionTest extends BaseUnitTestCase
         $action = new TypeTextAction('Mock Keys');
 
         // Act
-        $result = $action->perform($mockContainer, $mockContext);
+        $result = $action->perform($mockResult, $mockContext);
 
         // Assert
         $this->assertTrue($result);

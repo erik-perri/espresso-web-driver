@@ -9,6 +9,8 @@ namespace Action;
 use EspressoWebDriver\Action\ClearTextAction;
 use EspressoWebDriver\Core\EspressoContext;
 use EspressoWebDriver\Core\EspressoOptions;
+use EspressoWebDriver\Core\MatchResult;
+use EspressoWebDriver\Matcher\MatcherInterface;
 use EspressoWebDriver\Tests\Traits\MocksWebDriverElement;
 use EspressoWebDriver\Tests\Unit\BaseUnitTestCase;
 use Facebook\WebDriver\WebDriver;
@@ -27,6 +29,12 @@ class ClearTextActionTest extends BaseUnitTestCase
             ->expects($this->once())
             ->method('clear');
 
+        $mockResult = new MatchResult(
+            container: null,
+            matcher: $this->createMock(MatcherInterface::class),
+            result: [$mockContainer],
+        );
+
         $mockContext = new EspressoContext(
             driver: $this->createMock(WebDriver::class),
             options: new EspressoOptions,
@@ -35,7 +43,7 @@ class ClearTextActionTest extends BaseUnitTestCase
         $action = new ClearTextAction;
 
         // Act
-        $result = $action->perform($mockContainer, $mockContext);
+        $result = $action->perform($mockResult, $mockContext);
 
         // Assert
         $this->assertTrue($result);

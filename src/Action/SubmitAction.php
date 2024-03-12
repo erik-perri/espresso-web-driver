@@ -5,16 +5,15 @@ declare(strict_types=1);
 namespace EspressoWebDriver\Action;
 
 use EspressoWebDriver\Core\EspressoContext;
+use EspressoWebDriver\Core\MatchResult;
 use EspressoWebDriver\Exception\PerformException;
-use Facebook\WebDriver\WebDriverElement;
 
 final readonly class SubmitAction implements ActionInterface
 {
-    /**
-     * @throws PerformException
-     */
-    public function perform(WebDriverElement $target, EspressoContext $context): bool
+    public function perform(MatchResult $target, EspressoContext $context): bool
     {
+        $target = $target->single();
+
         if (!in_array(strtolower($target->getTagName()), [
             'button',
             'form',

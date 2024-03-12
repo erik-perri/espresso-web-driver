@@ -9,7 +9,9 @@ namespace Action;
 use EspressoWebDriver\Action\SubmitAction;
 use EspressoWebDriver\Core\EspressoContext;
 use EspressoWebDriver\Core\EspressoOptions;
+use EspressoWebDriver\Core\MatchResult;
 use EspressoWebDriver\Exception\PerformException;
+use EspressoWebDriver\Matcher\MatcherInterface;
 use EspressoWebDriver\Tests\Traits\MocksWebDriverElement;
 use EspressoWebDriver\Tests\Unit\BaseUnitTestCase;
 use Facebook\WebDriver\WebDriver;
@@ -43,13 +45,19 @@ class SubmitActionTest extends BaseUnitTestCase
 
         $mockElement = $this->createMockWebDriverElement('mock');
 
+        $mockResult = new MatchResult(
+            container: null,
+            matcher: $this->createMock(MatcherInterface::class),
+            result: [$mockElement],
+        );
+
         $mockContext = new EspressoContext(
             driver: $this->createMock(WebDriver::class),
             options: new EspressoOptions,
         );
 
         // Act
-        $action->perform($mockElement, $mockContext);
+        $action->perform($mockResult, $mockContext);
 
         // Assert
         // No assertions, only expectations.

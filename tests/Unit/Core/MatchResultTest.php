@@ -32,8 +32,8 @@ class MatchResultTest extends TestCase
         $elementTwo = $this->createMockWebDriverElement('div');
 
         $result = new MatchResult(
-            matcher: $matcher,
             container: null,
+            matcher: $matcher,
             result: [
                 $elementOne,
                 $elementTwo,
@@ -60,8 +60,8 @@ class MatchResultTest extends TestCase
         $element = $this->createMockWebDriverElement('mock');
 
         $result = new MatchResult(
-            matcher: $matcher,
             container: null,
+            matcher: $matcher,
             result: [$element],
         );
 
@@ -81,8 +81,8 @@ class MatchResultTest extends TestCase
             ->willReturn('matcher()');
 
         $result = new MatchResult(
-            matcher: $matcher,
             container: null,
+            matcher: $matcher,
             result: [],
         );
 
@@ -109,8 +109,8 @@ class MatchResultTest extends TestCase
         $elementTwo = $this->createMockWebDriverElement('mock');
 
         $result = new MatchResult(
-            matcher: $matcher,
             container: null,
+            matcher: $matcher,
             result: [
                 $elementOne,
                 $elementTwo,
@@ -137,8 +137,8 @@ class MatchResultTest extends TestCase
             ->willReturn('matcher()');
 
         $result = new MatchResult(
-            matcher: $matcher,
             container: null,
+            matcher: $matcher,
             result: [],
         );
 
@@ -157,8 +157,8 @@ class MatchResultTest extends TestCase
         $mockElement = $this->createMockWebDriverElement('mock');
 
         $result = new MatchResult(
-            matcher: $mockMatcher,
             container: null,
+            matcher: $mockMatcher,
             result: [$mockElement],
         );
 
@@ -188,8 +188,8 @@ class MatchResultTest extends TestCase
         );
 
         $result = new MatchResult(
-            matcher: $mockMatcher,
             container: null,
+            matcher: $mockMatcher,
             result: [
                 $mockContainerElementOne,
                 $mockContainerElementTwo,

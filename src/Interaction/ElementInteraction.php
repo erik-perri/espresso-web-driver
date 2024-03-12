@@ -80,12 +80,10 @@ final readonly class ElementInteraction implements InteractionInterface
                     ),
                 );
 
-                $targetElement = $targetResult->single();
-
-                if (!$action->perform($targetElement, $this->context)) {
+                if (!$action->perform($targetResult, $this->context)) {
                     throw new PerformException(
                         action: $action,
-                        element: $this->context->options->elementLogger->describe($targetElement),
+                        element: $this->context->options->elementLogger->describe($targetResult->single()),
                     );
                 }
             } catch (AmbiguousElementException|NoMatchingElementException|NoRootElementException $exception) {

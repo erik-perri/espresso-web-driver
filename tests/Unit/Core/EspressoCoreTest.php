@@ -63,12 +63,12 @@ class EspressoCoreTest extends BaseUnitTestCase
             ->willReturn([$mockRootElement]);
 
         $mockContainerResult = new MatchResult(
-            matcher: $mockContainerMatcher,
             container: new MatchResult(
-                matcher: withTagName('html'),
                 container: null,
+                matcher: withTagName('html'),
                 result: [$mockRootElement],
             ),
+            matcher: $mockContainerMatcher,
             result: [$this->createMockWebDriverElement('div')],
         );
 
@@ -79,10 +79,16 @@ class EspressoCoreTest extends BaseUnitTestCase
             ->with($mockContainerResult, $this->isInstanceOf(EspressoContext::class))
             ->willReturn([$mockElement]);
 
+        $mockElementResult = new MatchResult(
+            container: $mockContainerResult,
+            matcher: $mockElementMatcher,
+            result: [$mockElement],
+        );
+
         $mockAction = $this->createMock(ActionInterface::class);
         $mockAction->expects($this->once())
             ->method('perform')
-            ->with($mockElement, $this->isInstanceOf(EspressoContext::class))
+            ->with($mockElementResult, $this->isInstanceOf(EspressoContext::class))
             ->willReturn(true);
 
         // Act

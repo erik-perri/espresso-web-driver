@@ -39,8 +39,8 @@ class MatchProcessor implements MatchProcessorInterface
 
         if ($container !== null) {
             return new MatchResult(
-                matcher: $container,
                 container: $rootElement,
+                matcher: $container,
                 result: $container->match($rootElement, $context),
             );
         }
@@ -57,8 +57,8 @@ class MatchProcessor implements MatchProcessorInterface
         EspressoContext $context,
     ): MatchResult {
         return new MatchResult(
-            matcher: $target,
             container: $container,
+            matcher: $target,
             result: $target->match($container, $context),
         );
     }
@@ -72,8 +72,8 @@ class MatchProcessor implements MatchProcessorInterface
 
         try {
             return new MatchResult(
-                matcher: $matcher,
                 container: null,
+                matcher: $matcher,
                 result: [$context->driver->findElement(WebDriverBy::tagName('html'))],
             );
         } catch (NoSuchElementException) {

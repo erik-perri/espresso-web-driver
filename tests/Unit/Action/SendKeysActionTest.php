@@ -9,7 +9,9 @@ namespace Action;
 use EspressoWebDriver\Action\SendKeysAction;
 use EspressoWebDriver\Core\EspressoContext;
 use EspressoWebDriver\Core\EspressoOptions;
+use EspressoWebDriver\Core\MatchResult;
 use EspressoWebDriver\Exception\PerformException;
+use EspressoWebDriver\Matcher\MatcherInterface;
 use EspressoWebDriver\Tests\Traits\MocksWebDriverElement;
 use EspressoWebDriver\Tests\Unit\BaseUnitTestCase;
 use Facebook\WebDriver\WebDriver;
@@ -57,15 +59,21 @@ class SendKeysActionTest extends BaseUnitTestCase
         // Arrange
         $action = new SendKeysAction;
 
-        $element = $this->createMockWebDriverElement('textarea');
+        $mockElement = $this->createMockWebDriverElement('textarea');
 
-        $context = new EspressoContext(
+        $mockResult = new MatchResult(
+            container: null,
+            matcher: $this->createMock(MatcherInterface::class),
+            result: [$mockElement],
+        );
+
+        $mockContext = new EspressoContext(
             driver: $this->createMock(WebDriver::class),
             options: new EspressoOptions,
         );
 
         // Act
-        $action->perform($element, $context);
+        $action->perform($mockResult, $mockContext);
 
         // Assert
         // No assertions, only expectations.
