@@ -6,6 +6,7 @@ namespace EspressoWebDriver\Action;
 
 use EspressoWebDriver\Core\EspressoContext;
 use EspressoWebDriver\Core\MatchResult;
+use Facebook\WebDriver\Exception\ElementClickInterceptedException;
 
 final readonly class ClickAction implements ActionInterface
 {
@@ -14,7 +15,18 @@ final readonly class ClickAction implements ActionInterface
         $interactableParent = $context->options->elementLocator
             ->findNonScreenReaderParent($target->single(), $target->container?->single());
 
-        $interactableParent->click();
+        // TODO Build retry logic in a configurable way
+        $waitIntervalInMicroseconds = 250 * 1000;
+
+        try {
+            $interactableParent->click();
+
+            return true;
+        } /** @noinspection PhpRedundantCatchClauseInspection */ catch (ElementClickInterceptedException $e) {
+            usleep($waitIntervalInMicroseconds);
+
+            $interactableParent->click();
+        }
 
         return true;
     }
