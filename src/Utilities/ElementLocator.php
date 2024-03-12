@@ -22,17 +22,15 @@ final readonly class ElementLocator implements ElementLocatorInterface
         WebDriverElement $element,
         ?WebDriverElement $container,
     ): WebDriverElement {
-        $parent = $element;
-
-        while (!$this->isScreenReaderElement($parent) && $parent->getID() !== $container?->getID()) {
+        if ($this->isScreenReaderElement($element)) {
             try {
-                $parent = $parent->findElement(WebDriverBy::xpath('..'));
+                return $element->findElement(WebDriverBy::xpath('..'));
             } catch (NoSuchElementException) {
-                return $element;
+                //
             }
         }
 
-        return $parent;
+        return $element;
     }
 
     private function isScreenReaderElement(WebDriverElement $target): bool
@@ -40,11 +38,11 @@ final readonly class ElementLocator implements ElementLocatorInterface
         $classList = $target->getAttribute('class');
 
         if (!$classList) {
-            return true;
+            return false;
         }
 
         $classes = explode(' ', $classList);
 
-        return empty(array_intersect($this->invisibleClasses, $classes));
+        return !empty(array_intersect($this->invisibleClasses, $classes));
     }
 }
