@@ -21,8 +21,11 @@ final readonly class MatchResult
     /**
      * @param  WebDriverElement[]  $result
      */
-    public function __construct(private MatcherInterface $matcher, array $result)
-    {
+    public function __construct(
+        public MatcherInterface $matcher,
+        public ?MatchResult $container,
+        array $result,
+    ) {
         $this->result = $this->removeDuplicates($result);
     }
 

@@ -17,6 +17,8 @@ use EspressoWebDriver\Tests\Unit\BaseUnitTestCase;
 use Facebook\WebDriver\WebDriver;
 use PHPUnit\Framework\Attributes\CoversClass;
 
+use function EspressoWebDriver\withTagName;
+
 #[CoversClass(EspressoCore::class)]
 class EspressoCoreTest extends BaseUnitTestCase
 {
@@ -53,12 +55,22 @@ class EspressoCoreTest extends BaseUnitTestCase
 
         $core = new EspressoCore($mockDriver, new EspressoOptions);
 
+        $mockRootElement = $this->createMockWebDriverElement('html');
+
         $mockContainerMatcher = $this->createMock(MatcherInterface::class);
         $mockContainerMatcher->expects($this->once())
             ->method('match')
-            ->willReturn([$this->createMockWebDriverElement('div')]);
+            ->willReturn([$mockRootElement]);
 
-        $mockContainerResult = new MatchResult($mockContainerMatcher, [$this->createMockWebDriverElement('div')]);
+        $mockContainerResult = new MatchResult(
+            matcher: $mockContainerMatcher,
+            container: new MatchResult(
+                matcher: withTagName('html'),
+                container: null,
+                result: [$mockRootElement],
+            ),
+            result: [$this->createMockWebDriverElement('div')],
+        );
 
         $mockElement = $this->createMockWebDriverElement('div');
         $mockElementMatcher = $this->createMock(MatcherInterface::class);

@@ -33,6 +33,7 @@ class MatchResultTest extends TestCase
 
         $result = new MatchResult(
             matcher: $matcher,
+            container: null,
             result: [
                 $elementOne,
                 $elementTwo,
@@ -60,6 +61,7 @@ class MatchResultTest extends TestCase
 
         $result = new MatchResult(
             matcher: $matcher,
+            container: null,
             result: [$element],
         );
 
@@ -80,6 +82,7 @@ class MatchResultTest extends TestCase
 
         $result = new MatchResult(
             matcher: $matcher,
+            container: null,
             result: [],
         );
 
@@ -107,6 +110,7 @@ class MatchResultTest extends TestCase
 
         $result = new MatchResult(
             matcher: $matcher,
+            container: null,
             result: [
                 $elementOne,
                 $elementTwo,
@@ -134,6 +138,7 @@ class MatchResultTest extends TestCase
 
         $result = new MatchResult(
             matcher: $matcher,
+            container: null,
             result: [],
         );
 
@@ -153,6 +158,7 @@ class MatchResultTest extends TestCase
 
         $result = new MatchResult(
             matcher: $mockMatcher,
+            container: null,
             result: [$mockElement],
         );
 
@@ -183,6 +189,7 @@ class MatchResultTest extends TestCase
 
         $result = new MatchResult(
             matcher: $mockMatcher,
+            container: null,
             result: [
                 $mockContainerElementOne,
                 $mockContainerElementTwo,
