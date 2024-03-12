@@ -28,8 +28,8 @@ final readonly class WithTextContainingMatcher implements MatcherInterface, Nega
         //      XPath's newer lower-case() or matches() are not supported
         return $container->findElements(
             WebDriverBy::xpath(sprintf(
-                'descendant-or-self::*[contains(%1$s, %2$s)]',
-                'translate(normalize-space(text()), "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "abcdefghijklmnopqrstuvwxyz")',
+                'descendant-or-self::*[text()[contains(%1$s, %2$s)]]',
+                'translate(normalize-space(.), "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "abcdefghijklmnopqrstuvwxyz")',
                 $this->wrappedText,
             )),
         );
@@ -41,8 +41,8 @@ final readonly class WithTextContainingMatcher implements MatcherInterface, Nega
         //      XPath's newer lower-case() or matches() are not supported
         return $container->findElements(
             WebDriverBy::xpath(sprintf(
-                'descendant-or-self::*[not(contains(%1$s, %2$s))]',
-                'translate(normalize-space(text()), "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "abcdefghijklmnopqrstuvwxyz")',
+                'descendant-or-self::*[text()[not(contains(%1$s, %2$s))]]',
+                'translate(normalize-space(.), "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "abcdefghijklmnopqrstuvwxyz")',
                 $this->wrappedText,
             )),
         );

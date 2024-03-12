@@ -22,7 +22,7 @@ final readonly class WithTextMatcher implements MatcherInterface, NegativeMatche
     {
         return $container->findElements(
             WebDriverBy::xpath(sprintf(
-                'descendant-or-self::*[normalize-space(text())=%1$s]',
+                'descendant-or-self::*[text()[normalize-space(.)=%1$s]]',
                 $this->wrappedText,
             )),
         );
@@ -32,7 +32,7 @@ final readonly class WithTextMatcher implements MatcherInterface, NegativeMatche
     {
         return $container->findElements(
             WebDriverBy::xpath(sprintf(
-                'descendant-or-self::*[not(normalize-space(text())=%1$s)]',
+                'descendant-or-self::*[text()[not(normalize-space(.)=%1$s)]]',
                 $this->wrappedText,
             )),
         );

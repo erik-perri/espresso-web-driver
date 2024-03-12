@@ -30,7 +30,7 @@ final readonly class WithLabelMatcher implements MatcherInterface, NegativeMatch
 
         $labels = $container->findElements(
             WebDriverBy::xpath(sprintf(
-                'descendant-or-self::label[normalize-space(text())=%s]',
+                'descendant-or-self::label[text()[normalize-space(.)=%s]]',
                 $this->wrappedText,
             )),
         );
