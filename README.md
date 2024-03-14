@@ -39,10 +39,11 @@ $containedEspresso->onElement(withText('Edit'))
   * [Matchers](#matchers)
     * [allOf(`MatcherInterface ...`)](#allofmatcherinterface-)
     * [anyOf(`MatcherInterface ...`)](#anyofmatcherinterface-)
+    * [hasAncestor(`MatcherInterface`)](#hasancestormatcherinterface)
     * [hasChild(`MatcherInterface`)](#haschildmatcherinterface)
     * [hasDescendant(`MatcherInterface`)](#hasdescendantmatcherinterface)
-    * [hasSibling(`MatcherInterface`)](#hassiblingmatcherinterface)
     * [hasParent(`MatcherInterface`)](#hasparentmatcherinterface)
+    * [hasSibling(`MatcherInterface`)](#hassiblingmatcherinterface)
     * [isChecked()](#ischecked)
     * [isDisplayed()](#isdisplayed)
     * [isDisplayedInViewport()](#isdisplayedinviewport)
@@ -52,6 +53,7 @@ $containedEspresso->onElement(withText('Edit'))
     * [withClass(`string`)](#withclassstring)
     * [withId(`string`)](#withidstring)
     * [withLabel(`string`)](#withlabelstring)
+    * [withPlaceholder(`string`)](#withplaceholderstring)
     * [withTagName(`string`)](#withtagnamestring)
     * [withText(`string`)](#withtextstring)
     * [withTextContaining(`string`)](#withtextcontainingstring)
@@ -106,6 +108,10 @@ Matches elements that match all the given matchers.
 
 Matches elements that match any of the given matchers.
 
+### hasAncestor(`MatcherInterface`)
+
+Matches elements that have an ancestor that matches the given matcher.
+
 ### hasChild(`MatcherInterface`)
 
 Matches elements that have a child that matches the given matcher.
@@ -114,13 +120,13 @@ Matches elements that have a child that matches the given matcher.
 
 Matches elements that have a descendant that matches the given matcher.
 
-### hasSibling(`MatcherInterface`)
-
-Matches elements that have a sibling that matches the given matcher.
-
 ### hasParent(`MatcherInterface`)
 
 Matches elements that have a parent that matches the given matcher.
+
+### hasSibling(`MatcherInterface`)
+
+Matches elements that have a sibling that matches the given matcher.
 
 ### isChecked()
 
@@ -157,6 +163,10 @@ Matches elements that have the given id.
 ### withLabel(`string`)
 
 Matches form elements that have the given label.
+
+### withPlaceholder(`string`)
+
+Matches form elements that have the given placeholder.
 
 ### withTagName(`string`)
 
