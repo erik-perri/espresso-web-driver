@@ -22,6 +22,7 @@ use EspressoWebDriver\Core\EspressoCore;
 use EspressoWebDriver\Core\EspressoOptions;
 use EspressoWebDriver\Matcher\AllOfMatcher;
 use EspressoWebDriver\Matcher\AnyOfMatcher;
+use EspressoWebDriver\Matcher\HasAncestorMatcher;
 use EspressoWebDriver\Matcher\HasChildMatcher;
 use EspressoWebDriver\Matcher\HasDescendantMatcher;
 use EspressoWebDriver\Matcher\HasParentMatcher;
@@ -131,6 +132,11 @@ function anyOf(MatcherInterface ...$matchers): MatcherInterface
     return new AnyOfMatcher(...$matchers);
 }
 
+function hasAncestor(MatcherInterface $matcher): MatcherInterface
+{
+    return new HasAncestorMatcher($matcher);
+}
+
 function hasChild(MatcherInterface $matcher): MatcherInterface
 {
     return new HasChildMatcher($matcher);
@@ -144,11 +150,6 @@ function hasDescendant(MatcherInterface $matcher): MatcherInterface
 function hasParent(MatcherInterface $matcher): MatcherInterface
 {
     return new HasParentMatcher($matcher);
-}
-
-function isFocused(): MatcherInterface
-{
-    return new IsFocusedMatcher;
 }
 
 function hasSibling(MatcherInterface $matcher): MatcherInterface
@@ -180,6 +181,11 @@ function isDisplayedInViewport(): MatcherInterface
 function isEnabled(): MatcherInterface
 {
     return new IsEnabledMatcher;
+}
+
+function isFocused(): MatcherInterface
+{
+    return new IsFocusedMatcher;
 }
 
 function not(MatcherInterface $matcher): MatcherInterface
