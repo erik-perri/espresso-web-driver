@@ -22,6 +22,7 @@ final readonly class IsFocusedMatcher implements MatcherInterface, NegativeMatch
         $containerElement = $container->single();
 
         try {
+            // TODO Stop allowing this to break out of container
             $parent = $containerElement->findElement(WebDriverBy::xpath('./parent::*'));
         } catch (NoSuchElementException) {
             // If we cannot find the parent there is no way for us to find the focused element.
@@ -39,6 +40,7 @@ final readonly class IsFocusedMatcher implements MatcherInterface, NegativeMatch
         $containerElement = $container->single();
 
         try {
+            // TODO Stop allowing this to break out of container
             $parent = $containerElement->findElement(WebDriverBy::xpath('./parent::*'));
         } catch (NoSuchElementException) {
             // If we cannot find the parent there is no way for us to find the focused element.
