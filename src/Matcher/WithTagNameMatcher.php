@@ -17,14 +17,14 @@ final readonly class WithTagNameMatcher implements MatcherInterface, NegativeMat
 
     public function match(MatchResult $container, EspressoContext $context): array
     {
-        return $container->findElements(
+        return $container->single()->findElements(
             WebDriverBy::xpath(sprintf('descendant-or-self::%1$s', $this->tagName)),
         );
     }
 
     public function matchNegative(MatchResult $container, EspressoContext $context): array
     {
-        return $container->findElements(
+        return $container->single()->findElements(
             WebDriverBy::xpath(sprintf('descendant-or-self::*[not(self::%1$s)]', $this->tagName)),
         );
     }

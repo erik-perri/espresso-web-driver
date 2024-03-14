@@ -21,26 +21,19 @@ final readonly class NotMatcher implements MatcherInterface
             return $this->matcher->matchNegative($container, $context);
         }
 
-        $elementsMatching = [];
+        $elementsMatchingById = [];
 
         foreach ($this->matcher->match($container, $context) as $element) {
-            $elementsMatching[$element->getID()] = $element;
+            $elementsMatchingById[$element->getID()] = $element;
         }
 
-        $elementsNotMatching = [];
+        // TODO This is probably a bad idea on dom heavy pages
+        $potentiallyNotMatching = $container->single()->findElements(WebDriverBy::cssSelector('*'));
 
-        foreach ($container->all() as $containerElement) {
-            // TODO This is probably a bad idea on dom heavy pages
-            $potentiallyNotMatching = $containerElement->findElements(WebDriverBy::cssSelector('*'));
-
-            foreach ($potentiallyNotMatching as $element) {
-                if (!isset($elementsMatching[$element->getID()])) {
-                    $elementsNotMatching[$element->getID()] = $element;
-                }
-            }
-        }
-
-        return $elementsNotMatching;
+        return array_filter(
+            $potentiallyNotMatching,
+            fn ($element) => !isset($elementsMatchingById[$element->getID()]),
+        );
     }
 
     public function __toString(): string

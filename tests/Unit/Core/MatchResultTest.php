@@ -12,7 +12,6 @@ use EspressoWebDriver\Exception\NoMatchingElementException;
 use EspressoWebDriver\Matcher\MatcherInterface;
 use EspressoWebDriver\Tests\Traits\MocksWebDriverElement;
 use EspressoWebDriver\Utilities\ElementPathLogger;
-use Facebook\WebDriver\WebDriverBy;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
@@ -167,39 +166,5 @@ class MatchResultTest extends TestCase
 
         // Assert
         $this->assertSame($mockElement, $single);
-    }
-
-    public function testFindElementsReturnsUniqueElementsFromAllElements(): void
-    {
-        // Arrange
-        $mockMatcher = $this->createMock(MatcherInterface::class);
-
-        $mockElementOne = $this->createMockWebDriverElement('mock');
-        $mockElementTwo = $this->createMockWebDriverElement('mock');
-        $mockElementThree = $this->createMockWebDriverElement('mock');
-
-        $mockContainerElementOne = $this->createMockWebDriverElement(
-            'div',
-            children: [$mockElementOne, $mockElementTwo],
-        );
-        $mockContainerElementTwo = $this->createMockWebDriverElement(
-            'div',
-            children: [$mockElementOne, $mockElementThree],
-        );
-
-        $result = new MatchResult(
-            container: null,
-            matcher: $mockMatcher,
-            result: [
-                $mockContainerElementOne,
-                $mockContainerElementTwo,
-            ],
-        );
-
-        // Act
-        $all = $result->findElements(WebDriverBy::cssSelector('is-mocked-does-not-matter'));
-
-        // Assert
-        $this->assertSame([$mockElementOne, $mockElementTwo, $mockElementThree], $all);
     }
 }

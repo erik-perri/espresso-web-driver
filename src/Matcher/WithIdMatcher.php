@@ -17,14 +17,14 @@ final readonly class WithIdMatcher implements MatcherInterface, NegativeMatcherI
 
     public function match(MatchResult $container, EspressoContext $context): array
     {
-        return $container->findElements(
+        return $container->single()->findElements(
             WebDriverBy::xpath(sprintf('descendant-or-self::*[@id="%1$s"]', $this->id)),
         );
     }
 
     public function matchNegative(MatchResult $container, EspressoContext $context): array
     {
-        return $container->findElements(
+        return $container->single()->findElements(
             WebDriverBy::xpath(sprintf('descendant-or-self::*[not(@id="%1$s")]', $this->id)),
         );
     }

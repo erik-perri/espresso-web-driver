@@ -24,7 +24,7 @@ final readonly class WithPlaceholderMatcher implements MatcherInterface, Negativ
 
     public function match(MatchResult $container, EspressoContext $context): array
     {
-        return $container->findElements(
+        return $container->single()->findElements(
             WebDriverBy::xpath(sprintf(
                 'descendant-or-self::*[normalize-space(@placeholder)=%1$s]',
                 $this->wrappedText,
@@ -34,7 +34,7 @@ final readonly class WithPlaceholderMatcher implements MatcherInterface, Negativ
 
     public function matchNegative(MatchResult $container, EspressoContext $context): array
     {
-        return $container->findElements(
+        return $container->single()->findElements(
             WebDriverBy::xpath(sprintf(
                 'descendant-or-self::*[not(normalize-space(@placeholder)=%1$s)]',
                 $this->wrappedText,

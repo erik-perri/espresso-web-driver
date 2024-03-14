@@ -8,7 +8,6 @@ use EspressoWebDriver\Core\EspressoContext;
 use EspressoWebDriver\Core\MatchResult;
 use EspressoWebDriver\Utilities\TextNormalizer;
 use EspressoWebDriver\Utilities\XPathStringWrapper;
-use Facebook\WebDriver\Exception\NoSuchElementException;
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverElement;
 
@@ -28,7 +27,9 @@ final readonly class WithLabelMatcher implements MatcherInterface, NegativeMatch
     {
         $elements = [];
 
-        $labels = $container->findElements(
+        $containerElement = $container->single();
+
+        $labels = $containerElement->findElements(
             WebDriverBy::xpath(sprintf(
                 'descendant-or-self::label[text()[normalize-space(.)=%s]]',
                 $this->wrappedText,
@@ -41,13 +42,7 @@ final readonly class WithLabelMatcher implements MatcherInterface, NegativeMatch
             // If the label has a "for" attribute we can use it to find the input, otherwise we need to look for an
             // input child.
             if ($for !== null) {
-                $matchingElements = [];
-
-                foreach ($container->all() as $containerElement) {
-                    $matchingElements[] = $this->matchElementsWithId($containerElement, $for);
-                }
-
-                $elements[] = array_merge(...$matchingElements);
+                $elements[] = $this->matchElementsWithId($containerElement, $for);
             } else {
                 $elements[] = $this->matchFirstFormElement($label);
             }
@@ -60,7 +55,7 @@ final readonly class WithLabelMatcher implements MatcherInterface, NegativeMatch
     {
         $labelledElements = $this->match($container, $context);
 
-        $allElements = $container->findElements(
+        $allElements = $container->single()->findElements(
             WebDriverBy::xpath(
                 'descendant::*[(self::input and not(@type="hidden")) or self::select or self::textarea]',
             ),
@@ -76,23 +71,15 @@ final readonly class WithLabelMatcher implements MatcherInterface, NegativeMatch
     }
 
     /**
-     * @return array<string, WebDriverElement>
+     * @return array<int, WebDriverElement>
      */
     private function matchElementsWithId(WebDriverElement $container, string $for): array
     {
-        try {
-            $input = $container->findElement(WebDriverBy::id($for));
-
-            return [$input->getID() => $input];
-        } catch (NoSuchElementException) {
-            //
-        }
-
-        return [];
+        return $container->findElements(WebDriverBy::id($for));
     }
 
     /**
-     * @return array<string, WebDriverElement>
+     * @return array<int, WebDriverElement>
      */
     private function matchFirstFormElement(WebDriverElement $label): array
     {
@@ -108,7 +95,7 @@ final readonly class WithLabelMatcher implements MatcherInterface, NegativeMatch
 
         $input = reset($inputs);
 
-        return [$input->getID() => $input];
+        return [$input];
     }
 
     public function __toString(): string

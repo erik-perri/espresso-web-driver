@@ -8,7 +8,6 @@ use EspressoWebDriver\Exception\AmbiguousElementException;
 use EspressoWebDriver\Exception\NoMatchingElementException;
 use EspressoWebDriver\Matcher\MatcherInterface;
 use EspressoWebDriver\Utilities\ElementLoggerInterface;
-use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverElement;
 
 final readonly class MatchResult
@@ -57,20 +56,6 @@ final readonly class MatchResult
             $this->matcher,
             "\n".$elementLogger->describeMany($this->result),
         );
-    }
-
-    /**
-     * @return array<int, WebDriverElement>
-     */
-    public function findElements(WebDriverBy $locator): array
-    {
-        $elementsByResult = [];
-
-        foreach ($this->result as $element) {
-            $elementsByResult[] = $element->findElements($locator);
-        }
-
-        return $this->removeDuplicates(array_merge(...$elementsByResult));
     }
 
     /**

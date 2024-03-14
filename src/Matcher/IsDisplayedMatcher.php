@@ -6,52 +6,43 @@ namespace EspressoWebDriver\Matcher;
 
 use EspressoWebDriver\Core\EspressoContext;
 use EspressoWebDriver\Core\MatchResult;
+use EspressoWebDriver\Exception\AmbiguousElementException;
+use EspressoWebDriver\Exception\NoMatchingElementException;
 use Facebook\WebDriver\WebDriverBy;
+use Facebook\WebDriver\WebDriverElement;
 
 final readonly class IsDisplayedMatcher implements MatcherInterface, NegativeMatcherInterface
 {
     public function match(MatchResult $container, EspressoContext $context): array
     {
-        $elements = [];
-
-        foreach ($container->all() as $containerElement) {
-            if ($containerElement->isDisplayed()) {
-                $elements[] = $containerElement;
-            }
-        }
-
-        // TODO This is probably a bad idea on dom heavy pages
-        $potentialElements = $container->findElements(WebDriverBy::cssSelector('*'));
-
-        foreach ($potentialElements as $element) {
-            if ($element->isDisplayed()) {
-                $elements[] = $element;
-            }
-        }
-
-        return $elements;
+        return array_filter(
+            $this->findPotentialElements($container),
+            fn (WebDriverElement $element) => $element->isDisplayed(),
+        );
     }
 
     public function matchNegative(MatchResult $container, EspressoContext $context): array
     {
-        $elements = [];
+        return array_filter(
+            $this->findPotentialElements($container),
+            fn (WebDriverElement $element) => !$element->isDisplayed(),
+        );
+    }
 
-        foreach ($container->all() as $containerElement) {
-            if (!$containerElement->isDisplayed()) {
-                $elements[] = $containerElement;
-            }
-        }
+    /**
+     * @return WebDriverElement[]
+     *
+     * @throws AmbiguousElementException|NoMatchingElementException
+     */
+    private function findPotentialElements(MatchResult $container): array
+    {
+        $element = $container->single();
 
-        // TODO This is probably a bad idea on dom heavy pages
-        $potentialElements = $container->findElements(WebDriverBy::cssSelector('*'));
-
-        foreach ($potentialElements as $element) {
-            if (!$element->isDisplayed()) {
-                $elements[] = $element;
-            }
-        }
-
-        return $elements;
+        return [
+            $element,
+            // TODO This is probably a bad idea on dom heavy pages
+            ...$element->findElements(WebDriverBy::cssSelector('*')),
+        ];
     }
 
     public function __toString(): string

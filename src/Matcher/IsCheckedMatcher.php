@@ -6,6 +6,8 @@ namespace EspressoWebDriver\Matcher;
 
 use EspressoWebDriver\Core\EspressoContext;
 use EspressoWebDriver\Core\MatchResult;
+use EspressoWebDriver\Exception\AmbiguousElementException;
+use EspressoWebDriver\Exception\NoMatchingElementException;
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverElement;
 
@@ -13,41 +15,30 @@ final readonly class IsCheckedMatcher implements MatcherInterface, NegativeMatch
 {
     public function match(MatchResult $container, EspressoContext $context): array
     {
-        $potentialElements = $container->findElements(
-            WebDriverBy::xpath('descendant-or-self::*[self::input[@type="checkbox" or @type="radio"]]'),
+        return array_filter(
+            $this->findCheckElements($container),
+            fn (WebDriverElement $element) => $element->isSelected(),
         );
-
-        $elements = [];
-
-        foreach ($potentialElements as $element) {
-            if ($this->isChecked($element)) {
-                $elements[] = $element;
-            }
-        }
-
-        return $elements;
     }
 
     public function matchNegative(MatchResult $container, EspressoContext $context): array
     {
-        $potentialElements = $container->findElements(
-            WebDriverBy::xpath('descendant-or-self::*[self::input[@type="checkbox" or @type="radio"]]'),
+        return array_filter(
+            $this->findCheckElements($container),
+            fn (WebDriverElement $element) => !$element->isSelected(),
         );
-
-        $elements = [];
-
-        foreach ($potentialElements as $element) {
-            if (!$this->isChecked($element)) {
-                $elements[] = $element;
-            }
-        }
-
-        return $elements;
     }
 
-    private function isChecked(WebDriverElement $container): bool
+    /**
+     * @return WebDriverElement[]
+     *
+     * @throws AmbiguousElementException|NoMatchingElementException
+     */
+    private function findCheckElements(MatchResult $container): array
     {
-        return $container->isSelected();
+        return $container->single()->findElements(
+            WebDriverBy::xpath('descendant-or-self::*[self::input[@type="checkbox" or @type="radio"]]'),
+        );
     }
 
     public function __toString(): string

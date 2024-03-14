@@ -11,6 +11,7 @@ use EspressoWebDriver\Exception\EspressoWebDriverException;
 use EspressoWebDriver\Exception\NoMatchingElementException;
 use EspressoWebDriver\Utilities\ElementDisplayChecker;
 use Facebook\WebDriver\WebDriverBy;
+use Facebook\WebDriver\WebDriverElement;
 
 final readonly class IsDisplayedInViewportMatcher implements MatcherInterface, NegativeMatcherInterface
 {
@@ -19,27 +20,13 @@ final readonly class IsDisplayedInViewportMatcher implements MatcherInterface, N
      */
     public function match(MatchResult $container, EspressoContext $context): array
     {
-        $elements = [];
-
         // TODO Move to a part of context for reuse of values? How would we know when to update?
         $checker = new ElementDisplayChecker($context->driver);
 
-        foreach ($container->all() as $containerElement) {
-            if ($checker->isDisplayed($containerElement)) {
-                $elements[] = $containerElement;
-            }
-        }
-
-        // TODO This is probably a bad idea on dom heavy pages
-        $potentialElements = $container->findElements(WebDriverBy::cssSelector('*'));
-
-        foreach ($potentialElements as $element) {
-            if ($checker->isDisplayed($element)) {
-                $elements[] = $element;
-            }
-        }
-
-        return $elements;
+        return array_filter(
+            $this->findPotentialElements($container),
+            fn (WebDriverElement $element) => $checker->isDisplayed($element),
+        );
     }
 
     /**
@@ -47,27 +34,29 @@ final readonly class IsDisplayedInViewportMatcher implements MatcherInterface, N
      */
     public function matchNegative(MatchResult $container, EspressoContext $context): array
     {
-        $elements = [];
-
         // TODO Move to a part of context for reuse of values? How would we know when to update?
         $checker = new ElementDisplayChecker($context->driver);
 
-        foreach ($container->all() as $containerElement) {
-            if (!$checker->isDisplayed($containerElement)) {
-                $elements[] = $containerElement;
-            }
-        }
+        return array_filter(
+            $this->findPotentialElements($container),
+            fn (WebDriverElement $element) => !$checker->isDisplayed($element),
+        );
+    }
 
-        // TODO This is probably a bad idea on dom heavy pages
-        $potentialElements = $container->findElements(WebDriverBy::cssSelector('*'));
+    /**
+     * @return WebDriverElement[]
+     *
+     * @throws AmbiguousElementException|NoMatchingElementException
+     */
+    private function findPotentialElements(MatchResult $container): array
+    {
+        $element = $container->single();
 
-        foreach ($potentialElements as $element) {
-            if (!$checker->isDisplayed($element)) {
-                $elements[] = $element;
-            }
-        }
-
-        return $elements;
+        return [
+            $element,
+            // TODO This is probably a bad idea on dom heavy pages
+            ...$element->findElements(WebDriverBy::cssSelector('*')),
+        ];
     }
 
     public function __toString(): string

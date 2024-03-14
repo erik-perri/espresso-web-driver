@@ -19,17 +19,17 @@ final readonly class WithValueMatcher implements MatcherInterface, NegativeMatch
     {
         $elements = [];
 
-        foreach ($container->all() as $containerElement) {
-            if ($containerElement->getAttribute('value') === $this->value) {
-                $elements[] = $containerElement;
-            }
+        $containerElement = $container->single();
+
+        if ($containerElement->getAttribute('value') === $this->value) {
+            $elements[] = $containerElement;
         }
 
         $value = $this->cleanValueForCssSelector($this->value);
 
         return array_merge(
             $elements,
-            $container->findElements(WebDriverBy::cssSelector(sprintf('[value="%1$s"]', $value))),
+            $containerElement->findElements(WebDriverBy::cssSelector(sprintf('[value="%1$s"]', $value))),
         );
     }
 
@@ -37,17 +37,17 @@ final readonly class WithValueMatcher implements MatcherInterface, NegativeMatch
     {
         $elements = [];
 
-        foreach ($container->all() as $containerElement) {
-            if ($containerElement->getAttribute('value') !== $this->value) {
-                $elements[] = $containerElement;
-            }
+        $containerElement = $container->single();
+
+        if ($containerElement->getAttribute('value') !== $this->value) {
+            $elements[] = $containerElement;
         }
 
         $value = $this->cleanValueForCssSelector($this->value);
 
         return array_merge(
             $elements,
-            $container->findElements(WebDriverBy::cssSelector(sprintf(':not([value="%1$s"])', $value))),
+            $containerElement->findElements(WebDriverBy::cssSelector(sprintf(':not([value="%1$s"])', $value))),
         );
     }
 
