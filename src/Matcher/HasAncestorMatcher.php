@@ -25,7 +25,7 @@ final readonly class HasAncestorMatcher implements MatcherInterface
             $descendants = $ancestor->findElements(WebDriverBy::xpath('.//*'));
 
             foreach ($descendants as $descendant) {
-                $elements[$descendant->getID()] = $descendant;
+                $elements[] = $descendant;
             }
         }
 

@@ -27,7 +27,7 @@ final readonly class HasSiblingMatcher implements MatcherInterface
             );
 
             foreach ($adjacentChildren as $child) {
-                $elements[$child->getID()] = $child;
+                $elements[] = $child;
             }
         }
 

@@ -27,7 +27,7 @@ final readonly class AnyOfMatcher implements MatcherInterface
             $results = $matcher->match($container, $context);
 
             foreach ($results as $element) {
-                $elements[$element->getID()] = $element;
+                $elements[] = $element;
             }
         }
 

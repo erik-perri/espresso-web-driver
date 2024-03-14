@@ -97,12 +97,12 @@ final readonly class MatchResult
      */
     private function removeDuplicates(array $result): array
     {
-        $uniqueResults = [];
+        $uniqueResultsById = [];
 
         foreach ($result as $element) {
-            $uniqueResults[$element->getID()] = $element;
+            $uniqueResultsById[$element->getID()] = $element;
         }
 
-        return array_values($uniqueResults);
+        return array_values($uniqueResultsById);
     }
 }
