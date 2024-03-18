@@ -8,6 +8,7 @@ use EspressoWebDriver\Core\EspressoContext;
 use EspressoWebDriver\Core\MatchResult;
 use EspressoWebDriver\Matcher\MatcherInterface;
 use RuntimeException;
+use Throwable;
 
 final readonly class RetryingMatchProcessor implements MatchProcessorInterface
 {
@@ -29,9 +30,19 @@ final readonly class RetryingMatchProcessor implements MatchProcessorInterface
         $endTime = $startTime + $this->waitTimeoutInSeconds;
         $waitIntervalInMicroseconds = $this->waitIntervalInMilliseconds * 1000;
         $lastResult = null;
+        $lastException = null;
 
         while (microtime(true) < $endTime) {
-            $lastResult = $this->matchProcessor->process($target, $container, $context, $options);
+            try {
+                $lastException = null;
+                $lastResult = $this->matchProcessor->process($target, $container, $context, $options);
+            } catch (Throwable $exception) {
+                // TODO Should we narrow this and only retry some exceptions?
+                //      StaleElementReferenceException for example
+                $lastException = $exception;
+
+                continue;
+            }
 
             $count = $lastResult->count();
 
@@ -47,6 +58,10 @@ final readonly class RetryingMatchProcessor implements MatchProcessorInterface
             }
 
             usleep($waitIntervalInMicroseconds);
+        }
+
+        if ($lastException !== null) {
+            throw $lastException;
         }
 
         if ($lastResult === null) {
