@@ -9,6 +9,7 @@ namespace Assertion;
 use EspressoWebDriver\Assertion\DoesNotExistAssertion;
 use EspressoWebDriver\Core\EspressoContext;
 use EspressoWebDriver\Core\EspressoOptions;
+use EspressoWebDriver\Exception\AssertionFailedException;
 use EspressoWebDriver\Matcher\MatcherInterface;
 use EspressoWebDriver\Tests\Traits\MocksWebDriverElement;
 use EspressoWebDriver\Tests\Unit\BaseUnitTestCase;
@@ -41,14 +42,18 @@ class DoesNotExistAssertionTest extends BaseUnitTestCase
             ->willReturn([]);
 
         // Act
-        $result = $assertion->assert($mockMatcher, null, $mockContext);
+        $assertion->assert($mockMatcher, null, $mockContext);
 
         // Assert
-        $this->assertTrue($result);
+        // No assertions, only expectations.
     }
 
-    public function testReturnsFalseIfElementsExist(): void
+    public function testThrowsExceptionIfElementsExist(): void
     {
+        // Expectations
+        $this->expectException(AssertionFailedException::class);
+        $this->expectExceptionMessage('Failed to assert doesNotExist');
+
         // Arrange
         $mockElement = $this->createMockWebDriverElement('div');
 
@@ -70,10 +75,10 @@ class DoesNotExistAssertionTest extends BaseUnitTestCase
             ->willReturn([$mockElement]);
 
         // Act
-        $result = $assertion->assert($mockMatcher, null, $mockContext);
+        $assertion->assert($mockMatcher, null, $mockContext);
 
         // Assert
-        $this->assertFalse($result);
+        // No assertions, only expectations.
     }
 
     public function testDoesNotExistAssertionToString(): void

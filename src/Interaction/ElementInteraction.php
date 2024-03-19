@@ -33,12 +33,17 @@ final readonly class ElementInteraction implements InteractionInterface
     public function check(AssertionInterface $assertion): InteractionInterface
     {
         $message = null;
-        $success = false;
+        $success = true;
 
         try {
-            $success = $assertion->assert($this->target, $this->container, $this->context);
+            $assertion->assert($this->target, $this->container, $this->context);
+        } catch (AssertionFailedException $exception) {
+            $success = false;
+
+            throw $exception;
         } catch (AmbiguousElementException|NoMatchingElementException|NoRootElementException $exception) {
             $message = $exception->getMessage();
+            $success = false;
 
             if ($exception instanceof AmbiguousElementException) {
                 $message = sprintf(
@@ -51,6 +56,7 @@ final readonly class ElementInteraction implements InteractionInterface
             throw new AssertionFailedException($assertion, $exception);
         } catch (Throwable $exception) {
             $message = sprintf('Unexpected exception: %1$s', $exception->getMessage());
+            $success = false;
 
             throw new AssertionFailedException($assertion, $exception);
         } finally {
@@ -60,10 +66,6 @@ final readonly class ElementInteraction implements InteractionInterface
                     ? sprintf('Failed asserting that %1$s is true, %2$s', $assertion, $message)
                     : sprintf('Failed asserting that %1$s is true', $assertion),
             );
-        }
-
-        if (!$success) {
-            throw new AssertionFailedException($assertion);
         }
 
         return $this;

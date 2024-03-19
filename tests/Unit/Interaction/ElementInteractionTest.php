@@ -58,12 +58,12 @@ class ElementInteractionTest extends BaseUnitTestCase
         $mockElementMatcher = $this->createMock(MatcherInterface::class);
 
         $mockAssertion = $this->createMock(AssertionInterface::class);
-        $mockAssertion->expects($this->once())
-            ->method('assert')
-            ->willReturn(false);
         $mockAssertion->expects($this->exactly(2))
             ->method('__toString')
             ->willReturn('match(mock)');
+        $mockAssertion->expects($this->once())
+            ->method('assert')
+            ->willThrowException(new AssertionFailedException($mockAssertion));
 
         $interaction = new ElementInteraction($mockElementMatcher, null, $mockContext);
 
@@ -225,9 +225,6 @@ class ElementInteractionTest extends BaseUnitTestCase
         $interaction = new ElementInteraction($mockElementMatcher, null, $mockContext);
 
         $mockAssertion = $this->createMock(AssertionInterface::class);
-        $mockAssertion
-            ->method('assert')
-            ->willReturn(true);
 
         // Act
         $result = $interaction->check($mockAssertion);

@@ -15,7 +15,7 @@ final readonly class ExistsAssertion implements AssertionInterface
         MatcherInterface $target,
         ?MatcherInterface $container,
         EspressoContext $context,
-    ): bool {
+    ): void {
         $targetResult = $context->options->matchProcessor->process(
             target: $target,
             container: $container,
@@ -26,8 +26,6 @@ final readonly class ExistsAssertion implements AssertionInterface
         );
 
         $targetResult->single();
-
-        return true;
     }
 
     public function __toString(): string

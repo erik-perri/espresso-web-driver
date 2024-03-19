@@ -40,7 +40,7 @@ class ElementDisplayCheckerTest extends BaseUnitTestCase
         $checker->isDisplayed($mockElement);
     }
 
-    public function testReturnsFalseWhenElementClaimsHidden(): void
+    public function testThrowsExceptionWhenElementClaimsHidden(): void
     {
         // Arrange
         $mockDriver = $this->createMockForIntersectionOfInterfaces([WebDriver::class, JavaScriptExecutor::class]);

@@ -11,6 +11,7 @@ use EspressoWebDriver\Assertion\ExistsAssertion;
 use EspressoWebDriver\Assertion\MatchesAssertion;
 use EspressoWebDriver\Core\EspressoContext;
 use EspressoWebDriver\Core\EspressoOptions;
+use EspressoWebDriver\Exception\AssertionFailedException;
 use EspressoWebDriver\Matcher\IsDisplayedMatcher;
 use EspressoWebDriver\Matcher\MatcherInterface;
 use EspressoWebDriver\Processor\MatchProcessorOptions;
@@ -42,6 +43,10 @@ class RetryingMatchProcessorTest extends BaseUnitTestCase
 
     public function testRetriesTheExpectedAmountOfTimes(): void
     {
+        // Expectations
+        $this->expectException(AssertionFailedException::class);
+        $this->expectExceptionMessage('Failed to assert matches(isDisplayed)');
+
         // Arrange
         $configuredDelayInMilliseconds = 160;
         $configuredTimeInSeconds = 1;
@@ -76,10 +81,10 @@ class RetryingMatchProcessorTest extends BaseUnitTestCase
             ->willReturn([$mockContainer]);
 
         // Act
-        $result = $assertion->assert($mockMatcher, null, $matchContext);
+        $assertion->assert($mockMatcher, null, $matchContext);
 
         // Assert
-        $this->assertFalse($result);
+        // No assertions, only expectations.
     }
 
     public function testReturnsEarlyOnSuccess(): void
@@ -122,10 +127,10 @@ class RetryingMatchProcessorTest extends BaseUnitTestCase
         $assertion = new MatchesAssertion(new IsDisplayedMatcher);
 
         // Act
-        $result = $assertion->assert($mockMatcher, null, $matchContext);
+        $assertion->assert($mockMatcher, null, $matchContext);
 
         // Assert
-        $this->assertTrue($result);
+        // No assertions, only expectations.
     }
 
     public function testRetriesForTheExpectedAmountOfTimesWhenNoElementsAreWanted(): void
@@ -165,10 +170,10 @@ class RetryingMatchProcessorTest extends BaseUnitTestCase
         $assertion = new DoesNotExistAssertion;
 
         // Act
-        $result = $assertion->assert($mockMatcher, null, $matchContext);
+        $assertion->assert($mockMatcher, null, $matchContext);
 
         // Assert
-        $this->assertTrue($result);
+        // No assertions, only expectations.
     }
 
     public function testRetriesForTheExpectedAmountOfTimesWhenOnlyOneElementIsWanted(): void
@@ -209,10 +214,10 @@ class RetryingMatchProcessorTest extends BaseUnitTestCase
         $assertion = new ExistsAssertion;
 
         // Act
-        $result = $assertion->assert($mockMatcher, null, $matchContext);
+        $assertion->assert($mockMatcher, null, $matchContext);
 
         // Assert
-        $this->assertTrue($result);
+        // No assertions, only expectations.
     }
 
     public function testThrowsExceptionWithExplanationWhenProvidedTimeoutWhichProducesNoResult(): void

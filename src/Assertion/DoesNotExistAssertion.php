@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace EspressoWebDriver\Assertion;
 
 use EspressoWebDriver\Core\EspressoContext;
+use EspressoWebDriver\Exception\AssertionFailedException;
 use EspressoWebDriver\Matcher\MatcherInterface;
 use EspressoWebDriver\Processor\ExpectedMatchCount;
 use EspressoWebDriver\Processor\MatchProcessorOptions;
@@ -15,7 +16,7 @@ final readonly class DoesNotExistAssertion implements AssertionInterface
         MatcherInterface $target,
         ?MatcherInterface $container,
         EspressoContext $context,
-    ): bool {
+    ): void {
         $targetResult = $context->options->matchProcessor->process(
             target: $target,
             container: $container,
@@ -25,7 +26,9 @@ final readonly class DoesNotExistAssertion implements AssertionInterface
             ),
         );
 
-        return $targetResult->count() === 0;
+        if ($targetResult->count() !== 0) {
+            throw new AssertionFailedException($this);
+        }
     }
 
     public function __toString(): string

@@ -9,6 +9,7 @@ namespace EspressoWebDriver\Tests\Unit\Assertion;
 use EspressoWebDriver\Assertion\MatchesAssertion;
 use EspressoWebDriver\Core\EspressoContext;
 use EspressoWebDriver\Core\EspressoOptions;
+use EspressoWebDriver\Exception\AssertionFailedException;
 use EspressoWebDriver\Matcher\MatcherInterface;
 use EspressoWebDriver\Tests\Traits\MocksWebDriverElement;
 use EspressoWebDriver\Tests\Unit\BaseUnitTestCase;
@@ -43,14 +44,18 @@ class MatchesAssertionTest extends BaseUnitTestCase
         $assertion = new MatchesAssertion($mockMatcher);
 
         // Act
-        $result = $assertion->assert($mockMatcher, null, $mockContext);
+        $assertion->assert($mockMatcher, null, $mockContext);
 
         // Assert
-        $this->assertTrue($result);
+        // No assertions, only expectations.
     }
 
-    public function testReturnsFalseIfMatcherResultDoesNotIncludeContainer(): void
+    public function testThrowsExceptionIfMatcherResultDoesNotIncludeContainer(): void
     {
+        // Expectations
+        $this->expectException(AssertionFailedException::class);
+        $this->expectExceptionMessage('Failed to assert matches()');
+
         // Arrange
         $mockTarget = $this->createMockWebDriverElement('div', ['id' => 'mock']);
 
@@ -79,10 +84,10 @@ class MatchesAssertionTest extends BaseUnitTestCase
         $assertion = new MatchesAssertion($mockAssertMatcher);
 
         // Act
-        $result = $assertion->assert($mockTargetMatcher, null, $mockContext);
+        $assertion->assert($mockTargetMatcher, null, $mockContext);
 
         // Assert
-        $this->assertFalse($result);
+        // No assertions, only expectations.
     }
 
     public function testMatchesAssertionToString(): void

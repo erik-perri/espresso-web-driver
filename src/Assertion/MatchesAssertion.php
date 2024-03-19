@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace EspressoWebDriver\Assertion;
 
 use EspressoWebDriver\Core\EspressoContext;
+use EspressoWebDriver\Exception\AssertionFailedException;
 use EspressoWebDriver\Matcher\MatcherInterface;
 use EspressoWebDriver\Processor\ExpectedMatchCount;
 use EspressoWebDriver\Processor\MatchProcessorOptions;
@@ -20,7 +21,7 @@ final readonly class MatchesAssertion implements AssertionInterface
         MatcherInterface $target,
         ?MatcherInterface $container,
         EspressoContext $context,
-    ): bool {
+    ): void {
         $targetResult = $context->options->matchProcessor->process(
             target: $target,
             container: $container,
@@ -38,13 +39,11 @@ final readonly class MatchesAssertion implements AssertionInterface
             context: $context,
         );
 
-        foreach ($matches->all() as $match) {
-            if ($targetElement->getID() === $match->getID()) {
-                return true;
-            }
-        }
+        $found = array_filter($matches->all(), fn ($match) => $targetElement->getID() === $match->getID());
 
-        return false;
+        if (empty($found)) {
+            throw new AssertionFailedException($this);
+        }
     }
 
     public function __toString(): string
