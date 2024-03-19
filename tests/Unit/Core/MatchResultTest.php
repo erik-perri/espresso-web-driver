@@ -6,17 +6,17 @@ declare(strict_types=1);
 
 namespace EspressoWebDriver\Tests\Unit\Core;
 
-use EspressoWebDriver\Core\MatchResult;
 use EspressoWebDriver\Exception\AmbiguousElementException;
 use EspressoWebDriver\Exception\NoMatchingElementException;
 use EspressoWebDriver\Matcher\MatcherInterface;
+use EspressoWebDriver\Processor\MatchResult;
 use EspressoWebDriver\Tests\Traits\MocksWebDriverElement;
 use EspressoWebDriver\Utilities\ElementPathLogger;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(AmbiguousElementException::class)]
-#[CoversClass(MatchResult::class)]
+#[CoversClass(\EspressoWebDriver\Processor\MatchResult::class)]
 #[CoversClass(NoMatchingElementException::class)]
 class MatchResultTest extends TestCase
 {
@@ -30,7 +30,7 @@ class MatchResultTest extends TestCase
         $elementOne = $this->createMockWebDriverElement('div');
         $elementTwo = $this->createMockWebDriverElement('div');
 
-        $result = new MatchResult(
+        $result = new \EspressoWebDriver\Processor\MatchResult(
             container: null,
             matcher: $matcher,
             result: [
@@ -79,7 +79,7 @@ class MatchResultTest extends TestCase
             ->method('__toString')
             ->willReturn('matcher()');
 
-        $result = new MatchResult(
+        $result = new \EspressoWebDriver\Processor\MatchResult(
             container: null,
             matcher: $matcher,
             result: [],
@@ -135,7 +135,7 @@ class MatchResultTest extends TestCase
             ->method('__toString')
             ->willReturn('matcher()');
 
-        $result = new MatchResult(
+        $result = new \EspressoWebDriver\Processor\MatchResult(
             container: null,
             matcher: $matcher,
             result: [],
@@ -155,7 +155,7 @@ class MatchResultTest extends TestCase
 
         $mockElement = $this->createMockWebDriverElement('mock');
 
-        $result = new MatchResult(
+        $result = new \EspressoWebDriver\Processor\MatchResult(
             container: null,
             matcher: $mockMatcher,
             result: [$mockElement],

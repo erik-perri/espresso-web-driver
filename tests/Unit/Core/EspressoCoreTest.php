@@ -10,7 +10,6 @@ use EspressoWebDriver\Action\ActionInterface;
 use EspressoWebDriver\Core\EspressoContext;
 use EspressoWebDriver\Core\EspressoCore;
 use EspressoWebDriver\Core\EspressoOptions;
-use EspressoWebDriver\Core\MatchResult;
 use EspressoWebDriver\Matcher\MatcherInterface;
 use EspressoWebDriver\Tests\Traits\MocksWebDriverElement;
 use EspressoWebDriver\Tests\Unit\BaseUnitTestCase;
@@ -62,8 +61,8 @@ class EspressoCoreTest extends BaseUnitTestCase
             ->method('match')
             ->willReturn([$mockRootElement]);
 
-        $mockContainerResult = new MatchResult(
-            container: new MatchResult(
+        $mockContainerResult = new \EspressoWebDriver\Processor\MatchResult(
+            container: new \EspressoWebDriver\Processor\MatchResult(
                 container: null,
                 matcher: withTagName('html'),
                 result: [$mockRootElement],
@@ -79,7 +78,7 @@ class EspressoCoreTest extends BaseUnitTestCase
             ->with($mockContainerResult, $this->isInstanceOf(EspressoContext::class))
             ->willReturn([$mockElement]);
 
-        $mockElementResult = new MatchResult(
+        $mockElementResult = new \EspressoWebDriver\Processor\MatchResult(
             container: $mockContainerResult,
             matcher: $mockElementMatcher,
             result: [$mockElement],

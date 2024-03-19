@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace EspressoWebDriver\Action;
 
 use EspressoWebDriver\Core\EspressoContext;
-use EspressoWebDriver\Core\MatchResult;
+use EspressoWebDriver\Processor\MatchResult;
 use Facebook\WebDriver\Exception\ElementClickInterceptedException;
 use Facebook\WebDriver\Exception\ElementNotInteractableException;
 

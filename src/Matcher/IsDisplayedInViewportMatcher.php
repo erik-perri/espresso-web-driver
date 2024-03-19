@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace EspressoWebDriver\Matcher;
 
 use EspressoWebDriver\Core\EspressoContext;
-use EspressoWebDriver\Core\MatchResult;
 use EspressoWebDriver\Exception\AmbiguousElementException;
 use EspressoWebDriver\Exception\EspressoWebDriverException;
 use EspressoWebDriver\Exception\NoMatchingElementException;
+use EspressoWebDriver\Processor\MatchResult;
 use EspressoWebDriver\Utilities\ElementDisplayChecker;
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverElement;

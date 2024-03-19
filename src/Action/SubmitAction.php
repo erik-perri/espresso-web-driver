@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace EspressoWebDriver\Action;
 
 use EspressoWebDriver\Core\EspressoContext;
-use EspressoWebDriver\Core\MatchResult;
 use EspressoWebDriver\Exception\PerformException;
+use EspressoWebDriver\Processor\MatchResult;
 
 final readonly class SubmitAction implements ActionInterface
 {

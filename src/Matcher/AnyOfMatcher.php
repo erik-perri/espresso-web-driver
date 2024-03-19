@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace EspressoWebDriver\Matcher;
 
 use EspressoWebDriver\Core\EspressoContext;
-use EspressoWebDriver\Core\MatchResult;
+use EspressoWebDriver\Processor\MatchResult;
 
 final readonly class AnyOfMatcher implements MatcherInterface
 {

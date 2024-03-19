@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace EspressoWebDriver\Processor;
 
 use EspressoWebDriver\Core\EspressoContext;
-use EspressoWebDriver\Core\MatchResult;
 use EspressoWebDriver\Matcher\MatcherInterface;
 use RuntimeException;
 use Throwable;

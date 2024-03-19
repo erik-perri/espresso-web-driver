@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace EspressoWebDriver\Core;
+namespace EspressoWebDriver\Processor;
 
 use EspressoWebDriver\Exception\AmbiguousElementException;
 use EspressoWebDriver\Exception\NoMatchingElementException;
