@@ -22,7 +22,8 @@ final readonly class MatchResult
      */
     public function __construct(
         public ?MatchResult $container,
-        public MatcherInterface $matcher,
+        private ExpectedMatchCount $expectedCount,
+        private MatcherInterface $matcher,
         array $result,
     ) {
         $this->result = $this->removeDuplicates($result);

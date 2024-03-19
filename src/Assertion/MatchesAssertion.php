@@ -8,7 +8,6 @@ use EspressoWebDriver\Core\EspressoContext;
 use EspressoWebDriver\Exception\AssertionFailedException;
 use EspressoWebDriver\Matcher\MatcherInterface;
 use EspressoWebDriver\Processor\ExpectedMatchCount;
-use EspressoWebDriver\Processor\MatchProcessorOptions;
 
 final readonly class MatchesAssertion implements AssertionInterface
 {
@@ -26,9 +25,7 @@ final readonly class MatchesAssertion implements AssertionInterface
             target: $target,
             container: $container,
             context: $context,
-            options: new MatchProcessorOptions(
-                expectedCount: ExpectedMatchCount::Single,
-            ),
+            expectedCount: ExpectedMatchCount::One,
         );
 
         $targetElement = $targetResult->single();
@@ -37,6 +34,7 @@ final readonly class MatchesAssertion implements AssertionInterface
             target: $this->matcher,
             container: $targetResult,
             context: $context,
+            expectedCount: ExpectedMatchCount::OneOrMore,
         );
 
         $found = array_filter($matches->all(), fn ($match) => $targetElement->getID() === $match->getID());

@@ -10,6 +10,7 @@ use EspressoWebDriver\Core\EspressoContext;
 use EspressoWebDriver\Core\EspressoOptions;
 use EspressoWebDriver\Exception\NoRootElementException;
 use EspressoWebDriver\Matcher\MatcherInterface;
+use EspressoWebDriver\Processor\ExpectedMatchCount;
 use EspressoWebDriver\Processor\MatchProcessor;
 use EspressoWebDriver\Tests\Unit\BaseUnitTestCase;
 use Facebook\WebDriver\Exception\NoSuchElementException;
@@ -44,7 +45,7 @@ class MatchProcessorTest extends BaseUnitTestCase
         $processor = new MatchProcessor;
 
         // Act
-        $processor->process($mockTargetMatcher, null, $mockContext);
+        $processor->process($mockTargetMatcher, null, $mockContext, ExpectedMatchCount::OneOrMore);
 
         // Assert
         // No assertions, only expectations.

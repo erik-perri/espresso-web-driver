@@ -10,6 +10,7 @@ use EspressoWebDriver\Action\ClearTextAction;
 use EspressoWebDriver\Core\EspressoContext;
 use EspressoWebDriver\Core\EspressoOptions;
 use EspressoWebDriver\Matcher\MatcherInterface;
+use EspressoWebDriver\Processor\ExpectedMatchCount;
 use EspressoWebDriver\Processor\MatchResult;
 use EspressoWebDriver\Tests\Traits\MocksWebDriverElement;
 use EspressoWebDriver\Tests\Unit\BaseUnitTestCase;
@@ -31,6 +32,7 @@ class ClearTextActionTest extends BaseUnitTestCase
 
         $mockResult = new MatchResult(
             container: null,
+            expectedCount: ExpectedMatchCount::One,
             matcher: $this->createMock(MatcherInterface::class),
             result: [$mockContainer],
         );

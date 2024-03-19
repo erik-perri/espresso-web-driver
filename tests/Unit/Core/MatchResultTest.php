@@ -9,6 +9,7 @@ namespace EspressoWebDriver\Tests\Unit\Core;
 use EspressoWebDriver\Exception\AmbiguousElementException;
 use EspressoWebDriver\Exception\NoMatchingElementException;
 use EspressoWebDriver\Matcher\MatcherInterface;
+use EspressoWebDriver\Processor\ExpectedMatchCount;
 use EspressoWebDriver\Processor\MatchResult;
 use EspressoWebDriver\Tests\Traits\MocksWebDriverElement;
 use EspressoWebDriver\Utilities\ElementPathLogger;
@@ -16,7 +17,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(AmbiguousElementException::class)]
-#[CoversClass(\EspressoWebDriver\Processor\MatchResult::class)]
+#[CoversClass(MatchResult::class)]
 #[CoversClass(NoMatchingElementException::class)]
 class MatchResultTest extends TestCase
 {
@@ -30,8 +31,9 @@ class MatchResultTest extends TestCase
         $elementOne = $this->createMockWebDriverElement('div');
         $elementTwo = $this->createMockWebDriverElement('div');
 
-        $result = new \EspressoWebDriver\Processor\MatchResult(
+        $result = new MatchResult(
             container: null,
+            expectedCount: ExpectedMatchCount::OneOrMore,
             matcher: $matcher,
             result: [
                 $elementOne,
@@ -60,6 +62,7 @@ class MatchResultTest extends TestCase
 
         $result = new MatchResult(
             container: null,
+            expectedCount: ExpectedMatchCount::OneOrMore,
             matcher: $matcher,
             result: [$element],
         );
@@ -79,8 +82,9 @@ class MatchResultTest extends TestCase
             ->method('__toString')
             ->willReturn('matcher()');
 
-        $result = new \EspressoWebDriver\Processor\MatchResult(
+        $result = new MatchResult(
             container: null,
+            expectedCount: ExpectedMatchCount::OneOrMore,
             matcher: $matcher,
             result: [],
         );
@@ -109,6 +113,7 @@ class MatchResultTest extends TestCase
 
         $result = new MatchResult(
             container: null,
+            expectedCount: ExpectedMatchCount::OneOrMore,
             matcher: $matcher,
             result: [
                 $elementOne,
@@ -135,8 +140,9 @@ class MatchResultTest extends TestCase
             ->method('__toString')
             ->willReturn('matcher()');
 
-        $result = new \EspressoWebDriver\Processor\MatchResult(
+        $result = new MatchResult(
             container: null,
+            expectedCount: ExpectedMatchCount::OneOrMore,
             matcher: $matcher,
             result: [],
         );
@@ -155,8 +161,9 @@ class MatchResultTest extends TestCase
 
         $mockElement = $this->createMockWebDriverElement('mock');
 
-        $result = new \EspressoWebDriver\Processor\MatchResult(
+        $result = new MatchResult(
             container: null,
+            expectedCount: ExpectedMatchCount::OneOrMore,
             matcher: $mockMatcher,
             result: [$mockElement],
         );

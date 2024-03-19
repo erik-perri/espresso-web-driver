@@ -14,7 +14,6 @@ use EspressoWebDriver\Core\EspressoOptions;
 use EspressoWebDriver\Exception\AssertionFailedException;
 use EspressoWebDriver\Matcher\IsDisplayedMatcher;
 use EspressoWebDriver\Matcher\MatcherInterface;
-use EspressoWebDriver\Processor\MatchProcessorOptions;
 use EspressoWebDriver\Processor\RetryingMatchProcessor;
 use EspressoWebDriver\Tests\Traits\MocksWebDriverElement;
 use EspressoWebDriver\Tests\Unit\BaseUnitTestCase;
@@ -23,7 +22,6 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use RuntimeException;
 use Symfony\Bridge\PhpUnit\ClockMock;
 
-#[CoversClass(MatchProcessorOptions::class)]
 #[CoversClass(RetryingMatchProcessor::class)]
 class RetryingMatchProcessorTest extends BaseUnitTestCase
 {

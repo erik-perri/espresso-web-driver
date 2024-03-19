@@ -11,6 +11,8 @@ use EspressoWebDriver\Core\EspressoContext;
 use EspressoWebDriver\Core\EspressoCore;
 use EspressoWebDriver\Core\EspressoOptions;
 use EspressoWebDriver\Matcher\MatcherInterface;
+use EspressoWebDriver\Processor\ExpectedMatchCount;
+use EspressoWebDriver\Processor\MatchResult;
 use EspressoWebDriver\Tests\Traits\MocksWebDriverElement;
 use EspressoWebDriver\Tests\Unit\BaseUnitTestCase;
 use Facebook\WebDriver\WebDriver;
@@ -61,12 +63,14 @@ class EspressoCoreTest extends BaseUnitTestCase
             ->method('match')
             ->willReturn([$mockRootElement]);
 
-        $mockContainerResult = new \EspressoWebDriver\Processor\MatchResult(
-            container: new \EspressoWebDriver\Processor\MatchResult(
+        $mockContainerResult = new MatchResult(
+            container: new MatchResult(
                 container: null,
+                expectedCount: ExpectedMatchCount::One,
                 matcher: withTagName('html'),
                 result: [$mockRootElement],
             ),
+            expectedCount: ExpectedMatchCount::One,
             matcher: $mockContainerMatcher,
             result: [$this->createMockWebDriverElement('div')],
         );
@@ -78,8 +82,9 @@ class EspressoCoreTest extends BaseUnitTestCase
             ->with($mockContainerResult, $this->isInstanceOf(EspressoContext::class))
             ->willReturn([$mockElement]);
 
-        $mockElementResult = new \EspressoWebDriver\Processor\MatchResult(
+        $mockElementResult = new MatchResult(
             container: $mockContainerResult,
+            expectedCount: ExpectedMatchCount::One,
             matcher: $mockElementMatcher,
             result: [$mockElement],
         );

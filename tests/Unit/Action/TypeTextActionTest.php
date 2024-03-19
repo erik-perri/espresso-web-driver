@@ -10,6 +10,7 @@ use EspressoWebDriver\Action\TypeTextAction;
 use EspressoWebDriver\Core\EspressoContext;
 use EspressoWebDriver\Core\EspressoOptions;
 use EspressoWebDriver\Matcher\MatcherInterface;
+use EspressoWebDriver\Processor\ExpectedMatchCount;
 use EspressoWebDriver\Processor\MatchResult;
 use EspressoWebDriver\Tests\Traits\MocksWebDriverElement;
 use EspressoWebDriver\Tests\Unit\BaseUnitTestCase;
@@ -32,6 +33,7 @@ class TypeTextActionTest extends BaseUnitTestCase
 
         $mockResult = new MatchResult(
             container: null,
+            expectedCount: ExpectedMatchCount::OneOrMore,
             matcher: $this->createMock(MatcherInterface::class),
             result: [$mockContainer],
         );

@@ -6,8 +6,8 @@ namespace EspressoWebDriver\Processor;
 
 enum ExpectedMatchCount: string
 {
-    case Any = 'any';
-    case Many = 'many';
-    case None = 'none';
-    case Single = 'single';
+    case One = 'one';
+    case OneOrMore = 'one_or_more';
+    case TwoOrMore = 'two_or_more';
+    case Zero = 'zero';
 }

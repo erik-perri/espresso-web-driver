@@ -19,6 +19,6 @@ interface MatchProcessorInterface
         MatcherInterface $target,
         MatcherInterface|MatchResult|null $container,
         EspressoContext $context,
-        MatchProcessorOptions $options = new MatchProcessorOptions,
+        ExpectedMatchCount $expectedCount,
     ): MatchResult;
 }

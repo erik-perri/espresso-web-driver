@@ -20,13 +20,18 @@ class MatchProcessor implements MatchProcessorInterface
         MatcherInterface $target,
         MatcherInterface|MatchResult|null $container,
         EspressoContext $context,
-        MatchProcessorOptions $options = new MatchProcessorOptions,
+        ExpectedMatchCount $expectedCount,
     ): MatchResult {
         $containerResult = $container instanceof MatchResult
             ? $container
             : $this->locateContainer($container, $context);
 
-        return $this->locateTarget($target, $containerResult, $context);
+        return new MatchResult(
+            container: $containerResult,
+            expectedCount: $expectedCount,
+            matcher: $target,
+            result: $target->match($containerResult, $context),
+        );
     }
 
     /**
@@ -39,27 +44,13 @@ class MatchProcessor implements MatchProcessorInterface
         if ($container !== null) {
             return new MatchResult(
                 container: $rootElement,
+                expectedCount: ExpectedMatchCount::One,
                 matcher: $container,
                 result: $container->match($rootElement, $context),
             );
         }
 
         return $rootElement;
-    }
-
-    /**
-     * @throws AmbiguousElementException|NoMatchingElementException
-     */
-    private function locateTarget(
-        MatcherInterface $target,
-        MatchResult $container,
-        EspressoContext $context,
-    ): MatchResult {
-        return new MatchResult(
-            container: $container,
-            matcher: $target,
-            result: $target->match($container, $context),
-        );
     }
 
     /**
@@ -72,6 +63,7 @@ class MatchProcessor implements MatchProcessorInterface
         try {
             return new MatchResult(
                 container: null,
+                expectedCount: ExpectedMatchCount::One,
                 matcher: $matcher,
                 result: [$context->driver->findElement(WebDriverBy::tagName('html'))],
             );

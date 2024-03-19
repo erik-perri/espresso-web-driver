@@ -14,7 +14,6 @@ use EspressoWebDriver\Exception\NoRootElementException;
 use EspressoWebDriver\Exception\PerformException;
 use EspressoWebDriver\Matcher\MatcherInterface;
 use EspressoWebDriver\Processor\ExpectedMatchCount;
-use EspressoWebDriver\Processor\MatchProcessorOptions;
 use Throwable;
 
 final readonly class ElementInteraction implements InteractionInterface
@@ -82,9 +81,7 @@ final readonly class ElementInteraction implements InteractionInterface
                     target: $this->target,
                     container: $this->container,
                     context: $this->context,
-                    options: new MatchProcessorOptions(
-                        expectedCount: ExpectedMatchCount::Single,
-                    ),
+                    expectedCount: ExpectedMatchCount::One,
                 );
 
                 if (!$action->perform($targetResult, $this->context)) {

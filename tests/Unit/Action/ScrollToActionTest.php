@@ -11,6 +11,7 @@ use EspressoWebDriver\Core\EspressoContext;
 use EspressoWebDriver\Core\EspressoOptions;
 use EspressoWebDriver\Exception\PerformException;
 use EspressoWebDriver\Matcher\MatcherInterface;
+use EspressoWebDriver\Processor\ExpectedMatchCount;
 use EspressoWebDriver\Processor\MatchResult;
 use EspressoWebDriver\Tests\Traits\MocksWebDriverElement;
 use EspressoWebDriver\Tests\Unit\BaseUnitTestCase;
@@ -47,6 +48,7 @@ class ScrollToActionTest extends BaseUnitTestCase
 
         $mockResult = new MatchResult(
             container: null,
+            expectedCount: ExpectedMatchCount::OneOrMore,
             matcher: $this->createMock(MatcherInterface::class),
             result: [$mockElement],
         );

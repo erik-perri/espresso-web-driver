@@ -8,7 +8,6 @@ use EspressoWebDriver\Core\EspressoContext;
 use EspressoWebDriver\Exception\AssertionFailedException;
 use EspressoWebDriver\Matcher\MatcherInterface;
 use EspressoWebDriver\Processor\ExpectedMatchCount;
-use EspressoWebDriver\Processor\MatchProcessorOptions;
 
 final readonly class DoesNotExistAssertion implements AssertionInterface
 {
@@ -21,9 +20,7 @@ final readonly class DoesNotExistAssertion implements AssertionInterface
             target: $target,
             container: $container,
             context: $context,
-            options: new MatchProcessorOptions(
-                expectedCount: ExpectedMatchCount::None,
-            ),
+            expectedCount: ExpectedMatchCount::Zero,
         );
 
         if ($targetResult->count() !== 0) {

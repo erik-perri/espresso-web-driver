@@ -23,7 +23,7 @@ final readonly class RetryingMatchProcessor implements MatchProcessorInterface
         MatcherInterface $target,
         MatcherInterface|MatchResult|null $container,
         EspressoContext $context,
-        MatchProcessorOptions $options = new MatchProcessorOptions,
+        ExpectedMatchCount $expectedCount,
     ): MatchResult {
         $startTime = (float) microtime(true);
         $endTime = $startTime + $this->waitTimeoutInSeconds;
@@ -34,7 +34,7 @@ final readonly class RetryingMatchProcessor implements MatchProcessorInterface
         while (microtime(true) < $endTime) {
             try {
                 $lastException = null;
-                $lastResult = $this->matchProcessor->process($target, $container, $context, $options);
+                $lastResult = $this->matchProcessor->process($target, $container, $context, $expectedCount);
             } catch (Throwable $exception) {
                 // TODO Should we narrow this and only retry some exceptions?
                 //      StaleElementReferenceException for example
@@ -45,11 +45,11 @@ final readonly class RetryingMatchProcessor implements MatchProcessorInterface
 
             $count = $lastResult->count();
 
-            $isExpectedCount = match ($options->expectedCount) {
-                ExpectedMatchCount::Any => $count > 0,
-                ExpectedMatchCount::Many => $count > 1,
-                ExpectedMatchCount::None => $count === 0,
-                ExpectedMatchCount::Single => $count === 1,
+            $isExpectedCount = match ($expectedCount) {
+                ExpectedMatchCount::OneOrMore => $count > 0,
+                ExpectedMatchCount::TwoOrMore => $count > 1,
+                ExpectedMatchCount::Zero => $count === 0,
+                ExpectedMatchCount::One => $count === 1,
             };
 
             if ($isExpectedCount) {
