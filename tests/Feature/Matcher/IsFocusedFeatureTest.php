@@ -7,6 +7,7 @@ declare(strict_types=1);
 namespace EspressoWebDriver\Tests\Feature\Matcher;
 
 use EspressoWebDriver\Core\EspressoOptions;
+use EspressoWebDriver\Exception\AssertionFailedException;
 use EspressoWebDriver\Exception\NoParentException;
 use EspressoWebDriver\Matcher\IsFocusedMatcher;
 use EspressoWebDriver\Tests\Feature\BaseFeatureTestCase;
@@ -99,8 +100,10 @@ class IsFocusedFeatureTest extends BaseFeatureTestCase
     public function testThrowsExceptionWhenCallingOnTheTopLevelElement(): void
     {
         // Expectations
-        $this->expectException(NoParentException::class);
-        $this->expectExceptionMessage('Unable to locate a parent while checking html for isFocused');
+        $this->expectException(AssertionFailedException::class);
+        $this->expectExceptionMessage(
+            'Failed to assert matches(isFocused), Unable to locate a parent while checking html for isFocused',
+        );
 
         // Arrange
         $espresso = $this->espresso(new EspressoOptions(
@@ -119,8 +122,10 @@ class IsFocusedFeatureTest extends BaseFeatureTestCase
     public function testThrowsExceptionWhenCallingNegativeOnTheTopLevelElement(): void
     {
         // Expectations
-        $this->expectException(NoParentException::class);
-        $this->expectExceptionMessage('Unable to locate a parent while checking html for isFocused');
+        $this->expectException(AssertionFailedException::class);
+        $this->expectExceptionMessage(
+            'Failed to assert matches(not(isFocused)), Unable to locate a parent while checking html for isFocused',
+        );
 
         // Arrange
         $espresso = $this->espresso(new EspressoOptions(

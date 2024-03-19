@@ -15,6 +15,7 @@ use EspressoWebDriver\Exception\PerformException;
 use EspressoWebDriver\Matcher\MatcherInterface;
 use EspressoWebDriver\Processor\ExpectedMatchCount;
 use EspressoWebDriver\Processor\MatchProcessorOptions;
+use Throwable;
 
 final readonly class ElementInteraction implements InteractionInterface
 {
@@ -31,15 +32,11 @@ final readonly class ElementInteraction implements InteractionInterface
      */
     public function check(AssertionInterface $assertion): InteractionInterface
     {
+        $message = null;
         $success = false;
 
         try {
-            $message = null;
             $success = $assertion->assert($this->target, $this->container, $this->context);
-
-            if (!$success) {
-                throw new AssertionFailedException($assertion);
-            }
         } catch (AmbiguousElementException|NoMatchingElementException|NoRootElementException $exception) {
             $message = $exception->getMessage();
 
@@ -52,6 +49,10 @@ final readonly class ElementInteraction implements InteractionInterface
             }
 
             throw new AssertionFailedException($assertion, $exception);
+        } catch (Throwable $exception) {
+            $message = sprintf('Unexpected exception: %1$s', $exception->getMessage());
+
+            throw new AssertionFailedException($assertion, $exception);
         } finally {
             $this->context->options->assertionReporter?->report(
                 $success,
@@ -59,6 +60,10 @@ final readonly class ElementInteraction implements InteractionInterface
                     ? sprintf('Failed asserting that %1$s is true, %2$s', $assertion, $message)
                     : sprintf('Failed asserting that %1$s is true', $assertion),
             );
+        }
+
+        if (!$success) {
+            throw new AssertionFailedException($assertion);
         }
 
         return $this;

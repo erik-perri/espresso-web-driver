@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace EspressoWebDriver\Exception;
 
 use EspressoWebDriver\Assertion\AssertionInterface;
+use Throwable;
 
 class AssertionFailedException extends EspressoWebDriverException
 {
-    public function __construct(AssertionInterface $assertion, ?EspressoWebDriverException $previous = null)
+    public function __construct(AssertionInterface $assertion, ?Throwable $previous = null)
     {
         parent::__construct(
             $previous
