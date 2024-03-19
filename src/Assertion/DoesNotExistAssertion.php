@@ -6,7 +6,7 @@ namespace EspressoWebDriver\Assertion;
 
 use EspressoWebDriver\Core\EspressoContext;
 use EspressoWebDriver\Matcher\MatcherInterface;
-use EspressoWebDriver\Processor\MatchProcessorExpectedCount;
+use EspressoWebDriver\Processor\ExpectedMatchCount;
 use EspressoWebDriver\Processor\MatchProcessorOptions;
 
 final readonly class DoesNotExistAssertion implements AssertionInterface
@@ -21,7 +21,7 @@ final readonly class DoesNotExistAssertion implements AssertionInterface
             container: $container,
             context: $context,
             options: new MatchProcessorOptions(
-                expectedCount: MatchProcessorExpectedCount::None,
+                expectedCount: ExpectedMatchCount::None,
             ),
         );
 

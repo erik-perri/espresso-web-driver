@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace EspressoWebDriver\Processor;
 
-enum MatchProcessorExpectedCount: string
+enum ExpectedMatchCount: string
 {
     case Any = 'any';
     case Many = 'many';

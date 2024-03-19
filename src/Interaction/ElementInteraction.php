@@ -13,7 +13,7 @@ use EspressoWebDriver\Exception\NoMatchingElementException;
 use EspressoWebDriver\Exception\NoRootElementException;
 use EspressoWebDriver\Exception\PerformException;
 use EspressoWebDriver\Matcher\MatcherInterface;
-use EspressoWebDriver\Processor\MatchProcessorExpectedCount;
+use EspressoWebDriver\Processor\ExpectedMatchCount;
 use EspressoWebDriver\Processor\MatchProcessorOptions;
 
 final readonly class ElementInteraction implements InteractionInterface
@@ -76,7 +76,7 @@ final readonly class ElementInteraction implements InteractionInterface
                     container: $this->container,
                     context: $this->context,
                     options: new MatchProcessorOptions(
-                        expectedCount: MatchProcessorExpectedCount::Single,
+                        expectedCount: ExpectedMatchCount::Single,
                     ),
                 );
 

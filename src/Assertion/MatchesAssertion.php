@@ -6,7 +6,7 @@ namespace EspressoWebDriver\Assertion;
 
 use EspressoWebDriver\Core\EspressoContext;
 use EspressoWebDriver\Matcher\MatcherInterface;
-use EspressoWebDriver\Processor\MatchProcessorExpectedCount;
+use EspressoWebDriver\Processor\ExpectedMatchCount;
 use EspressoWebDriver\Processor\MatchProcessorOptions;
 
 final readonly class MatchesAssertion implements AssertionInterface
@@ -26,7 +26,7 @@ final readonly class MatchesAssertion implements AssertionInterface
             container: $container,
             context: $context,
             options: new MatchProcessorOptions(
-                expectedCount: MatchProcessorExpectedCount::Single,
+                expectedCount: ExpectedMatchCount::Single,
             ),
         );
 

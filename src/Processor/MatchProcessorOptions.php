@@ -7,7 +7,7 @@ namespace EspressoWebDriver\Processor;
 final readonly class MatchProcessorOptions
 {
     public function __construct(
-        public MatchProcessorExpectedCount $expectedCount = MatchProcessorExpectedCount::Any,
+        public ExpectedMatchCount $expectedCount = ExpectedMatchCount::Any,
     ) {
         //
     }

@@ -46,10 +46,10 @@ final readonly class RetryingMatchProcessor implements MatchProcessorInterface
             $count = $lastResult->count();
 
             $isExpectedCount = match ($options->expectedCount) {
-                MatchProcessorExpectedCount::Any => $count > 0,
-                MatchProcessorExpectedCount::Many => $count > 1,
-                MatchProcessorExpectedCount::None => $count === 0,
-                MatchProcessorExpectedCount::Single => $count === 1,
+                ExpectedMatchCount::Any => $count > 0,
+                ExpectedMatchCount::Many => $count > 1,
+                ExpectedMatchCount::None => $count === 0,
+                ExpectedMatchCount::Single => $count === 1,
             };
 
             if ($isExpectedCount) {
