@@ -6,6 +6,7 @@ declare(strict_types=1);
 
 namespace EspressoWebDriver\Tests\Unit\Core;
 
+use Closure;
 use EspressoWebDriver\Exception\AmbiguousElementException;
 use EspressoWebDriver\Exception\NoMatchingElementException;
 use EspressoWebDriver\Matcher\MatcherInterface;
@@ -13,7 +14,9 @@ use EspressoWebDriver\Processor\ExpectedMatchCount;
 use EspressoWebDriver\Processor\MatchResult;
 use EspressoWebDriver\Tests\Traits\MocksWebDriverElement;
 use EspressoWebDriver\Utilities\ElementPathLogger;
+use Facebook\WebDriver\WebDriverElement;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(AmbiguousElementException::class)]
@@ -173,5 +176,91 @@ class MatchResultTest extends TestCase
 
         // Assert
         $this->assertSame($mockElement, $single);
+    }
+
+    #[DataProvider('provideMatchResultShouldRetry')]
+    public function testMatchResultShouldRetry(
+        ExpectedMatchCount $expectedCount,
+        Closure $resultFactory,
+        bool $expectedShouldRetry,
+    ): void {
+        // Arrange
+        $result = new MatchResult(
+            container: null,
+            expectedCount: $expectedCount,
+            matcher: $this->createMock(MatcherInterface::class),
+            result: $resultFactory($this),
+        );
+
+        // Act
+        $shouldRetry = $result->shouldRetry();
+
+        // Assert
+        $this->assertEquals($expectedShouldRetry, $shouldRetry);
+    }
+
+    /**
+     * @return array<string, array{
+     *     expectedCount: ExpectedMatchCount,
+     *     resultFactory: Closure(self): WebDriverElement[],
+     *     expectedShouldRetry: bool
+     * }>
+     */
+    public static function provideMatchResultShouldRetry(): array
+    {
+        return [
+            'one valid' => [
+                'expectedCount' => ExpectedMatchCount::One,
+                'resultFactory' => fn (self $self) => [
+                    $self->createMockWebDriverElement('div'),
+                ],
+                'expectedShouldRetry' => false,
+            ],
+            'one invalid' => [
+                'expectedCount' => ExpectedMatchCount::One,
+                'resultFactory' => fn (self $self) => [],
+                'expectedShouldRetry' => true,
+            ],
+            'one or more valid' => [
+                'expectedCount' => ExpectedMatchCount::OneOrMore,
+                'resultFactory' => fn (self $self) => [
+                    $self->createMockWebDriverElement('div'),
+                    $self->createMockWebDriverElement('div'),
+                ],
+                'expectedShouldRetry' => false,
+            ],
+            'one or more invalid' => [
+                'expectedCount' => ExpectedMatchCount::OneOrMore,
+                'resultFactory' => fn (self $self) => [],
+                'expectedShouldRetry' => true,
+            ],
+            'two or more valid' => [
+                'expectedCount' => ExpectedMatchCount::TwoOrMore,
+                'resultFactory' => fn (self $self) => [
+                    $self->createMockWebDriverElement('div'),
+                    $self->createMockWebDriverElement('div'),
+                ],
+                'expectedShouldRetry' => false,
+            ],
+            'two or more invalid' => [
+                'expectedCount' => ExpectedMatchCount::TwoOrMore,
+                'resultFactory' => fn (self $self) => [
+                    $self->createMockWebDriverElement('div'),
+                ],
+                'expectedShouldRetry' => true,
+            ],
+            'zero valid' => [
+                'expectedCount' => ExpectedMatchCount::Zero,
+                'resultFactory' => fn (self $self) => [],
+                'expectedShouldRetry' => false,
+            ],
+            'zero invalid' => [
+                'expectedCount' => ExpectedMatchCount::Zero,
+                'resultFactory' => fn (self $self) => [
+                    $self->createMockWebDriverElement('div'),
+                ],
+                'expectedShouldRetry' => true,
+            ],
+        ];
     }
 }
