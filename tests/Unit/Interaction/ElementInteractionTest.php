@@ -208,6 +208,42 @@ class ElementInteractionTest extends BaseUnitTestCase
         // No assertions, only expectations.
     }
 
+    public function testCheckIncludesUnknownExceptionsInMessage(): void
+    {
+        // Expectations
+        $this->expectException(AssertionFailedException::class);
+        $this->expectExceptionMessage('Failed to assert exists, mock exception');
+
+        // Arrange
+        $reporter = $this->createMock(AssertionReporterInterface::class);
+        $reporter->expects($this->once())
+            ->method('report')
+            ->with(
+                false,
+                'Failed asserting that exists is true, Unexpected exception: mock exception',
+            );
+
+        $mockElementMatcher = $this->createMock(MatcherInterface::class);
+
+        $mockDriver = $this->createMock(WebDriver::class);
+        $mockDriver->expects($this->once())
+            ->method('findElement')
+            ->willThrowException(new \RuntimeException('mock exception'));
+
+        $mockContext = new EspressoContext(
+            driver: $mockDriver,
+            options: new EspressoOptions(assertionReporter: $reporter),
+        );
+
+        $interaction = new ElementInteraction($mockElementMatcher, null, $mockContext);
+
+        // Act
+        $interaction->check(exists());
+
+        // Assert
+        // No assertions, only expectations.
+    }
+
     public function testCheckProvidesFluentInterface(): void
     {
         // Arrange
