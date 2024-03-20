@@ -4,7 +4,7 @@ expressions.
 ```php
 $espresso = usingDriver($driver, new EspressoOptions(
     matchProcessor: new RetryingMatchProcessor(
-        waitTimeoutInSeconds: 5,
+        waitTimeoutInMilliseconds: 5000,
         waitIntervalInMilliseconds: 250,
     ),
 ));
