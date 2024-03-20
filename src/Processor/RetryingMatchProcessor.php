@@ -18,7 +18,7 @@ final readonly class RetryingMatchProcessor implements MatchProcessorInterface
      */
     public function __construct(
         int $waitTimeoutInMilliseconds = 5000,
-        int $waitIntervalInMilliseconds = 250,
+        int $waitIntervalInMilliseconds = 200,
         array $retryableExceptions = [
             StaleElementReferenceException::class,
         ],

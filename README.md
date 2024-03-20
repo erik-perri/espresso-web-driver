@@ -3,9 +3,13 @@ expressions.
 
 ```php
 $espresso = usingDriver($driver, new EspressoOptions(
+    actionProcessor: new RetryingActionProcessor(
+        waitTimeoutInMilliseconds: 2000,
+        waitIntervalInMilliseconds: 200,
+    ),
     matchProcessor: new RetryingMatchProcessor(
         waitTimeoutInMilliseconds: 5000,
-        waitIntervalInMilliseconds: 250,
+        waitIntervalInMilliseconds: 200,
     ),
 ));
 
