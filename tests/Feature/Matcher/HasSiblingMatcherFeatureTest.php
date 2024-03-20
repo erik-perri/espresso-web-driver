@@ -11,9 +11,9 @@ use EspressoWebDriver\Tests\Feature\BaseFeatureTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\CoversFunction;
 
-use function EspressoWebDriver\allOf;
 use function EspressoWebDriver\hasSibling;
 use function EspressoWebDriver\matches;
+use function EspressoWebDriver\matchesAll;
 use function EspressoWebDriver\not;
 use function EspressoWebDriver\withClass;
 use function EspressoWebDriver\withId;
@@ -31,7 +31,7 @@ class HasSiblingMatcherFeatureTest extends BaseFeatureTestCase
 
         // Act and Assert
         $espresso->navigateTo('/matchers/has-sibling.html')
-            ->onElement(allOf(withTagName('input'), hasSibling(withText('Password'))))
+            ->onElement(matchesAll(withTagName('input'), hasSibling(withText('Password'))))
             ->check(matches(withId('password')));
     }
 
@@ -42,7 +42,7 @@ class HasSiblingMatcherFeatureTest extends BaseFeatureTestCase
 
         // Act and Assert
         $espresso->navigateTo('/matchers/has-sibling.html')
-            ->onElement(allOf(withTagName('input'), not(hasSibling(withClass('error')))))
+            ->onElement(matchesAll(withTagName('input'), not(hasSibling(withClass('error')))))
             ->check(matches(withId('password_confirmation')));
     }
 }

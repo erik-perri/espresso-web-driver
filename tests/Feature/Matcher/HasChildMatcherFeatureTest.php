@@ -11,9 +11,9 @@ use EspressoWebDriver\Tests\Feature\BaseFeatureTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\CoversFunction;
 
-use function EspressoWebDriver\allOf;
 use function EspressoWebDriver\hasChild;
 use function EspressoWebDriver\matches;
+use function EspressoWebDriver\matchesAll;
 use function EspressoWebDriver\not;
 use function EspressoWebDriver\withClass;
 use function EspressoWebDriver\withText;
@@ -44,7 +44,7 @@ class HasChildMatcherFeatureTest extends BaseFeatureTestCase
 
         // Act and Assert
         $espresso->navigateTo('/matchers/has-child.html')
-            ->onElement(allOf(hasChild(withText('Mock C')), not(hasChild(withText('Mock D')))))
+            ->onElement(matchesAll(hasChild(withText('Mock C')), not(hasChild(withText('Mock D')))))
             ->check(matches(withClass('mock-c')));
     }
 }

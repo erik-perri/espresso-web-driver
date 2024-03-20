@@ -12,8 +12,8 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\CoversFunction;
 use PHPUnit\Framework\Attributes\DataProvider;
 
-use function EspressoWebDriver\allOf;
 use function EspressoWebDriver\matches;
+use function EspressoWebDriver\matchesAll;
 use function EspressoWebDriver\not;
 use function EspressoWebDriver\withClass;
 use function EspressoWebDriver\withPlaceholder;
@@ -60,7 +60,7 @@ class WithPlaceholderMatcherFeatureTest extends BaseFeatureTestCase
 
         // Act and Assert
         $espresso->navigateTo('/matchers/with-placeholder.html')
-            ->onElement(allOf(withClass('input'), not(withPlaceholder($placeholder))))
+            ->onElement(matchesAll(withClass('input'), not(withPlaceholder($placeholder))))
             ->check(matches(withTagName($tagName)));
     }
 

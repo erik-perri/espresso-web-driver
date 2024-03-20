@@ -21,7 +21,7 @@ $espresso->onElement(withLabel('Last name'))
 
 ```php
 $containedEspresso = usingDriver($driver)
-    ->inContainer(allOf(
+    ->inContainer(matchesAll(
         withClass('row'),
         hasDescendant(withText('John Doe')),
     ));
@@ -37,8 +37,6 @@ $containedEspresso->onElement(withText('Edit'))
   * [Core](#core)
     * [usingDriver(`WebDriver`, `EspressoOptions`)](#usingdriverwebdriver-espressooptions)
   * [Matchers](#matchers)
-    * [allOf(`MatcherInterface ...`)](#allofmatcherinterface-)
-    * [anyOf(`MatcherInterface ...`)](#anyofmatcherinterface-)
     * [hasAncestor(`MatcherInterface`)](#hasancestormatcherinterface)
     * [hasChild(`MatcherInterface`)](#haschildmatcherinterface)
     * [hasDescendant(`MatcherInterface`)](#hasdescendantmatcherinterface)
@@ -49,6 +47,8 @@ $containedEspresso->onElement(withText('Edit'))
     * [isDisplayedInViewport()](#isdisplayedinviewport)
     * [isEnabled()](#isenabled)
     * [isFocused()](#isfocused)
+    * [matchesAll(`MatcherInterface ...`)](#matchesallmatcherinterface-)
+    * [matchesAny(`MatcherInterface ...`)](#matchesanymatcherinterface-)
     * [not(`MatcherInterface`)](#notmatcherinterface)
     * [withClass(`string`)](#withclassstring)
     * [withId(`string`)](#withidstring)
@@ -100,14 +100,6 @@ Returns a new [EspressoCore](#espressocore) instance with the specified driver a
 Matchers return `MatcherInterface` instances. They are used with the [EspressoCore](#espressocore) methods, other
 matchers to further refine the selection of elements, and assertions to check the state of elements.
 
-### allOf(`MatcherInterface ...`)
-
-Matches elements that match all the given matchers.
-
-### anyOf(`MatcherInterface ...`)
-
-Matches elements that match any of the given matchers.
-
 ### hasAncestor(`MatcherInterface`)
 
 Matches elements that have an ancestor that matches the given matcher.
@@ -147,6 +139,14 @@ Matches elements that are enabled.
 ### isFocused()
 
 Matches elements that have focus.
+
+### matchesAll(`MatcherInterface ...`)
+
+Matches elements that match all the given matchers.
+
+### matchesAny(`MatcherInterface ...`)
+
+Matches elements that match any of the given matchers.
 
 ### not(`MatcherInterface`)
 

@@ -11,8 +11,8 @@ use EspressoWebDriver\Tests\Feature\BaseFeatureTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\CoversFunction;
 
-use function EspressoWebDriver\allOf;
 use function EspressoWebDriver\matches;
+use function EspressoWebDriver\matchesAll;
 use function EspressoWebDriver\not;
 use function EspressoWebDriver\withId;
 use function EspressoWebDriver\withTagName;
@@ -40,7 +40,7 @@ class WithIdMatcherFeatureTest extends BaseFeatureTestCase
 
         // Act and Assert
         $espresso->navigateTo('/matchers/with-id.html')
-            ->onElement(allOf(not(withId('test')), withTagName('span')))
+            ->onElement(matchesAll(not(withId('test')), withTagName('span')))
             ->check(matches(withText('Testing')));
     }
 

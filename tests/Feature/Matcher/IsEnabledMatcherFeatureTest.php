@@ -11,10 +11,10 @@ use EspressoWebDriver\Tests\Feature\BaseFeatureTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\CoversFunction;
 
-use function EspressoWebDriver\allOf;
 use function EspressoWebDriver\hasDescendant;
 use function EspressoWebDriver\isEnabled;
 use function EspressoWebDriver\matches;
+use function EspressoWebDriver\matchesAll;
 use function EspressoWebDriver\not;
 use function EspressoWebDriver\withClass;
 use function EspressoWebDriver\withTagName;
@@ -34,10 +34,10 @@ class IsEnabledMatcherFeatureTest extends BaseFeatureTestCase
         // Act and Assert
         $containedEspresso->navigateTo('/matchers/is-enabled.html');
 
-        $containedEspresso->onElement(allOf(withTagName('button'), isEnabled()))
+        $containedEspresso->onElement(matchesAll(withTagName('button'), isEnabled()))
             ->check(matches(withText('Enabled')));
 
-        $containedEspresso->onElement(allOf(withTagName('button'), not(isEnabled())))
+        $containedEspresso->onElement(matchesAll(withTagName('button'), not(isEnabled())))
             ->check(matches(withText('Disabled')));
     }
 
@@ -49,10 +49,10 @@ class IsEnabledMatcherFeatureTest extends BaseFeatureTestCase
         // Act and Assert
         $espresso->navigateTo('/matchers/is-enabled.html');
 
-        $espresso->onElement(allOf(withTagName('fieldset'), isEnabled()))
+        $espresso->onElement(matchesAll(withTagName('fieldset'), isEnabled()))
             ->check(matches(hasDescendant(withText('Enabled'))));
 
-        $espresso->onElement(allOf(withTagName('fieldset'), not(isEnabled())))
+        $espresso->onElement(matchesAll(withTagName('fieldset'), not(isEnabled())))
             ->check(matches(hasDescendant(withText('Disabled'))));
     }
 
@@ -63,8 +63,8 @@ class IsEnabledMatcherFeatureTest extends BaseFeatureTestCase
 
         // Act and Assert
         $espresso->navigateTo('/matchers/is-enabled.html')
-            ->onElement(allOf(withTagName('fieldset'), not(isEnabled())))
-            ->check(matches(hasDescendant(allOf(withTagName('button'), not(isEnabled())))));
+            ->onElement(matchesAll(withTagName('fieldset'), not(isEnabled())))
+            ->check(matches(hasDescendant(matchesAll(withTagName('button'), not(isEnabled())))));
     }
 
     public function testIsEnabledWorksOnInputs(): void
@@ -75,10 +75,10 @@ class IsEnabledMatcherFeatureTest extends BaseFeatureTestCase
         // Act and Assert
         $espresso->navigateTo('/matchers/is-enabled.html');
 
-        $espresso->onElement(allOf(withTagName('input'), isEnabled()))
+        $espresso->onElement(matchesAll(withTagName('input'), isEnabled()))
             ->check(matches(withValue('Enabled')));
 
-        $espresso->onElement(allOf(withTagName('input'), not(isEnabled())))
+        $espresso->onElement(matchesAll(withTagName('input'), not(isEnabled())))
             ->check(matches(withValue('Disabled')));
     }
 
@@ -90,20 +90,20 @@ class IsEnabledMatcherFeatureTest extends BaseFeatureTestCase
         // Act and Assert
         $espresso->navigateTo('/matchers/is-enabled.html');
 
-        $espresso->onElement(allOf(withTagName('select'), isEnabled()))
+        $espresso->onElement(matchesAll(withTagName('select'), isEnabled()))
             ->check(matches(withClass('enabled')));
-        $espresso->onElement(allOf(withTagName('select'), not(isEnabled())))
+        $espresso->onElement(matchesAll(withTagName('select'), not(isEnabled())))
             ->check(matches(withClass('disabled')));
 
-        $espresso->onElement(allOf(withTagName('optgroup'), isEnabled()))
+        $espresso->onElement(matchesAll(withTagName('optgroup'), isEnabled()))
             ->check(matches(hasDescendant(withText('Enabled'))));
-        $espresso->inContainer(allOf(withTagName('optgroup'), not(isEnabled())))
-            ->onElement(allOf(withTagName('optgroup'), not(isEnabled())))
+        $espresso->inContainer(matchesAll(withTagName('optgroup'), not(isEnabled())))
+            ->onElement(matchesAll(withTagName('optgroup'), not(isEnabled())))
             ->check(matches(hasDescendant(withText('Disabled'))));
 
-        $espresso->onElement(allOf(withClass('option'), isEnabled()))
+        $espresso->onElement(matchesAll(withClass('option'), isEnabled()))
             ->check(matches(withText('Enabled')));
-        $espresso->onElement(allOf(withClass('option'), not(isEnabled())))
+        $espresso->onElement(matchesAll(withClass('option'), not(isEnabled())))
             ->check(matches(withText('Disabled')));
     }
 
@@ -115,9 +115,9 @@ class IsEnabledMatcherFeatureTest extends BaseFeatureTestCase
         // Act and Assert
         $espresso->navigateTo('/matchers/is-enabled.html');
 
-        $espresso->onElement(allOf(withTagName('textarea'), isEnabled()))
+        $espresso->onElement(matchesAll(withTagName('textarea'), isEnabled()))
             ->check(matches(withValue('Enabled')));
-        $espresso->onElement(allOf(withTagName('textarea'), not(isEnabled())))
+        $espresso->onElement(matchesAll(withTagName('textarea'), not(isEnabled())))
             ->check(matches(withValue('Disabled')));
     }
 }

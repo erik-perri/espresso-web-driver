@@ -15,10 +15,10 @@ use EspressoWebDriver\Tests\Utilities\StaticUrlProcessor;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\CoversFunction;
 
-use function EspressoWebDriver\allOf;
 use function EspressoWebDriver\click;
 use function EspressoWebDriver\doesNotExist;
 use function EspressoWebDriver\exists;
+use function EspressoWebDriver\matchesAll;
 use function EspressoWebDriver\withTagName;
 use function EspressoWebDriver\withText;
 
@@ -39,7 +39,7 @@ class ExistsAssertionFeatureTest extends BaseFeatureTestCase
         $espresso->onElement(withText('Mock element'))
             ->check(doesNotExist());
 
-        $espresso->onElement(allOf(withTagName('button'), withText('Create element')))
+        $espresso->onElement(matchesAll(withTagName('button'), withText('Create element')))
             ->perform(click());
 
         $espresso->onElement(withText('Mock element'))
@@ -60,7 +60,7 @@ class ExistsAssertionFeatureTest extends BaseFeatureTestCase
         // Act and Assert
         $espresso->navigateTo('/assertions/exists.html');
 
-        $espresso->onElement(allOf(withTagName('button'), withText('Create element')))
+        $espresso->onElement(matchesAll(withTagName('button'), withText('Create element')))
             ->perform(click());
 
         $espresso->onElement(withText('Mock element'))

@@ -11,9 +11,9 @@ use EspressoWebDriver\Tests\Feature\BaseFeatureTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\CoversFunction;
 
-use function EspressoWebDriver\allOf;
 use function EspressoWebDriver\hasAncestor;
 use function EspressoWebDriver\matches;
+use function EspressoWebDriver\matchesAll;
 use function EspressoWebDriver\not;
 use function EspressoWebDriver\withClass;
 use function EspressoWebDriver\withText;
@@ -29,7 +29,7 @@ class HasAncestorMatcherFeatureTest extends BaseFeatureTestCase
 
         // Act and Assert
         $espresso->navigateTo('/matchers/has-ancestor.html')
-            ->onElement(allOf(
+            ->onElement(matchesAll(
                 withText('Descendant'),
                 hasAncestor(withClass('ancestor-a')),
             ))
@@ -43,7 +43,7 @@ class HasAncestorMatcherFeatureTest extends BaseFeatureTestCase
 
         // Act and Assert
         $espresso->navigateTo('/matchers/has-ancestor.html')
-            ->onElement(allOf(
+            ->onElement(matchesAll(
                 withText('Descendant'),
                 not(hasAncestor(withClass('ancestor-a'))),
             ))

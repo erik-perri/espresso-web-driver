@@ -122,16 +122,6 @@ function matches(MatcherInterface $matcher): AssertionInterface
 
 // region Matchers
 
-function allOf(MatcherInterface ...$matchers): MatcherInterface
-{
-    return new AllOfMatcher(...$matchers);
-}
-
-function anyOf(MatcherInterface ...$matchers): MatcherInterface
-{
-    return new AnyOfMatcher(...$matchers);
-}
-
 function hasAncestor(MatcherInterface $matcher): MatcherInterface
 {
     return new HasAncestorMatcher($matcher);
@@ -186,6 +176,16 @@ function isEnabled(): MatcherInterface
 function isFocused(): MatcherInterface
 {
     return new IsFocusedMatcher;
+}
+
+function matchesAll(MatcherInterface ...$matchers): MatcherInterface
+{
+    return new AllOfMatcher(...$matchers);
+}
+
+function matchesAny(MatcherInterface ...$matchers): MatcherInterface
+{
+    return new AnyOfMatcher(...$matchers);
 }
 
 function not(MatcherInterface $matcher): MatcherInterface

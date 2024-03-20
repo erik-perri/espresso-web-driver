@@ -12,8 +12,8 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\CoversFunction;
 use PHPUnit\Framework\Attributes\DataProvider;
 
-use function EspressoWebDriver\allOf;
 use function EspressoWebDriver\matches;
+use function EspressoWebDriver\matchesAll;
 use function EspressoWebDriver\not;
 use function EspressoWebDriver\withId;
 use function EspressoWebDriver\withTagName;
@@ -42,7 +42,7 @@ class WithValueMatcherFeatureTest extends BaseFeatureTestCase
 
         // Act and Assert
         $espresso->navigateTo('/matchers/with-value.html')
-            ->onElement(allOf(withTagName('button'), not(withValue('button-value'))))
+            ->onElement(matchesAll(withTagName('button'), not(withValue('button-value'))))
             ->check(matches(withText('Button without longer value')));
     }
 
@@ -75,7 +75,7 @@ class WithValueMatcherFeatureTest extends BaseFeatureTestCase
 
         // Act and Assert
         $espresso->navigateTo('/matchers/with-value.html')
-            ->onElement(allOf(withTagName('li'), not(withValue('5'))))
+            ->onElement(matchesAll(withTagName('li'), not(withValue('5'))))
             ->check(matches(withText('List starting at 6')));
     }
 

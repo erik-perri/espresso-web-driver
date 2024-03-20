@@ -11,8 +11,8 @@ use EspressoWebDriver\Tests\Feature\BaseFeatureTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\CoversFunction;
 
-use function EspressoWebDriver\allOf;
 use function EspressoWebDriver\matches;
+use function EspressoWebDriver\matchesAll;
 use function EspressoWebDriver\not;
 use function EspressoWebDriver\withTagName;
 use function EspressoWebDriver\withText;
@@ -44,7 +44,7 @@ class WithTagNameMatcherFeatureTest extends BaseFeatureTestCase
         // Act and Assert
         $espresso->navigateTo('/matchers/with-tag-name.html')
             ->inContainer(withTagName('table'))
-            ->onElement(allOf(not(withTagName('col')), not(withTagName('table'))))
+            ->onElement(matchesAll(not(withTagName('col')), not(withTagName('table'))))
             ->check(matches(withTagName('colgroup')));
     }
 

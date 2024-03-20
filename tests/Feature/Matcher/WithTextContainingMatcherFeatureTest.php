@@ -12,9 +12,9 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\CoversFunction;
 use PHPUnit\Framework\Attributes\DataProvider;
 
-use function EspressoWebDriver\allOf;
 use function EspressoWebDriver\exists;
 use function EspressoWebDriver\matches;
+use function EspressoWebDriver\matchesAll;
 use function EspressoWebDriver\not;
 use function EspressoWebDriver\withClass;
 use function EspressoWebDriver\withTagName;
@@ -62,7 +62,7 @@ class WithTextContainingMatcherFeatureTest extends BaseFeatureTestCase
     {
         // Arrange
         $containedEspresso = $this->espresso()
-            ->inContainer(allOf(withTagName('li'), withTextContaining('Mock A')));
+            ->inContainer(matchesAll(withTagName('li'), withTextContaining('Mock A')));
 
         // Act and Assert
         $containedEspresso->navigateTo('/matchers/with-text.html')
@@ -74,7 +74,7 @@ class WithTextContainingMatcherFeatureTest extends BaseFeatureTestCase
     {
         // Arrange
         $containedEspresso = $this->espresso()
-            ->inContainer(allOf(withTagName('li'), withTextContaining('Another D')));
+            ->inContainer(matchesAll(withTagName('li'), withTextContaining('Another D')));
 
         // Act and Assert
         $containedEspresso->navigateTo('/matchers/with-text.html')
@@ -89,7 +89,7 @@ class WithTextContainingMatcherFeatureTest extends BaseFeatureTestCase
 
         // Act and Assert
         $espresso->navigateTo('/matchers/with-text.html')
-            ->onElement(allOf(withTagName('li'), withTextContaining('MOCK A')))
+            ->onElement(matchesAll(withTagName('li'), withTextContaining('MOCK A')))
             ->check(exists());
     }
 
@@ -100,7 +100,7 @@ class WithTextContainingMatcherFeatureTest extends BaseFeatureTestCase
 
         // Act and Assert
         $espresso->navigateTo('/matchers/with-text.html')
-            ->onElement(allOf(withTagName('li'), withTextContaining('Mock B')))
+            ->onElement(matchesAll(withTagName('li'), withTextContaining('Mock B')))
             ->check(exists());
     }
 
@@ -111,7 +111,7 @@ class WithTextContainingMatcherFeatureTest extends BaseFeatureTestCase
 
         // Act and Assert
         $espresso->navigateTo('/matchers/with-text.html')
-            ->onElement(allOf(withTagName('li'), withTextContaining('Mock C')))
+            ->onElement(matchesAll(withTagName('li'), withTextContaining('Mock C')))
             ->check(exists());
     }
 
@@ -122,7 +122,7 @@ class WithTextContainingMatcherFeatureTest extends BaseFeatureTestCase
 
         // Act and Assert
         $espresso->navigateTo('/matchers/with-text.html')
-            ->onElement(allOf(withTagName('li'), not(withTextContaining('mock'))))
+            ->onElement(matchesAll(withTagName('li'), not(withTextContaining('mock'))))
             ->check(matches(withText('Another D')));
     }
 }

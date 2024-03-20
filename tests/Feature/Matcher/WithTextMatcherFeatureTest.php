@@ -15,10 +15,10 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\CoversFunction;
 use PHPUnit\Framework\Attributes\DataProvider;
 
-use function EspressoWebDriver\allOf;
 use function EspressoWebDriver\click;
 use function EspressoWebDriver\exists;
 use function EspressoWebDriver\matches;
+use function EspressoWebDriver\matchesAll;
 use function EspressoWebDriver\not;
 use function EspressoWebDriver\withClass;
 use function EspressoWebDriver\withTagName;
@@ -68,7 +68,7 @@ class WithTextMatcherFeatureTest extends BaseFeatureTestCase
 
         // Act and Assert
         $espresso->navigateTo('/matchers/with-text.html')
-            ->onElement(allOf(
+            ->onElement(matchesAll(
                 withTagName('li'),
                 not(withText('Mock A')),
                 not(withText('Mock B')),
