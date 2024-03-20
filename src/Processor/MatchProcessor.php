@@ -14,7 +14,7 @@ use Facebook\WebDriver\WebDriverBy;
 
 use function EspressoWebDriver\withTagName;
 
-class MatchProcessor implements MatchProcessorInterface
+final readonly class MatchProcessor implements MatchProcessorInterface
 {
     public function process(
         MatcherInterface $target,

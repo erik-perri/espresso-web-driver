@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace EspressoWebDriver\Core;
 
+use EspressoWebDriver\Processor\ActionProcessor;
+use EspressoWebDriver\Processor\ActionProcessorInterface;
 use EspressoWebDriver\Processor\MatchProcessor;
 use EspressoWebDriver\Processor\MatchProcessorInterface;
 use EspressoWebDriver\Processor\UrlProcessorInterface;
@@ -16,6 +18,7 @@ use EspressoWebDriver\Utilities\ElementPathLogger;
 final readonly class EspressoOptions
 {
     public function __construct(
+        public ActionProcessorInterface $actionProcessor = new ActionProcessor,
         public ?AssertionReporterInterface $assertionReporter = null,
         public ElementLocatorInterface $elementLocator = new ElementLocator,
         public ElementLoggerInterface $elementLogger = new ElementPathLogger,

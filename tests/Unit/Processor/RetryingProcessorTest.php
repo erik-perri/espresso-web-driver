@@ -12,24 +12,34 @@ use EspressoWebDriver\Assertion\MatchesAssertion;
 use EspressoWebDriver\Core\EspressoContext;
 use EspressoWebDriver\Core\EspressoOptions;
 use EspressoWebDriver\Exception\AssertionFailedException;
+use EspressoWebDriver\Interaction\ElementInteraction;
 use EspressoWebDriver\Matcher\IsDisplayedMatcher;
 use EspressoWebDriver\Matcher\MatcherInterface;
+use EspressoWebDriver\Processor\RetryingActionProcessor;
 use EspressoWebDriver\Processor\RetryingMatchProcessor;
+use EspressoWebDriver\Processor\RetryingProcessor;
 use EspressoWebDriver\Tests\Traits\MocksWebDriverElement;
 use EspressoWebDriver\Tests\Unit\BaseUnitTestCase;
+use Facebook\WebDriver\Exception\ElementClickInterceptedException;
+use Facebook\WebDriver\Exception\StaleElementReferenceException;
 use Facebook\WebDriver\WebDriver;
+use PharIo\Manifest\ElementCollectionException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use RuntimeException;
 use Symfony\Bridge\PhpUnit\ClockMock;
 
+use function EspressoWebDriver\click;
+
+#[CoversClass(RetryingActionProcessor::class)]
 #[CoversClass(RetryingMatchProcessor::class)]
-class RetryingMatchProcessorTest extends BaseUnitTestCase
+#[CoversClass(RetryingProcessor::class)]
+class RetryingProcessorTest extends BaseUnitTestCase
 {
     use MocksWebDriverElement;
 
     protected function setUp(): void
     {
-        ClockMock::register(RetryingMatchProcessor::class);
+        ClockMock::register(RetryingProcessor::class);
 
         ClockMock::withClockMock(true);
     }
@@ -47,8 +57,8 @@ class RetryingMatchProcessorTest extends BaseUnitTestCase
 
         // Arrange
         $configuredDelayInMilliseconds = 160;
-        $configuredTimeInSeconds = 1;
-        $expectedRetries = (int) ceil(($configuredTimeInSeconds * 1000) / $configuredDelayInMilliseconds);
+        $configuredTimeInMilliseconds = 1000;
+        $expectedRetries = (int) ceil($configuredTimeInMilliseconds / $configuredDelayInMilliseconds);
 
         $mockContainer = $this->createMockWebDriverElement('div');
         $mockContainer
@@ -61,11 +71,11 @@ class RetryingMatchProcessorTest extends BaseUnitTestCase
             ->method('findElement')
             ->willReturn($this->createMockWebDriverElement('html', children: [$mockContainer]));
 
-        $matchContext = new EspressoContext(
+        $mockContext = new EspressoContext(
             driver: $mockDriver,
             options: new EspressoOptions(
                 matchProcessor: new RetryingMatchProcessor(
-                    waitTimeoutInSeconds: $configuredTimeInSeconds,
+                    waitTimeoutInMilliseconds: $configuredTimeInMilliseconds,
                     waitIntervalInMilliseconds: $configuredDelayInMilliseconds,
                 ),
             ),
@@ -79,7 +89,7 @@ class RetryingMatchProcessorTest extends BaseUnitTestCase
             ->willReturn([$mockContainer]);
 
         // Act
-        $assertion->assert($mockMatcher, null, $matchContext);
+        $assertion->assert($mockMatcher, null, $mockContext);
 
         // Assert
         // No assertions, only expectations.
@@ -89,7 +99,7 @@ class RetryingMatchProcessorTest extends BaseUnitTestCase
     {
         // Arrange
         $configuredDelayInMilliseconds = 100;
-        $configuredTimeInSeconds = 1;
+        $configuredTimeInMilliseconds = 1000;
         $expectedRetries = 4;
 
         $mockElement = $this->createMockWebDriverElement('div', children: []);
@@ -112,11 +122,11 @@ class RetryingMatchProcessorTest extends BaseUnitTestCase
             ->method('match')
             ->willReturn([$mockElement]);
 
-        $matchContext = new EspressoContext(
+        $mockContext = new EspressoContext(
             driver: $mockDriver,
             options: new EspressoOptions(
                 matchProcessor: new RetryingMatchProcessor(
-                    waitTimeoutInSeconds: $configuredTimeInSeconds,
+                    waitTimeoutInMilliseconds: $configuredTimeInMilliseconds,
                     waitIntervalInMilliseconds: $configuredDelayInMilliseconds,
                 ),
             ),
@@ -125,7 +135,7 @@ class RetryingMatchProcessorTest extends BaseUnitTestCase
         $assertion = new MatchesAssertion(new IsDisplayedMatcher);
 
         // Act
-        $assertion->assert($mockMatcher, null, $matchContext);
+        $assertion->assert($mockMatcher, null, $mockContext);
 
         // Assert
         // No assertions, only expectations.
@@ -135,7 +145,7 @@ class RetryingMatchProcessorTest extends BaseUnitTestCase
     {
         // Arrange
         $configuredDelayInMilliseconds = 100;
-        $configuredTimeInSeconds = 1;
+        $configuredTimeInMilliseconds = 1000;
         $expectedRetries = 4;
 
         $mockElement = $this->createMockWebDriverElement('div');
@@ -155,11 +165,11 @@ class RetryingMatchProcessorTest extends BaseUnitTestCase
                 [],
             );
 
-        $matchContext = new EspressoContext(
+        $mockContext = new EspressoContext(
             driver: $mockDriver,
             options: new EspressoOptions(
                 matchProcessor: new RetryingMatchProcessor(
-                    waitTimeoutInSeconds: $configuredTimeInSeconds,
+                    waitTimeoutInMilliseconds: $configuredTimeInMilliseconds,
                     waitIntervalInMilliseconds: $configuredDelayInMilliseconds,
                 ),
             ),
@@ -168,7 +178,7 @@ class RetryingMatchProcessorTest extends BaseUnitTestCase
         $assertion = new DoesNotExistAssertion;
 
         // Act
-        $assertion->assert($mockMatcher, null, $matchContext);
+        $assertion->assert($mockMatcher, null, $mockContext);
 
         // Assert
         // No assertions, only expectations.
@@ -178,7 +188,7 @@ class RetryingMatchProcessorTest extends BaseUnitTestCase
     {
         // Arrange
         $configuredDelayInMilliseconds = 100;
-        $configuredTimeInSeconds = 1;
+        $configuredTimeInMilliseconds = 1000;
         $expectedRetries = 4;
 
         $mockElement = $this->createMockWebDriverElement('div');
@@ -199,11 +209,11 @@ class RetryingMatchProcessorTest extends BaseUnitTestCase
                 [$mockElement],
             );
 
-        $matchContext = new EspressoContext(
+        $mockContext = new EspressoContext(
             driver: $mockDriver,
             options: new EspressoOptions(
                 matchProcessor: new RetryingMatchProcessor(
-                    waitTimeoutInSeconds: $configuredTimeInSeconds,
+                    waitTimeoutInMilliseconds: $configuredTimeInMilliseconds,
                     waitIntervalInMilliseconds: $configuredDelayInMilliseconds,
                 ),
             ),
@@ -212,7 +222,137 @@ class RetryingMatchProcessorTest extends BaseUnitTestCase
         $assertion = new ExistsAssertion;
 
         // Act
-        $assertion->assert($mockMatcher, null, $matchContext);
+        $assertion->assert($mockMatcher, null, $mockContext);
+
+        // Assert
+        // No assertions, only expectations.
+    }
+
+    public function testRetriesRetryableExceptions(): void
+    {
+        // Arrange
+        $configuredDelayInMilliseconds = 100;
+        $configuredTimeInMilliseconds = 1000;
+        $expectedRetries = 4;
+
+        $mockElement = $this->createMockWebDriverElement('div');
+
+        $mockDriver = $this->createMock(WebDriver::class);
+        $mockDriver->expects($this->exactly($expectedRetries))
+            ->method('findElement')
+            ->willReturn($this->createMockWebDriverElement('html', children: [$mockElement]));
+
+        $mockMatcher = $this->createMock(MatcherInterface::class);
+        $mockMatcher->expects($this->exactly($expectedRetries))
+            ->method('match')
+            ->willReturnOnConsecutiveCalls(
+                $this->throwException(new StaleElementReferenceException('')),
+                $this->throwException(new StaleElementReferenceException('')),
+                $this->throwException(new StaleElementReferenceException('')),
+                [$mockElement],
+            );
+
+        $mockContext = new EspressoContext(
+            driver: $mockDriver,
+            options: new EspressoOptions(
+                matchProcessor: new RetryingMatchProcessor(
+                    waitTimeoutInMilliseconds: $configuredTimeInMilliseconds,
+                    waitIntervalInMilliseconds: $configuredDelayInMilliseconds,
+                ),
+            ),
+        );
+
+        $assertion = new ExistsAssertion;
+
+        // Act
+        $assertion->assert($mockMatcher, null, $mockContext);
+
+        // Assert
+        // No assertions, only expectations.
+    }
+
+    public function testThrowsExceptionsThatWereThrownUntilTheEnd(): void
+    {
+        // Expectations
+        $this->expectException(ElementClickInterceptedException::class);
+
+        // Arrange
+        $configuredDelayInMilliseconds = 100;
+        $configuredTimeInMilliseconds = 300;
+        $expectedRetries = 4;
+
+        $mockElement = $this->createMockWebDriverElement('div');
+        $mockElement->expects($this->exactly($expectedRetries))
+            ->method('click')
+            ->willThrowException(new ElementClickInterceptedException(''));
+
+        $mockDriver = $this->createMock(WebDriver::class);
+        $mockDriver->expects($this->once())
+            ->method('findElement')
+            ->willReturn($this->createMockWebDriverElement('html', children: [$mockElement]));
+
+        $mockMatcher = $this->createMock(MatcherInterface::class);
+        $mockMatcher->expects($this->once())
+            ->method('match')
+            ->willReturn([$mockElement]);
+
+        $mockContext = new EspressoContext(
+            driver: $mockDriver,
+            options: new EspressoOptions(
+                actionProcessor: new RetryingActionProcessor(
+                    waitTimeoutInMilliseconds: $configuredTimeInMilliseconds,
+                    waitIntervalInMilliseconds: $configuredDelayInMilliseconds,
+                ),
+            ),
+        );
+
+        $interaction = new ElementInteraction($mockMatcher, null, $mockContext);
+
+        // Act
+        $interaction->perform(click());
+
+        // Assert
+        // No assertions, only expectations.
+    }
+
+    public function testThrowsExceptionsThatAreNotExpectedToRetry(): void
+    {
+        // Expectations
+        $this->expectException(ElementCollectionException::class);
+
+        // Arrange
+        $configuredDelayInMilliseconds = 100;
+        $configuredTimeInMilliseconds = 300;
+
+        $mockElement = $this->createMockWebDriverElement('div');
+        $mockElement->expects($this->once())
+            ->method('click')
+            ->willThrowException(new ElementCollectionException(''));
+
+        $mockDriver = $this->createMock(WebDriver::class);
+        $mockDriver->expects($this->once())
+            ->method('findElement')
+            ->willReturn($this->createMockWebDriverElement('html', children: [$mockElement]));
+
+        $mockMatcher = $this->createMock(MatcherInterface::class);
+        $mockMatcher->expects($this->once())
+            ->method('match')
+            ->willReturn([$mockElement]);
+
+        $mockContext = new EspressoContext(
+            driver: $mockDriver,
+            options: new EspressoOptions(
+                actionProcessor: new RetryingActionProcessor(
+                    waitTimeoutInMilliseconds: $configuredTimeInMilliseconds,
+                    waitIntervalInMilliseconds: $configuredDelayInMilliseconds,
+                ),
+            ),
+        );
+
+        $interaction = new ElementInteraction($mockMatcher, null, $mockContext);
+
+        // Act
+        $interaction->perform(click());
 
         // Assert
         // No assertions, only expectations.
@@ -229,7 +369,7 @@ class RetryingMatchProcessorTest extends BaseUnitTestCase
             driver: $this->createMock(WebDriver::class),
             options: new EspressoOptions(
                 matchProcessor: new RetryingMatchProcessor(
-                    waitTimeoutInSeconds: 0,
+                    waitTimeoutInMilliseconds: 0,
                     waitIntervalInMilliseconds: 0,
                 ),
             ),

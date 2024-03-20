@@ -84,7 +84,12 @@ final readonly class ElementInteraction implements InteractionInterface
                     expectedCount: ExpectedMatchCount::One,
                 );
 
-                if (!$action->perform($targetResult, $this->context)) {
+                $actionResult = $this->context->options->actionProcessor->process(
+                    action: $action,
+                    target: $targetResult,
+                    context: $this->context,
+                );
+                if (!$actionResult->result()) {
                     throw new PerformException(
                         action: $action,
                         element: $this->context->options->elementLogger->describe($targetResult->single()),

@@ -10,7 +10,7 @@ use EspressoWebDriver\Matcher\MatcherInterface;
 use EspressoWebDriver\Utilities\ElementLoggerInterface;
 use Facebook\WebDriver\WebDriverElement;
 
-final readonly class MatchResult
+final readonly class MatchResult implements ProcessorResultInterface
 {
     /**
      * @var array<int, WebDriverElement>
@@ -57,6 +57,20 @@ final readonly class MatchResult
             $this->matcher,
             "\n".$elementLogger->describeMany($this->result),
         );
+    }
+
+    public function shouldRetry(): bool
+    {
+        $count = $this->count();
+
+        $isValid = match ($this->expectedCount) {
+            ExpectedMatchCount::OneOrMore => $count > 0,
+            ExpectedMatchCount::TwoOrMore => $count > 1,
+            ExpectedMatchCount::Zero => $count === 0,
+            ExpectedMatchCount::One => $count === 1,
+        };
+
+        return !$isValid;
     }
 
     /**
