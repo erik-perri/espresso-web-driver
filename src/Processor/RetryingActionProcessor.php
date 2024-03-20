@@ -8,6 +8,7 @@ use EspressoWebDriver\Action\ActionInterface;
 use EspressoWebDriver\Core\EspressoContext;
 use Facebook\WebDriver\Exception\ElementClickInterceptedException;
 use Facebook\WebDriver\Exception\ElementNotInteractableException;
+use Throwable;
 
 final readonly class RetryingActionProcessor implements ActionProcessorInterface
 {
@@ -32,6 +33,9 @@ final readonly class RetryingActionProcessor implements ActionProcessorInterface
         );
     }
 
+    /**
+     * @throws Throwable
+     */
     public function process(
         ActionInterface $action,
         MatchResult $target,
