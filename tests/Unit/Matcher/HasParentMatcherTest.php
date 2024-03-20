@@ -18,8 +18,7 @@ class HasParentMatcherTest extends BaseUnitTestCase
     {
         // Arrange
         $mockMatcher = $this->createMock(MatcherInterface::class);
-        $mockMatcher
-            ->method('__toString')
+        $mockMatcher->method('__toString')
             ->willReturn('mock(test)');
 
         $matcher = new HasParentMatcher($mockMatcher);

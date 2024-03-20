@@ -26,8 +26,7 @@ class TypeTextActionTest extends BaseUnitTestCase
     {
         // Arrange
         $mockContainer = $this->createMockWebDriverElement('input');
-        $mockContainer
-            ->expects($this->once())
+        $mockContainer->expects($this->once())
             ->method('sendKeys')
             ->with('Mock Keys');
 

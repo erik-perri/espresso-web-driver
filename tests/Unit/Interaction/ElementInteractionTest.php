@@ -164,8 +164,7 @@ class ElementInteractionTest extends BaseUnitTestCase
 
         // Arrange
         $reporter = $this->createMock(AssertionReporterInterface::class);
-        $reporter
-            ->expects($this->once())
+        $reporter->expects($this->once())
             ->method('report')
             ->with(
                 false,
@@ -184,17 +183,14 @@ class ElementInteractionTest extends BaseUnitTestCase
         ]);
 
         $mockElementMatcher = $this->createMock(MatcherInterface::class);
-        $mockElementMatcher
-            ->method('__toString')
+        $mockElementMatcher->method('__toString')
             ->willReturn('mock');
-        $mockElementMatcher
-            ->expects($this->once())
+        $mockElementMatcher->expects($this->once())
             ->method('match')
             ->willReturn([$mockElementOne, $mockElementTwo]);
 
         $mockDriver = $this->createMock(WebDriver::class);
-        $mockDriver
-            ->expects($this->once())
+        $mockDriver->expects($this->once())
             ->method('findElement')
             ->willReturn($htmlElement);
 
@@ -241,22 +237,19 @@ class ElementInteractionTest extends BaseUnitTestCase
 
         // Arrange
         $mockMatcher = $this->createMock(MatcherInterface::class);
-        $mockMatcher
-            ->method('__toString')
+        $mockMatcher->method('__toString')
             ->willReturn('mock');
 
         $mockAction = $this->createMock(ActionInterface::class);
         $mockAction
             ->method('__toString')
             ->willReturn('mock');
-        $mockAction
-            ->expects($this->once())
+        $mockAction->expects($this->once())
             ->method('perform')
             ->willReturn(false);
 
         $mockDriver = $this->createMock(WebDriver::class);
-        $mockDriver
-            ->expects($this->once())
+        $mockDriver->expects($this->once())
             ->method('findElement')
             ->willReturn($this->createMockWebDriverElement('html'));
 
@@ -267,8 +260,7 @@ class ElementInteractionTest extends BaseUnitTestCase
 
         $mockElement = $this->createMockWebDriverElement('mock');
 
-        $mockMatcher
-            ->expects($this->once())
+        $mockMatcher->expects($this->once())
             ->method('match')
             ->willReturn([$mockElement]);
 
@@ -324,8 +316,7 @@ class ElementInteractionTest extends BaseUnitTestCase
     {
         // Arrange
         $mockDriver = $this->createMockForIntersectionOfInterfaces([WebDriver::class, JavaScriptExecutor::class]);
-        $mockDriver
-            ->expects($this->once())
+        $mockDriver->expects($this->once())
             ->method('findElement')
             ->willReturn($this->createMockWebDriverElement('html'));
 
@@ -338,8 +329,7 @@ class ElementInteractionTest extends BaseUnitTestCase
         );
 
         $mockElementMatcher = $this->createMock(MatcherInterface::class);
-        $mockElementMatcher
-            ->expects($this->once())
+        $mockElementMatcher->expects($this->once())
             ->method('match')
             ->willReturn([$this->createMockWebDriverElement('mock')]);
 
@@ -361,8 +351,7 @@ class ElementInteractionTest extends BaseUnitTestCase
     {
         // Arrange
         $mockDriver = $this->createMockForIntersectionOfInterfaces([WebDriver::class, JavaScriptExecutor::class]);
-        $mockDriver
-            ->expects($this->once())
+        $mockDriver->expects($this->once())
             ->method('findElement')
             ->willReturn($this->createMockWebDriverElement('html'));
 
@@ -375,14 +364,12 @@ class ElementInteractionTest extends BaseUnitTestCase
         );
 
         $mockContainerMatcher = $this->createMock(MatcherInterface::class);
-        $mockContainerMatcher
-            ->expects($this->once())
+        $mockContainerMatcher->expects($this->once())
             ->method('match')
             ->willReturn([$this->createMockWebDriverElement('div')]);
 
         $mockElementMatcher = $this->createMock(MatcherInterface::class);
-        $mockElementMatcher
-            ->expects($this->once())
+        $mockElementMatcher->expects($this->once())
             ->method('match')
             ->willReturn([$this->createMockWebDriverElement('mock')]);
 

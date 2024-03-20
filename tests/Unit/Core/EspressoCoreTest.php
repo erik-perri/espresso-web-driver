@@ -29,8 +29,7 @@ class EspressoCoreTest extends BaseUnitTestCase
     {
         // Arrange
         $mockDriver = $this->createMock(WebDriver::class);
-        $mockDriver
-            ->expects($this->once())
+        $mockDriver->expects($this->once())
             ->method('get')
             ->with('https://example.com');
 
@@ -49,8 +48,7 @@ class EspressoCoreTest extends BaseUnitTestCase
     {
         // Arrange
         $mockDriver = $this->createMock(WebDriver::class);
-        $mockDriver
-            ->expects($this->once())
+        $mockDriver->expects($this->once())
             ->method('findElement')
             ->willReturn($this->createMockWebDriverElement('html'));
 

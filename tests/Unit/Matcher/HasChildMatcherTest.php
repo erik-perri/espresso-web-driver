@@ -18,8 +18,7 @@ class HasChildMatcherTest extends BaseUnitTestCase
     {
         // Arrange
         $mockMatcher = $this->createMock(MatcherInterface::class);
-        $mockMatcher
-            ->method('__toString')
+        $mockMatcher->method('__toString')
             ->willReturn('mock(test)');
 
         $matcher = new HasChildMatcher($mockMatcher);
