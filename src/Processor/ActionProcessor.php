@@ -9,10 +9,8 @@ use EspressoWebDriver\Core\EspressoContext;
 
 final readonly class ActionProcessor implements ActionProcessorInterface
 {
-    public function process(ActionInterface $action, MatchResult $target, EspressoContext $context): ActionResult
+    public function process(ActionInterface $action, MatchResult $target, EspressoContext $context): bool
     {
-        $result = $action->perform($target, $context);
-
-        return new ActionResult($result);
+        return $action->perform($target, $context);
     }
 }

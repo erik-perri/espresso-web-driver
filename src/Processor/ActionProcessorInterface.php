@@ -15,5 +15,5 @@ interface ActionProcessorInterface
     /**
      * @throws AmbiguousElementException|NoMatchingElementException|PerformException
      */
-    public function process(ActionInterface $action, MatchResult $target, EspressoContext $context): ActionResult;
+    public function process(ActionInterface $action, MatchResult $target, EspressoContext $context): bool;
 }
