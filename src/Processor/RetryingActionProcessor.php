@@ -26,7 +26,7 @@ final readonly class RetryingActionProcessor implements ActionProcessorInterface
      * @param  class-string[]  $retryableExceptions
      */
     public function __construct(
-        private int $retryAttempts = 1,
+        private int $retryAttempts = 2,
         private int $retryDelayInMilliseconds = 100,
         private array $retryableExceptions = [
             ElementClickInterceptedException::class,
