@@ -4,11 +4,11 @@ expressions.
 ```php
 $espresso = usingDriver($driver, new EspressoOptions(
     actionProcessor: new RetryingActionProcessor(
-        waitTimeoutInMilliseconds: 2000,
-        waitIntervalInMilliseconds: 200,
+        retryAttempts: 2,
+        retryDelayInMilliseconds: 100,
     ),
     matchProcessor: new RetryingMatchProcessor(
-        waitTimeoutInMilliseconds: 5000,
+        waitTimeoutInMilliseconds: 4000,
         waitIntervalInMilliseconds: 200,
     ),
 ));
